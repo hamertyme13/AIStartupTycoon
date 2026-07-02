@@ -22,6 +22,14 @@ class GameManager {
             return
         }
 
+        guard company.products[index].unlocked else {
+
+            company.latestNews = "🔒 Product locked."
+
+            return
+
+        }
+
         let cost = company.products[index].buildCost
 
         guard company.cash >= cost else {
@@ -29,6 +37,7 @@ class GameManager {
             company.latestNews = "❌ Not enough cash."
 
             return
+
         }
 
         company.cash -= cost
@@ -41,7 +50,8 @@ class GameManager {
 
         company.companyValue += company.products[index].revenuePerLevel * 5
 
-        company.latestNews = "🚀 \(company.products[index].name) upgraded to Level \(company.products[index].level)"
+        company.latestNews =
+        "🚀 \(company.products[index].name) upgraded to Level \(company.products[index].level)"
 
         unlockProducts()
 
