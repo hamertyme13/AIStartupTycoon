@@ -3,7 +3,7 @@ import Combine
 
 struct DashboardView: View {
 
-    @State var game = GameManager()
+    @Environment(GameManager.self) private var game
 
     let timer = Timer.publish(every: 1,
                               on: .main,

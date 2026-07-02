@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductsView: View {
 
-    @State private var game = GameManager()
+    @Environment(GameManager.self) private var game
 
     var body: some View {
 
