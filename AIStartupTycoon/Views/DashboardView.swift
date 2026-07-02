@@ -45,7 +45,7 @@ struct DashboardView: View {
 
                     StatCard(
                         title: "👥 Employees",
-                        value: "\(game.company.employeeCount)",
+                        value: "\(game.company.employees.count)",
                         color: .orange
                     )
 
@@ -64,6 +64,7 @@ struct DashboardView: View {
             .navigationTitle("Dashboard")
             .onReceive(timer) { _ in
                 game.tick()
+                game.employeeWork()
             }
 
         }

@@ -24,7 +24,16 @@ class Company {
 
     // MARK: Employees
 
-    var employeeCount = 1
+    var employees: [Employee] = [
+
+        Employee(
+            name: "You",
+            role: .juniorEngineer,
+            salary: 0,
+            skill: 50
+        )
+
+    ]
 
     // MARK: Products
 

@@ -65,16 +65,29 @@ class GameManager {
 
         guard company.cash >= cost else {
 
-            company.latestNews = "❌ Not enough cash to hire."
+            company.latestNews = "❌ Not enough cash."
 
             return
+
         }
 
         company.cash -= cost
 
-        company.employeeCount += 1
+        let newEmployee = Employee(
 
-        company.latestNews = "👨‍💻 Engineer hired."
+            name: "Engineer \(company.employees.count)",
+
+            role: .juniorEngineer,
+
+            salary: 4000,
+
+            skill: Int.random(in: 40...70)
+
+        )
+
+        company.employees.append(newEmployee)
+
+        company.latestNews = "👨‍💻 Hired \(newEmployee.name)"
 
     }
 
@@ -94,6 +107,19 @@ class GameManager {
 
         }
 
+    }
+    
+    func employeeWork() {
+
+        var revenueGain = 0.0
+
+        for employee in company.employees {
+
+            revenueGain += employee.productivity * 5
+
+        }
+
+        company.cash += revenueGain
     }
 
 }
