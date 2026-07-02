@@ -35,14 +35,16 @@ struct ProductCard: View {
 
             Divider()
 
-            Text("Level: \(product.level)")
+            Text("⭐ Level \(product.level)")
 
-            Text("Customers: \(product.customers)")
+            Text("👥 Customers: \(product.customers.formatted())")
 
-            Text("Revenue: +$\(Int(product.revenuePerLevel))/month")
+            Text("📈 Growth: +\(product.dailyGrowth)/sec")
 
-            Text("Cost: $\(Int(product.buildCost))")
+            Text("💵 MRR: $\(Int(product.monthlyRevenue).formatted())")
 
+            Text("🔨 Upgrade Cost: $\(Int(product.buildCost).formatted())")
+            
             Button("Build") {
 
                 onBuild()

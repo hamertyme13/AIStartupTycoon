@@ -65,6 +65,7 @@ struct DashboardView: View {
             .onReceive(timer) { _ in
                 game.tick()
                 game.employeeWork()
+                game.growProducts()
             }
 
         }

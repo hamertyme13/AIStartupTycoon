@@ -4,22 +4,29 @@ struct Product: Identifiable {
 
     let id = UUID()
 
-    let name: String
-    let description: String
+    var name: String
+    var description: String
 
-    var level: Int = 0
+    var level = 0
 
-    let buildCost: Double
-    let revenuePerLevel: Double
+    var customers = 0
 
-    var customers: Int = 0
+    var buildCost: Double
 
-    var unlocked: Bool = true
+    var revenuePerLevel: Double
+
+    var unlocked = true
+
+    var monthlyRevenue: Double {
+
+        Double(customers) * 10
+
+    }
+
+    var dailyGrowth: Int {
+
+        max(level * 5, 1)
+
+    }
 
 }
-//  Products.swift
-//  AIStartupTycoon
-//
-//  Created by Joshua Hamer on 7/2/26.
-//
-

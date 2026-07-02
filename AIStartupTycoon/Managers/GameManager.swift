@@ -121,6 +121,20 @@ class GameManager {
 
         company.cash += revenueGain
     }
+    
+    func growProducts() {
+
+        for index in company.products.indices {
+
+            guard company.products[index].unlocked else { continue }
+
+            let growth = company.products[index].dailyGrowth
+
+            company.products[index].customers += growth
+
+        }
+
+    }
 
 }
 //  GameManager.swift
