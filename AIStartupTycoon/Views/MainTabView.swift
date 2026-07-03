@@ -1,10 +1,13 @@
 import SwiftUI
+import Observation
 
 struct MainTabView: View {
 
     @Environment(GameManager.self) private var game
 
     var body: some View {
+        
+        @Bindable var game = game
 
         TabView {
 
@@ -34,13 +37,19 @@ struct MainTabView: View {
                 }
 
         }
-        
+        .sheet(item: $game.latestReport) { report in
+
+            MonthlyReportView(report: report) {
+
+                game.latestReport = nil
+
+            }
 
         }
 
     }
 
-
+}
 
 #Preview {
 

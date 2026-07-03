@@ -4,13 +4,17 @@ import Observation
 @Observable
 class GameManager {
 
+    // MARK: - Game State
+
     var company = Company()
-    
+
     var secondsElapsed = 0
-    
+
     var currentEvent: GameEvent?
 
-    // MARK: Passive Income
+    var latestReport: MonthlyReport?
+
+    // MARK: - Game Loop
 
     func tick() {
 
@@ -18,13 +22,11 @@ class GameManager {
 
     }
 
-    // MARK: Build Product
+    // MARK: - Products
 
     func buildProduct(index: Int) {
 
-        guard company.products.indices.contains(index) else {
-            return
-        }
+        guard company.products.indices.contains(index) else { return }
 
         guard company.products[index].unlocked else {
 
@@ -61,7 +63,45 @@ class GameManager {
 
     }
 
-    // MARK: Hire Engineer
+    private func unlockProducts() {
+
+        if company.products.indices.contains(1),
+           company.products[0].level >= 5 {
+
+            company.products[1].unlocked = true
+
+        }
+
+        if company.products.indices.contains(2),
+           company.products[1].level >= 5 {
+
+            company.products[2].unlocked = true
+
+        }
+
+        if company.products.indices.contains(3),
+           company.products[2].level >= 5 {
+
+            company.products[3].unlocked = true
+
+        }
+
+    }
+
+    func growProducts() {
+
+        for index in company.products.indices {
+
+            guard company.products[index].unlocked else { continue }
+
+            company.products[index].customers +=
+                company.products[index].dailyGrowth
+
+        }
+
+    }
+
+    // MARK: - Employees
 
     func hireEngineer() {
 
@@ -77,7 +117,7 @@ class GameManager {
 
         company.cash -= cost
 
-        let newEmployee = Employee(
+        let employee = Employee(
 
             name: "Engineer \(company.employees.count)",
 
@@ -89,30 +129,12 @@ class GameManager {
 
         )
 
-        company.employees.append(newEmployee)
+        company.employees.append(employee)
 
-        company.latestNews = "👨‍💻 Hired \(newEmployee.name)"
-
-    }
-
-    // MARK: Unlock Products
-
-    private func unlockProducts() {
-
-        if company.products[0].level >= 5 {
-
-            company.products[1].unlocked = true
-
-        }
-
-        if company.products[1].level >= 5 {
-
-            company.products[2].unlocked = true
-
-        }
+        company.latestNews = "👨‍💻 Hired \(employee.name)"
 
     }
-    
+
     func employeeWork() {
 
         var revenueGain = 0.0
@@ -124,22 +146,19 @@ class GameManager {
         }
 
         company.cash += revenueGain
-    }
-    
-    func growProducts() {
-
-        for index in company.products.indices {
-
-            guard company.products[index].unlocked else { continue }
-
-            let growth = company.products[index].dailyGrowth
-
-            company.products[index].customers += growth
-
-        }
 
     }
-    
+
+    // MARK: - Research
+
+    func addResearchPoints(_ amount: Double) {
+
+        company.researchPoints += amount
+
+    }
+
+    // MARK: - Investors
+
     func acceptInvestment(index: Int) {
 
         guard company.investors.indices.contains(index) else { return }
@@ -149,56 +168,115 @@ class GameManager {
             company.latestNews = "⚠️ Already invested."
 
             return
+
         }
 
         company.cash += company.investors[index].investment
 
-        company.founderOwnership -= company.investors[index].equity
+        company.founderOwnership -=
+            company.investors[index].equity
 
         company.investors[index].invested = true
 
         company.investors[index].investedDate =
-            "Year \(company.currentYear) • Month \(company.currentMonth)"
+        "Year \(company.currentYear) • Month \(company.currentMonth)"
 
         company.latestNews =
-            "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
-    }
-    
-    func rollForEvent() {
-
-        guard Int.random(in: 1...100) <= 20 else { return }
-
-        currentEvent = EventManager.events.randomElement()
+        "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
 
     }
-    
+
+    // MARK: - Monthly Simulation
+
     func nextMonth() {
 
+        processMonthlyFinances()
+
+        createMonthlyReport()
+
+        advanceCalendar()
+
+        rollForEvent()
+
+    }
+
+    private func processMonthlyFinances() {
+
         company.cash += company.monthlyProfit
+
+    }
+
+    private func createMonthlyReport() {
+
+        let payroll = company.employees.reduce(0) {
+
+            $0 + $1.salary
+
+        }
+
+        latestReport = MonthlyReport(
+
+            month: company.currentMonth,
+
+            year: company.currentYear,
+
+            revenue: company.monthlyRevenue,
+
+            payroll: payroll,
+
+            officeRent: company.officeRent,
+
+            serverCost: company.serverCost,
+
+            researchCost: company.researchExpense,
+
+            endingCash: company.cash
+
+        )
+
+    }
+
+    private func advanceCalendar() {
 
         company.currentMonth += 1
 
         if company.currentMonth > 12 {
 
             company.currentMonth = 1
+
             company.currentYear += 1
-        rollForEvent()
+
         }
 
         company.latestNews =
-            "📅 Advanced to Year \(company.currentYear), Month \(company.currentMonth)"
+        "📅 Advanced to Year \(company.currentYear) • Month \(company.currentMonth)"
 
     }
-    
+
+    // MARK: - Events
+
+    func rollForEvent() {
+
+        guard Int.random(in: 1...100) <= 20 else {
+
+            return
+
+        }
+
+        currentEvent = EventManager.events.randomElement()
+
+    }
+
     func apply(_ event: GameEvent) {
 
         company.cash += event.cashReward
 
         company.companyValue += event.companyValueReward
 
-        if !company.products.isEmpty {
+        if let firstProduct = company.products.indices.first {
 
-            company.products[0].customers += event.customerReward
+            company.products[firstProduct].customers +=
+                event.customerReward
 
         }
 
@@ -207,12 +285,5 @@ class GameManager {
         currentEvent = nil
 
     }
-    
-    
-}
-//  GameManager.swift
-//  AIStartupTycoon
-//
-//  Created by Joshua Hamer on 7/2/26.
-//
 
+}
