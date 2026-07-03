@@ -5,6 +5,8 @@ import Observation
 class GameManager {
 
     var company = Company()
+    
+    var secondsElapsed = 0
 
     // MARK: Passive Income
 
@@ -158,6 +160,24 @@ class GameManager {
 
         company.latestNews =
             "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
+    }
+    
+    func nextMonth() {
+
+        company.cash += company.monthlyProfit
+
+        company.currentMonth += 1
+
+        if company.currentMonth > 12 {
+
+            company.currentMonth = 1
+            company.currentYear += 1
+
+        }
+
+        company.latestNews =
+            "📅 Advanced to Year \(company.currentYear), Month \(company.currentMonth)"
+
     }
 
 }

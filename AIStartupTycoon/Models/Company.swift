@@ -43,7 +43,9 @@ class Company {
             name: "AI Chatbot",
             description: "Customer Support AI",
             buildCost: 1000,
-            revenuePerLevel: 100
+            revenuePerLevel: 100,
+            unlocked: true,
+            requiredTechnology: nil
         ),
 
         Product(
@@ -51,15 +53,26 @@ class Company {
             description: "AI Image Creation",
             buildCost: 5000,
             revenuePerLevel: 350,
-            unlocked: false
+            unlocked: false,
+            requiredTechnology: "Image Generation"
         ),
 
         Product(
-            name: "Coding Assistant",
-            description: "AI Software Engineer",
-            buildCost: 12000,
-            revenuePerLevel: 800,
-            unlocked: false
+            name: "Voice Assistant",
+            description: "Speech AI",
+            buildCost: 10000,
+            revenuePerLevel: 900,
+            unlocked: false,
+            requiredTechnology: "Voice AI"
+        ),
+
+        Product(
+            name: "AI Agent",
+            description: "Autonomous Worker",
+            buildCost: 50000,
+            revenuePerLevel: 3000,
+            unlocked: false,
+            requiredTechnology: "AI Agents"
         )
 
     ]
@@ -138,5 +151,12 @@ class Company {
         )
 
     ]
+    
+    var monthlyExpenses: Double {
+        employees.reduce(0) { $0 + $1.salary }
+    }
+    var monthlyProfit: Double {
+        monthlyRevenue - monthlyExpenses
+    }
 
 }

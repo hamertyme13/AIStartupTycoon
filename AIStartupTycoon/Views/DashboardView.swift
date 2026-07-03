@@ -25,6 +25,10 @@ struct DashboardView: View {
                             .bold()
 
                     }
+                    TimeCard(
+                        year: game.company.currentYear,
+                        month: game.company.currentMonth
+                    )
 
                     Text("Building the Future of AI")
                         .foregroundStyle(.secondary)
@@ -51,6 +55,16 @@ struct DashboardView: View {
                         title: "👥 Employees",
                         value: "\(game.company.employees.count)",
                         color: .orange
+                    )
+                    
+                    StatCard(
+
+                        title: "💵 Monthly Profit",
+
+                        value: "$\(Int(game.company.monthlyProfit).formatted())",
+
+                        color: .mint
+
                     )
 
                     GroupBox {
@@ -89,6 +103,11 @@ struct DashboardView: View {
                 game.tick()
                 game.employeeWork()
                 game.growProducts()
+                game.secondsElapsed += 1
+                if game.secondsElapsed >= 10 {
+                    game.secondsElapsed = 0
+                    game.nextMonth()
+                }
             }
 
         }

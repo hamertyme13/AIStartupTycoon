@@ -19,6 +19,15 @@ struct ResearchManager {
             "🧠 Research completed: \(company.technologies[index].name)"
 
         }
+        
+        let completedTech = company.technologies[index].name
+        
+        for productIndex in company.products.indices {
+            
+            if company.products[productIndex].requiredTechnology == completedTech {
+                company.products[productIndex].unlocked = true
+            }
+        }
 
     }
 

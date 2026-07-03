@@ -14,19 +14,33 @@ struct ProductsView: View {
 
                     ForEach(game.company.products.indices, id: \.self) { index in
 
-                        ProductCard(
-                            product: game.company.products[index]
-                        ) {
+                        let product = game.company.products[index]
 
-                            withAnimation(.spring()) {
+                        if product.unlocked {
 
-                                game.buildProduct(index: index)
+                            ProductCard(
+                                product: product
+                            ) {
+
+                                withAnimation(.spring()) {
+
+                                    game.buildProduct(index: index)
+
+                                }
 
                             }
+
+                        } else {
+
+                            LockedProductCard(
+                                product: product
+                            )
 
                         }
 
                     }
+
+                
 
                 }
                 .padding()

@@ -16,6 +16,8 @@ struct Product: Identifiable {
     var revenuePerLevel: Double
 
     var unlocked = true
+    
+    var requiredTechnology: String?
 
     var monthlyRevenue: Double {
 
