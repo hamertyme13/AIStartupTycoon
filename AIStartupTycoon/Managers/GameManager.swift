@@ -14,9 +14,19 @@ class GameManager {
 
     var latestReport: MonthlyReport?
 
+    // MARK: - Time
+    
+    var gameSpeed: GameSpeed = .normal
+    
+    var secondsPerMonth: Int {
+        
+        gameSpeed.secondsPerMonth
+        
+    }
+    
     // MARK: - Notifications
 
-    func addNotification(title: String, message: String) {
+    private func addNotification(title: String, message: String) {
 
         company.latestNews = message
 
@@ -35,7 +45,21 @@ class GameManager {
 
     func tick() {
 
-        company.cash += company.monthlyRevenue / 30
+        addCash(company.monthlyRevenue / 30)
+
+    }
+    
+    func advanceOneSecond() {
+
+        tick()
+
+        employeeWork()
+
+        employeeResearch()
+
+        updateEmployees()
+
+        growProducts()
 
     }
 
@@ -58,18 +82,15 @@ class GameManager {
 
         let cost = company.products[index].buildCost
 
-        guard company.cash >= cost else {
-
+        guard spendCash(cost) else {
+            
             addNotification(
                 title: "❌ Not Enough Cash",
                 message: "You need more money to build this product."
             )
-
+            
             return
-
         }
-
-        company.cash -= cost
 
         company.products[index].level += 1
 
@@ -94,43 +115,76 @@ class GameManager {
 
     private func unlockProducts() {
 
-        if company.products.indices.contains(1),
-           company.products[0].level >= 5 {
+        for index in company.products.indices {
 
-            company.products[1].unlocked = true
+            guard !company.products[index].unlocked else {
 
-            addNotification(
-                title: "🔓 Product Unlocked",
-                message: "\(company.products[1].name) is now available."
-            )
+                continue
 
-        }
+            }
 
-        if company.products.indices.contains(2),
-           company.products[1].level >= 5 {
+            guard technologyUnlocked(
+                company.products[index].requiredTechnology
+            ) else {
 
-            company.products[2].unlocked = true
+                continue
 
-            addNotification(
-                title: "🔓 Product Unlocked",
-                message: "\(company.products[2].name) is now available."
-            )
+            }
 
-        }
+            switch index {
 
-        if company.products.indices.contains(3),
-           company.products[2].level >= 5 {
+            case 1:
 
-            company.products[3].unlocked = true
+                if company.products[0].level >= 5 {
 
-            addNotification(
-                title: "🔓 Product Unlocked",
-                message: "\(company.products[3].name) is now available."
-            )
+                    company.products[index].unlocked = true
+
+                    addNotification(
+                        title: "🔓 Product Unlocked",
+                        message:
+                            "\(company.products[index].name) is now available."
+                    )
+
+                }
+
+            case 2:
+
+                if company.products[1].level >= 5 {
+
+                    company.products[index].unlocked = true
+
+                    addNotification(
+                        title: "🔓 Product Unlocked",
+                        message:
+                            "\(company.products[index].name) is now available."
+                    )
+
+                }
+
+            case 3:
+
+                if company.products[2].level >= 5 {
+
+                    company.products[index].unlocked = true
+
+                    addNotification(
+                        title: "🔓 Product Unlocked",
+                        message:
+                            "\(company.products[index].name) is now available."
+                    )
+
+                }
+
+            default:
+
+                break
+
+            }
 
         }
 
     }
+    
 
     func growProducts() {
 
@@ -138,8 +192,12 @@ class GameManager {
 
             guard company.products[index].unlocked else { continue }
 
+            let growth = Double(company.products[index].dailyGrowth)
+
+            let bonus = growth * (Double(company.reputation) / 100)
+
             company.products[index].customers +=
-                company.products[index].dailyGrowth
+                Int(growth + bonus)
 
         }
 
@@ -151,18 +209,15 @@ class GameManager {
 
         let cost = 500.0
 
-        guard company.cash >= cost else {
-
+        guard spendCash(cost) else {
+            
             addNotification(
                 title: "❌ Not Enough Cash",
                 message: "You can't afford another engineer."
             )
-
+            
             return
-
         }
-
-        company.cash -= cost
 
         let employee = Employee(
             name: "Engineer \(company.employees.count)",
@@ -188,7 +243,50 @@ class GameManager {
 
         }
 
-        company.cash += revenueGain
+        addCash(revenueGain)
+
+    }
+    
+    func updateEmployees() {
+
+        for index in company.employees.indices {
+
+            company.employees[index].experience += 1
+
+            if company.employees[index].experience >=
+                company.employees[index].experienceNeeded {
+
+                company.employees[index].experience = 0
+
+                company.employees[index].level += 1
+
+                company.employees[index].skill += 2
+
+                addNotification(
+                    title: "📈 Level Up",
+                    message:
+                        "\(company.employees[index].name) reached Level \(company.employees[index].level)"
+                )
+
+            }
+            
+            if company.employees[index].level >= 5 &&
+               company.employees[index].role == .juniorEngineer {
+
+                company.employees[index].role = .seniorEngineer
+
+                company.employees[index].skill += 5
+
+                company.employees[index].salary += 1500
+
+                addNotification(
+                    title: "🎉 Promotion",
+                    message: "\(company.employees[index].name) was promoted to Senior Engineer!"
+                )
+
+            }
+
+        }
 
     }
 
@@ -197,6 +295,119 @@ class GameManager {
     func addResearchPoints(_ amount: Double) {
 
         company.researchPoints += amount
+
+    }
+    
+    func startResearch(index: Int) {
+
+        guard company.technologies.indices.contains(index) else {
+
+            return
+
+        }
+
+        guard !company.technologies[index].unlocked else {
+
+            return
+
+        }
+
+        company.activeResearch = company.technologies[index].id
+
+        addNotification(
+            title: "🧠 Research Started",
+            message: company.technologies[index].name
+        )
+
+    }
+    
+    func updateResearch() {
+
+        guard let activeID = company.activeResearch else {
+
+            return
+
+        }
+
+        guard let index = company.technologies.firstIndex(where: {
+
+            $0.id == activeID
+
+        }) else {
+
+            return
+
+        }
+
+        company.technologies[index].progress += 1
+
+        if company.technologies[index].progress >=
+            company.technologies[index].requiredResearch {
+
+            company.technologies[index].unlocked = true
+
+            company.activeResearch = nil
+
+            addNotification(
+                title: "🔬 Research Complete",
+                message: "\(company.technologies[index].name) unlocked!"
+            )
+
+            unlockProducts()
+
+        }
+
+    }
+    
+    func employeeResearch() {
+
+        guard let activeID = company.activeResearch else {
+
+            return
+
+        }
+
+        guard let index = company.technologies.firstIndex(where: {
+
+            $0.id == activeID
+
+        }) else {
+
+            return
+
+        }
+
+        let researchGain = company.employees.reduce(0.0) {
+
+            $0 + $1.researchOutput
+
+        }
+
+        company.researchPoints += researchGain
+
+        company.technologies[index].progress += researchGain
+
+        if company.technologies[index].progress >=
+            company.technologies[index].requiredResearch {
+
+            company.technologies[index].progress =
+                company.technologies[index].requiredResearch
+
+            company.technologies[index].unlocked = true
+
+            company.activeResearch = nil
+
+            changeMarketShare(by: 1)
+
+            addNotification(
+                title: "🧠 Research Complete",
+                message:
+                    "\(company.technologies[index].name) unlocked!"
+            )
+
+            unlockProducts()
+
+        }
 
     }
 
@@ -217,7 +428,7 @@ class GameManager {
 
         }
 
-        company.cash += company.investors[index].investment
+        addCash(company.investors[index].investment)
 
         company.founderOwnership -=
             company.investors[index].equity
@@ -252,7 +463,7 @@ class GameManager {
 
     private func processMonthlyFinances() {
 
-        company.cash += company.monthlyProfit
+        addCash(company.monthlyProfit)
 
     }
 
@@ -371,7 +582,7 @@ class GameManager {
 
     func apply(_ event: GameEvent) {
 
-        company.cash += event.cashReward
+        addCash(event.cashReward)
 
         company.companyValue += event.companyValueReward
 
@@ -390,6 +601,49 @@ class GameManager {
         currentEvent = nil
 
     }
+    // MARK: - Economy Helpers
+
+    @discardableResult
+    private func spendCash(_ amount: Double) -> Bool {
+
+        guard company.cash >= amount else {
+
+            return false
+
+        }
+
+        company.cash -= amount
+
+        return true
+
+    }
+
+    private func addCash(_ amount: Double) {
+
+        company.cash += amount
+
+    }
+
+    private func technologyUnlocked(_ technology: String?) -> Bool {
+
+        guard let technology else {
+
+            return true
+
+        }
+
+        return company.technologies.contains {
+
+            $0.name == technology && $0.unlocked
+
+        }
+
+    }
+    private func canAfford(_ amount: Double) -> Bool {
+
+        company.cash >= amount
+
+    }
 
     // MARK: - Market
 
@@ -397,9 +651,75 @@ class GameManager {
 
         company.marketShare += amount
 
-        company.marketShare =
-            min(max(company.marketShare, 1), 95)
+        company.marketShare = min(
+            max(company.marketShare, 1),
+            95
+        )
+
+}
+    
+    // MARK: - Marketing
+
+    func launchMarketingCampaign() {
+
+        let cost = 2000.0
+
+        guard company.cash >= cost else {
+
+            addNotification(
+                title: "❌ Marketing Failed",
+                message: "Not enough cash for a marketing campaign."
+            )
+
+            return
+        }
+
+        guard spendCash(cost) else {
+
+            addNotification(
+                title: "❌ Marketing Failed",
+                message: "Not enough cash for a marketing campaign."
+            )
+
+            return
+
+        }
+
+        company.reputation += 2
+
+        changeMarketShare(by: 1.0)
+
+        let customers = Int.random(in: 300...700)
+
+        if let first = company.products.indices.first {
+
+            company.products[first].customers += customers
+
+        }
+
+        addNotification(
+            title: "📢 Marketing Campaign",
+            message: "Campaign attracted \(customers) new customers."
+        )
 
     }
+    
+    func skipToNextMonth() {
+
+        while secondsElapsed < secondsPerMonth {
+
+            advanceOneSecond()
+
+            secondsElapsed += 1
+
+        }
+
+        secondsElapsed = 0
+
+        nextMonth()
+
+    }
+    
+    
 
 }

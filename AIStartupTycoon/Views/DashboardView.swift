@@ -38,6 +38,12 @@ struct DashboardView: View {
                         year: game.company.currentYear,
                         month: game.company.currentMonth
                     )
+                    
+                    MonthProgressCard(
+                        elapsed: game.secondsElapsed,
+                        total: game.secondsPerMonth)
+                    
+                    TimeControls()
 
                     // MARK: - Stats
 
@@ -140,17 +146,13 @@ struct DashboardView: View {
         }
         .onReceive(timer) { _ in
 
-            game.tick()
-            game.employeeWork()
-            game.growProducts()
-
-            game.secondsElapsed += 1
-
-            if game.secondsElapsed >= 10 {
-
-                game.secondsElapsed = 0
-                game.nextMonth()
-
+            if game.gameSpeed != .paused {
+                game.advanceOneSecond()
+                game.secondsElapsed += 1
+                if game.secondsElapsed >= game.secondsPerMonth {
+                    game.secondsElapsed = 0
+                    game.nextMonth()
+            }
             }
 
         }

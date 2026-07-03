@@ -48,6 +48,12 @@ struct MainTabView: View {
                         systemImage: "chart.bar.xaxis"
                     )
                 }
+            
+            MarketingView()
+                .tabItem {
+                    Label("Marketing",
+                          systemImage: "megaphone.fill")
+                }
     
         }
         .sheet(item: $game.latestReport) { report in

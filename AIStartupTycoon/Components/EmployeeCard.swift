@@ -19,6 +19,11 @@ struct EmployeeCard: View {
                     Text(employee.role.rawValue)
                         .foregroundStyle(.secondary)
 
+                    // NEW
+                    Text("Level \(employee.level)")
+                        .font(.caption)
+                        .foregroundStyle(.blue)
+
                 }
 
                 Spacer()
@@ -28,6 +33,21 @@ struct EmployeeCard: View {
                     .foregroundStyle(.blue)
 
             }
+
+            Divider()
+
+            // MARK: Experience
+
+            ProgressView(
+                value: employee.experience,
+                total: employee.experienceNeeded
+            )
+
+            Text(
+                "\(Int(employee.experience)) / \(Int(employee.experienceNeeded)) XP"
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
 
             Divider()
 
@@ -50,7 +70,7 @@ struct EmployeeCard: View {
                 Text("$\(Int(employee.salary))/mo")
 
             }
-            
+
             HStack {
 
                 Label("Productivity", systemImage: "bolt.fill")
@@ -58,6 +78,17 @@ struct EmployeeCard: View {
                 Spacer()
 
                 Text("\(Int(employee.productivity * 100))%")
+
+            }
+
+            // NEW
+            HStack {
+
+                Label("Research", systemImage: "flask.fill")
+
+                Spacer()
+
+                Text(String(format: "%.1f RP/s", employee.researchOutput))
 
             }
 
@@ -82,9 +113,3 @@ struct EmployeeCard: View {
     )
 
 }
-//  EmployeeCard.swift
-//  AIStartupTycoon
-//
-//  Created by Joshua Hamer on 7/2/26.
-//
-

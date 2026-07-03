@@ -14,10 +14,17 @@ class Company {
     var monthlyRevenue: Double = 250
     var companyValue: Double = 25_000
     var marketShare: Double = 70
+    
+    // MARK: - Marketing
+    
+    var marketingBudget: Double = 0
+    
+    var marketingLevel = 1
+    
+    var reputation = 50
+    
+    var customerGrowthMultiplier = 1.0
 
-    // MARK: Reputation
-
-    var reputation = 0
 
     // MARK: News
 
@@ -37,6 +44,10 @@ class Company {
         )
 
     ]
+    
+    // MARK: - Research
+
+    var activeResearch: UUID?
 
     // MARK: Products
 
@@ -237,5 +248,7 @@ class Company {
         )
 
     ]
+    
+    
 
 }
