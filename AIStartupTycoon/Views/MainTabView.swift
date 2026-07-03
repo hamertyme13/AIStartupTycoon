@@ -15,6 +15,11 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "house.fill")
                 }
+            
+            NotificationCenterView()
+                .tabItem {
+                    Label("Notifications", systemImage: "bell.fill")
+                }
 
             ProductsView()
                 .tabItem {
@@ -35,7 +40,15 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Company", systemImage: "building.2.fill")
                 }
-
+            
+            MarketView()
+                .tabItem {
+                    Label(
+                        "Market",
+                        systemImage: "chart.bar.xaxis"
+                    )
+                }
+    
         }
         .sheet(item: $game.latestReport) { report in
 

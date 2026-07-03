@@ -13,6 +13,7 @@ class Company {
     var cash: Double = 10_000
     var monthlyRevenue: Double = 250
     var companyValue: Double = 25_000
+    var marketShare: Double = 70
 
     // MARK: Reputation
 
@@ -21,6 +22,8 @@ class Company {
     // MARK: News
 
     var latestNews = "🚀 Welcome to AI Startup Tycoon!"
+    
+    var notifications: [CompanyNotification] = []
 
     // MARK: Employees
 
@@ -200,5 +203,39 @@ class Company {
     var serverCost: Double = 500
 
     var researchExpense: Double = 0
+    
+    var competitors: [Competitor] = [
+
+        Competitor(
+            name: "NeuralForge AI",
+            cash: 50_000,
+            revenue: 2_000,
+            valuation: 500_000,
+            employees: 8,
+            products: 2,
+            marketShare: 8
+        ),
+
+        Competitor(
+            name: "Titan Intelligence",
+            cash: 120_000,
+            revenue: 5_500,
+            valuation: 1_500_000,
+            employees: 14,
+            products: 3,
+            marketShare: 12
+        ),
+
+        Competitor(
+            name: "QuantumMind",
+            cash: 80_000,
+            revenue: 3_200,
+            valuation: 900_000,
+            employees: 10,
+            products: 2,
+            marketShare: 10
+        )
+
+    ]
 
 }

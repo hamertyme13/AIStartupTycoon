@@ -14,6 +14,23 @@ class GameManager {
 
     var latestReport: MonthlyReport?
 
+    // MARK: - Notifications
+
+    func addNotification(title: String, message: String) {
+
+        company.latestNews = message
+
+        let notification = CompanyNotification(
+            title: title,
+            message: message,
+            year: company.currentYear,
+            month: company.currentMonth
+        )
+
+        company.notifications.insert(notification, at: 0)
+
+    }
+
     // MARK: - Game Loop
 
     func tick() {
@@ -30,7 +47,10 @@ class GameManager {
 
         guard company.products[index].unlocked else {
 
-            company.latestNews = "🔒 Product locked."
+            addNotification(
+                title: "🔒 Locked",
+                message: "Product is still locked."
+            )
 
             return
 
@@ -40,7 +60,10 @@ class GameManager {
 
         guard company.cash >= cost else {
 
-            company.latestNews = "❌ Not enough cash."
+            addNotification(
+                title: "❌ Not Enough Cash",
+                message: "You need more money to build this product."
+            )
 
             return
 
@@ -52,12 +75,18 @@ class GameManager {
 
         company.products[index].customers += 100
 
-        company.monthlyRevenue += company.products[index].revenuePerLevel
+        company.monthlyRevenue +=
+            company.products[index].revenuePerLevel
 
-        company.companyValue += company.products[index].revenuePerLevel * 5
+        company.companyValue +=
+            company.products[index].revenuePerLevel * 5
 
-        company.latestNews =
-        "🚀 \(company.products[index].name) upgraded to Level \(company.products[index].level)"
+        changeMarketShare(by: 0.5)
+
+        addNotification(
+            title: "🚀 Product Upgrade",
+            message: "\(company.products[index].name) reached Level \(company.products[index].level)"
+        )
 
         unlockProducts()
 
@@ -70,6 +99,11 @@ class GameManager {
 
             company.products[1].unlocked = true
 
+            addNotification(
+                title: "🔓 Product Unlocked",
+                message: "\(company.products[1].name) is now available."
+            )
+
         }
 
         if company.products.indices.contains(2),
@@ -77,12 +111,22 @@ class GameManager {
 
             company.products[2].unlocked = true
 
+            addNotification(
+                title: "🔓 Product Unlocked",
+                message: "\(company.products[2].name) is now available."
+            )
+
         }
 
         if company.products.indices.contains(3),
            company.products[2].level >= 5 {
 
             company.products[3].unlocked = true
+
+            addNotification(
+                title: "🔓 Product Unlocked",
+                message: "\(company.products[3].name) is now available."
+            )
 
         }
 
@@ -109,7 +153,10 @@ class GameManager {
 
         guard company.cash >= cost else {
 
-            company.latestNews = "❌ Not enough cash."
+            addNotification(
+                title: "❌ Not Enough Cash",
+                message: "You can't afford another engineer."
+            )
 
             return
 
@@ -118,30 +165,26 @@ class GameManager {
         company.cash -= cost
 
         let employee = Employee(
-
             name: "Engineer \(company.employees.count)",
-
             role: .juniorEngineer,
-
             salary: 4000,
-
             skill: Int.random(in: 40...70)
-
         )
 
         company.employees.append(employee)
 
-        company.latestNews = "👨‍💻 Hired \(employee.name)"
+        addNotification(
+            title: "👨‍💻 New Hire",
+            message: "\(employee.name) joined the company."
+        )
 
     }
 
     func employeeWork() {
 
-        var revenueGain = 0.0
+        let revenueGain = company.employees.reduce(0) {
 
-        for employee in company.employees {
-
-            revenueGain += employee.productivity * 5
+            $0 + ($1.productivity * 5)
 
         }
 
@@ -165,7 +208,10 @@ class GameManager {
 
         guard !company.investors[index].invested else {
 
-            company.latestNews = "⚠️ Already invested."
+            addNotification(
+                title: "⚠️ Investor",
+                message: "This investor has already invested."
+            )
 
             return
 
@@ -179,10 +225,12 @@ class GameManager {
         company.investors[index].invested = true
 
         company.investors[index].investedDate =
-        "Year \(company.currentYear) • Month \(company.currentMonth)"
+            "Year \(company.currentYear) • Month \(company.currentMonth)"
 
-        company.latestNews =
-        "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
+        addNotification(
+            title: "💰 Investment",
+            message: "\(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
+        )
 
     }
 
@@ -195,6 +243,8 @@ class GameManager {
         createMonthlyReport()
 
         advanceCalendar()
+
+        updateCompetitors()
 
         rollForEvent()
 
@@ -217,7 +267,6 @@ class GameManager {
         latestReport = MonthlyReport(
 
             month: company.currentMonth,
-
             year: company.currentYear,
 
             revenue: company.monthlyRevenue,
@@ -234,6 +283,11 @@ class GameManager {
 
         )
 
+        addNotification(
+            title: "📊 Monthly Report",
+            message: "Month closed with \(company.monthlyProfit >= 0 ? "a profit" : "a loss")."
+        )
+
     }
 
     private func advanceCalendar() {
@@ -243,13 +297,61 @@ class GameManager {
         if company.currentMonth > 12 {
 
             company.currentMonth = 1
-
             company.currentYear += 1
 
         }
 
-        company.latestNews =
-        "📅 Advanced to Year \(company.currentYear) • Month \(company.currentMonth)"
+        addNotification(
+            title: "📅 New Month",
+            message: "Year \(company.currentYear) • Month \(company.currentMonth)"
+        )
+
+    }
+
+    // MARK: - Competitors
+
+    func updateCompetitors() {
+
+        for index in company.competitors.indices {
+
+            company.competitors[index].cash +=
+                company.competitors[index].revenue
+
+            company.competitors[index].valuation +=
+                Double.random(in: 20_000...80_000)
+
+            if Int.random(in: 1...100) <= 30 {
+
+                company.competitors[index].employees += 1
+
+            }
+
+            if Int.random(in: 1...100) <= 15 {
+
+                company.competitors[index].products += 1
+
+                company.competitors[index].revenue +=
+                    Double.random(in: 200...800)
+
+                changeMarketShare(by: -0.2)
+
+            }
+
+            let change = Double.random(in: -1.5...1.5)
+
+            company.competitors[index].marketShare =
+                max(2, company.competitors[index].marketShare + change)
+
+        }
+
+        let competitorShare = company.competitors.reduce(0) {
+
+            $0 + $1.marketShare
+
+        }
+
+        company.marketShare =
+            max(1, min(95, 100 - competitorShare))
 
     }
 
@@ -273,16 +375,30 @@ class GameManager {
 
         company.companyValue += event.companyValueReward
 
-        if let firstProduct = company.products.indices.first {
+        if let first = company.products.indices.first {
 
-            company.products[firstProduct].customers +=
+            company.products[first].customers +=
                 event.customerReward
 
         }
 
-        company.latestNews = event.title
+        addNotification(
+            title: "🎲 Random Event",
+            message: event.title
+        )
 
         currentEvent = nil
+
+    }
+
+    // MARK: - Market
+
+    private func changeMarketShare(by amount: Double) {
+
+        company.marketShare += amount
+
+        company.marketShare =
+            min(max(company.marketShare, 1), 95)
 
     }
 
