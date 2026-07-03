@@ -63,5 +63,80 @@ class Company {
         )
 
     ]
+    
+    var investors: [Investor] = [
+
+        Investor(
+            name: "OpenAI Ventures",
+            investment: 250_000,
+            equity: 15,
+            description: "AI-focused venture capital."
+        ),
+
+        Investor(
+            name: "Y Combinator",
+            investment: 500_000,
+            equity: 20,
+            description: "Startup accelerator."
+        ),
+
+        Investor(
+            name: "Sequoia Capital",
+            investment: 1_000_000,
+            equity: 25,
+            description: "Global venture capital firm."
+        )
+
+    ]
+    
+    var founderOwnership = 100.0
+    var currentMonth = 1
+    var currentYear = 1
+    
+    var companyHealth: Double {
+
+        let employeeScore = min(Double(employees.count) / 10.0, 1.0)
+
+        let revenueScore = min(monthlyRevenue / 2000.0, 1.0)
+
+        return max((employeeScore + revenueScore) / 2, 0.20)
+
+    }
+    
+    var researchPoints: Double = 0
+
+    var technologies: [Technology] = [
+
+        Technology(
+            name: "Chatbots",
+            description: "Build conversational AI products.",
+            requiredResearch: 100
+        ),
+
+        Technology(
+            name: "Image Generation",
+            description: "Create AI image products.",
+            requiredResearch: 250
+        ),
+
+        Technology(
+            name: "Voice AI",
+            description: "Speech recognition and synthesis.",
+            requiredResearch: 500
+        ),
+
+        Technology(
+            name: "AI Agents",
+            description: "Autonomous AI workers.",
+            requiredResearch: 1000
+        ),
+
+        Technology(
+            name: "Artificial General Intelligence",
+            description: "The ultimate breakthrough.",
+            requiredResearch: 5000
+        )
+
+    ]
 
 }

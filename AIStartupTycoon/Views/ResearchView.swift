@@ -2,12 +2,36 @@ import SwiftUI
 
 struct ResearchView: View {
 
+    @Environment(GameManager.self) private var game
+
     var body: some View {
 
         NavigationStack {
 
-            Text("Research")
-                .font(.largeTitle)
+            ScrollView {
+
+                VStack(spacing: 20) {
+
+                    ForEach(game.company.technologies.indices, id: \.self) { index in
+
+                        TechnologyCard(
+                            technology: game.company.technologies[index]
+                        ) {
+
+                            ResearchManager.research(
+                                company: &game.company,
+                                index: index
+                            )
+
+                        }
+
+                    }
+
+                }
+                .padding()
+
+            }
+            .navigationTitle("Research")
 
         }
 
@@ -16,11 +40,8 @@ struct ResearchView: View {
 }
 
 #Preview {
-    ResearchView()
-}
-//  ResearchView.swift
-//  AIStartupTycoon
-//
-//  Created by Joshua Hamer on 7/2/26.
-//
 
+    ResearchView()
+        .environment(GameManager())
+
+}

@@ -135,6 +135,30 @@ class GameManager {
         }
 
     }
+    
+    func acceptInvestment(index: Int) {
+
+        guard company.investors.indices.contains(index) else { return }
+
+        guard !company.investors[index].invested else {
+
+            company.latestNews = "⚠️ Already invested."
+
+            return
+        }
+
+        company.cash += company.investors[index].investment
+
+        company.founderOwnership -= company.investors[index].equity
+
+        company.investors[index].invested = true
+
+        company.investors[index].investedDate =
+            "Year \(company.currentYear) • Month \(company.currentMonth)"
+
+        company.latestNews =
+            "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
+    }
 
 }
 //  GameManager.swift

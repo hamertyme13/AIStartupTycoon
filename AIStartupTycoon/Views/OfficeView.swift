@@ -2,12 +2,43 @@ import SwiftUI
 
 struct OfficeView: View {
 
+    @Environment(GameManager.self) private var game
+
     var body: some View {
 
         NavigationStack {
 
-            Text("Office")
-                .font(.largeTitle)
+            ScrollView {
+
+                VStack(spacing: 20) {
+
+                    GroupBox("Founder Ownership") {
+
+                        Text("\(Int(game.company.founderOwnership))%")
+                            .font(.largeTitle)
+                            .bold()
+
+                    }
+
+                    ForEach(game.company.investors.indices, id: \.self) { index in
+
+                        InvestorCard(investor: game.company.investors[index]) {
+
+                            withAnimation {
+
+                                game.acceptInvestment(index: index)
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                .padding()
+
+            }
+            .navigationTitle("Investors")
 
         }
 
@@ -16,11 +47,8 @@ struct OfficeView: View {
 }
 
 #Preview {
-    OfficeView()
-}
-//  OfficeView.swift
-//  AIStartupTycoon
-//
-//  Created by Joshua Hamer on 7/2/26.
-//
 
+    OfficeView()
+        .environment(GameManager())
+
+}

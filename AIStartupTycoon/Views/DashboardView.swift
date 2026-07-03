@@ -16,30 +16,34 @@ struct DashboardView: View {
 
             ScrollView {
 
-                VStack(spacing: 20) {
+                VStack(spacing: 30) {
 
-                    Text(game.company.name)
-                        .font(.largeTitle)
-                        .bold()
+                    VStack(spacing: 6) {
+
+                        Text(game.company.name)
+                            .font(.largeTitle)
+                            .bold()
+
+                    }
 
                     Text("Building the Future of AI")
                         .foregroundStyle(.secondary)
 
                     StatCard(
                         title: "💰 Cash",
-                        value: "$\(Int(game.company.cash))",
+                        value: "$\(Int(game.company.cash).formatted())",
                         color: .green
                     )
 
                     StatCard(
                         title: "📈 Monthly Revenue",
-                        value: "$\(Int(game.company.monthlyRevenue))",
+                        value: "$\(Int(game.company.monthlyRevenue).formatted())",
                         color: .blue
                     )
 
                     StatCard(
                         title: "🏢 Company Value",
-                        value: "$\(Int(game.company.companyValue))",
+                        value: "$\(Int(game.company.companyValue).formatted())",
                         color: .purple
                     )
 
@@ -49,11 +53,30 @@ struct DashboardView: View {
                         color: .orange
                     )
 
-                    GroupBox("Company News") {
+                    GroupBox {
+
+                        ProgressBar(progress: game.company.companyHealth)
+
+                    } label: {
+
+                        Label("Company Health",
+                              systemImage: "heart.text.square.fill")
+                        .font(.headline)
+                        .foregroundStyle(.red)
+
+                    }
+
+                    GroupBox {
 
                         Text(game.company.latestNews)
                             .frame(maxWidth: .infinity,
                                    alignment: .leading)
+
+                    } label: {
+
+                        Label("Latest News",
+                              systemImage: "newspaper.fill")
+                        .font(.headline)
 
                     }
 
