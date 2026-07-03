@@ -5,15 +5,14 @@ struct Technology: Identifiable {
     let id = UUID()
 
     let name: String
-    let description: String
 
-    var progress: Double = 0
+    let description: String
 
     let requiredResearch: Double
 
-    var unlocked = false
+    var progress: Double = 0
 
-    var completed = false
+    var unlocked = false
 
 }
 //  Technology.swift
