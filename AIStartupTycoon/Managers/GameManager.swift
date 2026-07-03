@@ -7,6 +7,8 @@ class GameManager {
     var company = Company()
     
     var secondsElapsed = 0
+    
+    var currentEvent: GameEvent?
 
     // MARK: Passive Income
 
@@ -162,6 +164,14 @@ class GameManager {
             "💰 \(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
     }
     
+    func rollForEvent() {
+
+        guard Int.random(in: 1...100) <= 20 else { return }
+
+        currentEvent = EventManager.events.randomElement()
+
+    }
+    
     func nextMonth() {
 
         company.cash += company.monthlyProfit
@@ -172,14 +182,33 @@ class GameManager {
 
             company.currentMonth = 1
             company.currentYear += 1
-
+        rollForEvent()
         }
 
         company.latestNews =
             "📅 Advanced to Year \(company.currentYear), Month \(company.currentMonth)"
 
     }
+    
+    func apply(_ event: GameEvent) {
 
+        company.cash += event.cashReward
+
+        company.companyValue += event.companyValueReward
+
+        if !company.products.isEmpty {
+
+            company.products[0].customers += event.customerReward
+
+        }
+
+        company.latestNews = event.title
+
+        currentEvent = nil
+
+    }
+    
+    
 }
 //  GameManager.swift
 //  AIStartupTycoon

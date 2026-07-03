@@ -112,8 +112,17 @@ class Company {
 
         let revenueScore = min(monthlyRevenue / 2000.0, 1.0)
 
-        return max((employeeScore + revenueScore) / 2, 0.20)
+        let cashScore: Double
 
+        if monthlyProfit > 0 {
+            cashScore = min(cash / 50000.0, 1.0)
+        } else {
+            cashScore = max(cash / 50000.0, 0.10)
+        }
+
+        let health = (employeeScore + revenueScore + cashScore) / 3.0
+
+        return max(health, 0.20)
     }
     
     var researchPoints: Double = 0
@@ -153,10 +162,43 @@ class Company {
     ]
     
     var monthlyExpenses: Double {
-        employees.reduce(0) { $0 + $1.salary }
+
+        let payroll = employees.reduce(0) { total, employee in
+            total + employee.salary
+        }
+
+        return payroll
+            + officeRent
+            + serverCost
+            + researchExpense
+
     }
+    
     var monthlyProfit: Double {
         monthlyRevenue - monthlyExpenses
     }
+    
+    var burnRate: Double {
+        monthlyExpenses
+    }
+    
+    var runwayMonths: Double {
+
+        guard burnRate > 0 else {
+
+            return 999
+
+        }
+
+        return cash / burnRate
+
+    }
+ // MARK: Expenses
+    
+    var officeRent: Double = 1500
+
+    var serverCost: Double = 500
+
+    var researchExpense: Double = 0
 
 }

@@ -5,10 +5,11 @@ struct DashboardView: View {
 
     @Environment(GameManager.self) private var game
 
-    let timer = Timer.publish(every: 1,
-                              on: .main,
-                              in: .common)
-        .autoconnect()
+    let timer = Timer.publish(
+        every: 1,
+        on: .main,
+        in: .common
+    ).autoconnect()
 
     var body: some View {
 
@@ -18,78 +19,114 @@ struct DashboardView: View {
 
                 VStack(spacing: 30) {
 
+                    // MARK: - Company Header
+
                     VStack(spacing: 6) {
 
                         Text(game.company.name)
                             .font(.largeTitle)
                             .bold()
 
+                        Text("Building the Future of AI")
+                            .foregroundStyle(.secondary)
+
                     }
+
+                    // MARK: - Time
+
                     TimeCard(
                         year: game.company.currentYear,
                         month: game.company.currentMonth
                     )
 
-                    Text("Building the Future of AI")
-                        .foregroundStyle(.secondary)
+                    // MARK: - Stats
 
-                    StatCard(
-                        title: "💰 Cash",
-                        value: "$\(Int(game.company.cash).formatted())",
-                        color: .green
-                    )
-
-                    StatCard(
-                        title: "📈 Monthly Revenue",
-                        value: "$\(Int(game.company.monthlyRevenue).formatted())",
-                        color: .blue
-                    )
-
-                    StatCard(
-                        title: "🏢 Company Value",
-                        value: "$\(Int(game.company.companyValue).formatted())",
-                        color: .purple
-                    )
-
-                    StatCard(
-                        title: "👥 Employees",
-                        value: "\(game.company.employees.count)",
-                        color: .orange
-                    )
+                    FinanceCard()
                     
-                    StatCard(
-
-                        title: "💵 Monthly Profit",
-
-                        value: "$\(Int(game.company.monthlyProfit).formatted())",
-
-                        color: .mint
-
-                    )
-
                     GroupBox {
 
-                        ProgressBar(progress: game.company.companyHealth)
+                        VStack(spacing: 16) {
+
+                            HStack {
+
+                                Label("Employees",
+                                      systemImage: "person.3.fill")
+
+                                Spacer()
+
+                                Text("\(game.company.employees.count)")
+                                    .bold()
+
+                            }
+
+                            HStack {
+
+                                Label("Products",
+                                      systemImage: "shippingbox.fill")
+
+                                Spacer()
+
+                                Text("\(game.company.products.filter { $0.unlocked }.count)")
+                                    .bold()
+
+                            }
+
+                            HStack {
+
+                                Label("Founder Ownership",
+                                      systemImage: "building.columns.fill")
+
+                                Spacer()
+
+                                Text("\(Int(game.company.founderOwnership))%")
+                                    .bold()
+
+                            }
+
+                        }
 
                     } label: {
 
-                        Label("Company Health",
-                              systemImage: "heart.text.square.fill")
+                        Label("Company",
+                              systemImage: "building.2.fill")
+
+                    }
+
+                    // MARK: - Company Health
+
+                    GroupBox {
+
+                        ProgressBar(
+                            progress: game.company.companyHealth
+                        )
+
+                    } label: {
+
+                        Label(
+                            "Company Health",
+                            systemImage: "heart.text.square.fill"
+                        )
                         .font(.headline)
                         .foregroundStyle(.red)
 
                     }
 
+                    // MARK: - News
+
                     GroupBox {
 
                         Text(game.company.latestNews)
-                            .frame(maxWidth: .infinity,
-                                   alignment: .leading)
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading
+                            )
 
                     } label: {
 
-                        Label("Latest News",
-                              systemImage: "newspaper.fill")
+                        Label(
+                            "Latest News",
+                            systemImage: "newspaper.fill"
+                        )
                         .font(.headline)
 
                     }
@@ -99,15 +136,21 @@ struct DashboardView: View {
 
             }
             .navigationTitle("Dashboard")
-            .onReceive(timer) { _ in
-                game.tick()
-                game.employeeWork()
-                game.growProducts()
-                game.secondsElapsed += 1
-                if game.secondsElapsed >= 10 {
-                    game.secondsElapsed = 0
-                    game.nextMonth()
-                }
+
+        }
+        .onReceive(timer) { _ in
+
+            game.tick()
+            game.employeeWork()
+            game.growProducts()
+
+            game.secondsElapsed += 1
+
+            if game.secondsElapsed >= 10 {
+
+                game.secondsElapsed = 0
+                game.nextMonth()
+
             }
 
         }
@@ -119,5 +162,6 @@ struct DashboardView: View {
 #Preview {
 
     DashboardView()
+        .environment(GameManager())
 
 }
