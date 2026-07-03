@@ -237,9 +237,13 @@ class GameManager {
 
     func employeeWork() {
 
-        let revenueGain = company.employees.reduce(0) {
+        let revenueGain = company.employees.reduce(0) { total, employee in
 
-            $0 + ($1.productivity * 5)
+            let productivity =
+                employee.productivity *
+                (1 + company.currentOffice.productivityBonus)
+
+            return total + (productivity * 5)
 
         }
 
@@ -377,9 +381,13 @@ class GameManager {
 
         }
 
-        let researchGain = company.employees.reduce(0.0) {
+        let researchGain = company.employees.reduce(0.0) { total, employee in
 
-            $0 + $1.researchOutput
+            let researchPower =
+                employee.researchOutput *
+                (1 + company.currentOffice.researchBonus)
+
+            return total + researchPower
 
         }
 
@@ -717,6 +725,43 @@ class GameManager {
         secondsElapsed = 0
 
         nextMonth()
+
+    }
+    
+    func upgradeOffice() {
+
+        guard company.officeLevel < company.offices.count - 1 else {
+
+            addNotification(
+                title: "🏢 Headquarters",
+                message: "You already own the best office!"
+            )
+
+            return
+        }
+
+        let nextOffice = company.offices[company.officeLevel + 1]
+
+        guard company.cash >= nextOffice.cost else {
+
+            addNotification(
+                title: "💸 Not Enough Cash",
+                message: "You need $\(Int(nextOffice.cost).formatted()) to upgrade."
+            )
+
+            return
+        }
+
+        company.cash -= nextOffice.cost
+
+        company.officeLevel += 1
+
+        company.reputation += nextOffice.reputationBonus
+
+        addNotification(
+            title: "🏢 Office Upgraded",
+            message: "Your company moved into the \(nextOffice.name)!"
+        )
 
     }
     

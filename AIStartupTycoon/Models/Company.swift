@@ -139,6 +139,30 @@ class Company {
         return max(health, 0.20)
     }
     
+    var companyStatus: String {
+
+        if cash < 10_000 {
+
+            return "🔴 In Trouble"
+
+        }
+
+        if monthlyProfit < 0 {
+
+            return "🟠 Struggling"
+
+        }
+
+        if marketShare >= 30 {
+
+            return "🟢 Thriving"
+
+        }
+
+        return "🟡 Growing"
+
+    }
+    
     var researchPoints: Double = 0
 
     var technologies: [Technology] = [
@@ -182,7 +206,7 @@ class Company {
         }
 
         return payroll
-            + officeRent
+            + currentOffice.monthlyRent
             + serverCost
             + researchExpense
 
@@ -207,6 +231,69 @@ class Company {
         return cash / burnRate
 
     }
+    
+    // MARK: - Offices
+    
+    var officeLevel = 0
+    
+    var offices: [Office] = [
+
+        Office(
+            name: "Garage",
+            cost: 0,
+            monthlyRent: 1_500,
+            productivityBonus: 0,
+            researchBonus: 0,
+            reputationBonus: 0,
+            icon: "🏠"
+        ),
+
+        Office(
+            name: "Shared Workspace",
+            cost: 25_000,
+            monthlyRent: 3_500,
+            productivityBonus: 0.10,
+            researchBonus: 0.05,
+            reputationBonus: 2,
+            icon: "🏢"
+        ),
+
+        Office(
+            name: "Small Office",
+            cost: 100_000,
+            monthlyRent: 8_000,
+            productivityBonus: 0.20,
+            researchBonus: 0.15,
+            reputationBonus: 5,
+            icon: "🏙️"
+        ),
+
+        Office(
+            name: "Corporate HQ",
+            cost: 500_000,
+            monthlyRent: 20_000,
+            productivityBonus: 0.35,
+            researchBonus: 0.30,
+            reputationBonus: 12,
+            icon: "🏛️"
+        ),
+
+        Office(
+            name: "AI Campus",
+            cost: 2_000_000,
+            monthlyRent: 60_000,
+            productivityBonus: 0.50,
+            researchBonus: 0.50,
+            reputationBonus: 25,
+            icon: "🌎"
+        )
+
+    ]
+    
+    var currentOffice: Office {
+        offices[officeLevel]
+    }
+    
  // MARK: Expenses
     
     var officeRent: Double = 1500
