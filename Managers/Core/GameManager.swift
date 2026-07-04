@@ -739,10 +739,22 @@ class GameManager {
 
         company.investors[index].investedDate =
             "Year \(company.currentYear) • Month \(company.currentMonth)"
-
+        
+        company.activeInvestors.append(
+            company.investors[index]
+        )
+        
         addNotification(
-            title: "💰 Investment",
-            message: "\(company.investors[index].name) invested $\(Int(company.investors[index].investment).formatted())"
+            title: "💰 Seed Funding",
+            message:
+        """
+        \(company.investors[index].name)
+
+        Invested $\(Int(company.investors[index].investment).formatted())
+
+        Founder Ownership:
+        \(Int(company.founderOwnership))%
+        """
         )
 
     }
@@ -760,8 +772,14 @@ class GameManager {
         refreshTalentMarket()
 
         updateCompetitors()
+        
+        company.latestNews = NewsManager.randomHeadline(
+            competitors: company.competitors
+        )
 
         rollForEvent()
+        
+        generateCEOBriefing()
 
     }
     

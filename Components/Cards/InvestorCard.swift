@@ -58,7 +58,7 @@ struct InvestorCard: View {
                 )
                 .foregroundStyle(.green)
                 
-                Text(investor.investedDate)
+                Text(investor.investedDate ?? "Not Invested")
                     .foregroundStyle(.secondary)
                 
             } else {
@@ -100,7 +100,8 @@ struct InvestorCard: View {
             name: "OpenAI Ventures",
             investment: 250000,
             equity: 15,
-            description: "AI Startup Fund"
+            description: "AI Startup Fund",
+            focus: .research
         )
     ) {
 

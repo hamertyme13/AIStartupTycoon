@@ -6,14 +6,193 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4B325CF62FF7296D00D98AF1 /* BuildButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CDB2FF7296D00D98AF1 /* BuildButton.swift */; };
+		4B325CF72FF7296D00D98AF1 /* EmployeeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CDC2FF7296D00D98AF1 /* EmployeeCard.swift */; };
+		4B325CF82FF7296D00D98AF1 /* NewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CDD2FF7296D00D98AF1 /* NewsCard.swift */; };
+		4B325CF92FF7296D00D98AF1 /* ProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CDE2FF7296D00D98AF1 /* ProductCard.swift */; };
+		4B325CFA2FF7296D00D98AF1 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CDF2FF7296D00D98AF1 /* ProgressBar.swift */; };
+		4B325CFB2FF7296D00D98AF1 /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE02FF7296D00D98AF1 /* StatCard.swift */; };
+		4B325CFC2FF7296D00D98AF1 /* EconomyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE22FF7296D00D98AF1 /* EconomyManager.swift */; };
+		4B325CFD2FF7296D00D98AF1 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE32FF7296D00D98AF1 /* EventManager.swift */; };
+		4B325CFE2FF7296D00D98AF1 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE42FF7296D00D98AF1 /* GameManager.swift */; };
+		4B325CFF2FF7296D00D98AF1 /* SaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE52FF7296D00D98AF1 /* SaveManager.swift */; };
+		4B325D002FF7296D00D98AF1 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE72FF7296D00D98AF1 /* Company.swift */; };
+		4B325D012FF7296D00D98AF1 /* Employees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE82FF7296D00D98AF1 /* Employees.swift */; };
+		4B325D022FF7296D00D98AF1 /* Investors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CE92FF7296D00D98AF1 /* Investors.swift */; };
+		4B325D032FF7296D00D98AF1 /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CEA2FF7296D00D98AF1 /* Products.swift */; };
+		4B325D042FF7296D00D98AF1 /* Research.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CEB2FF7296D00D98AF1 /* Research.swift */; };
+		4B325D052FF7296D00D98AF1 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CED2FF7296D00D98AF1 /* DashboardView.swift */; };
+		4B325D062FF7296D00D98AF1 /* EmployeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CEE2FF7296D00D98AF1 /* EmployeesView.swift */; };
+		4B325D072FF7296D00D98AF1 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CEF2FF7296D00D98AF1 /* MainTabView.swift */; };
+		4B325D082FF7296D00D98AF1 /* OfficeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF02FF7296D00D98AF1 /* OfficeView.swift */; };
+		4B325D092FF7296D00D98AF1 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF12FF7296D00D98AF1 /* ProductsView.swift */; };
+		4B325D0A2FF7296D00D98AF1 /* ResearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF22FF7296D00D98AF1 /* ResearchView.swift */; };
+		4B325D0B2FF7296D00D98AF1 /* AIStartupTycoonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */; };
+		4B325D0F2FF72B7600D98AF1 /* InvestorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D0D2FF72B6E00D98AF1 /* InvestorCard.swift */; };
+		4B325D122FF73C9300D98AF1 /* Technology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D102FF73C8C00D98AF1 /* Technology.swift */; };
+		4B325D1D2FF7423700D98AF1 /* LockedProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D1B2FF7422B00D98AF1 /* LockedProductCard.swift */; };
+		4B325D202FF743D500D98AF1 /* TimeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D1E2FF743D000D98AF1 /* TimeCard.swift */; };
+		4B325D2F2FF766EF00D98AF1 /* FinanceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D2D2FF766EF00D98AF1 /* FinanceCard.swift */; };
+		4B325D302FF766EF00D98AF1 /* FinanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D2E2FF766EF00D98AF1 /* FinanceRow.swift */; };
+		4B325D322FF766F000D98AF1 /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D312FF766F000D98AF1 /* GameEvent.swift */; };
+		4B325D342FF766F000D98AF1 /* EventPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D332FF766F000D98AF1 /* EventPopup.swift */; };
+		4B325D5A2FF782B000D98AF1 /* CompetitorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D552FF782B000D98AF1 /* CompetitorCard.swift */; };
+		4B325D5B2FF782B000D98AF1 /* MarketShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D562FF782B000D98AF1 /* MarketShareCard.swift */; };
+		4B325D5C2FF782B000D98AF1 /* MonthlyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D572FF782B000D98AF1 /* MonthlyReportView.swift */; };
+		4B325D5D2FF782B000D98AF1 /* NotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D582FF782B000D98AF1 /* NotificationRow.swift */; };
+		4B325D5E2FF782B000D98AF1 /* ReportRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D592FF782B000D98AF1 /* ReportRow.swift */; };
+		4B325D622FF782B100D98AF1 /* Competitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D5F2FF782B100D98AF1 /* Competitor.swift */; };
+		4B325D632FF782B100D98AF1 /* MonthlyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D602FF782B100D98AF1 /* MonthlyReport.swift */; };
+		4B325D642FF782B100D98AF1 /* CompanyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D612FF782B100D98AF1 /* CompanyNotification.swift */; };
+		4B325D672FF782B100D98AF1 /* MarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D652FF782B100D98AF1 /* MarketView.swift */; };
+		4B325D682FF782B100D98AF1 /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D662FF782B100D98AF1 /* NotificationCenterView.swift */; };
+		4B325D6B2FF78AB100D98AF1 /* MarketingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D692FF78AA800D98AF1 /* MarketingView.swift */; };
+		4B325D6E2FF7B72000D98AF1 /* MonthProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D6C2FF7B71500D98AF1 /* MonthProgressCard.swift */; };
+		4B325D712FF7B87400D98AF1 /* GameSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D6F2FF7B86F00D98AF1 /* GameSpeed.swift */; };
+		4B325D742FF7B91400D98AF1 /* TimeControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D722FF7B90700D98AF1 /* TimeControls.swift */; };
+		4B325D772FF7BD6A00D98AF1 /* ResearchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D752FF7BD5D00D98AF1 /* ResearchCard.swift */; };
+		4B325D7A2FF8519500D98AF1 /* Office.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D782FF8519200D98AF1 /* Office.swift */; };
+		4B325D7D2FF87CD600D98AF1 /* CompanyCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D7B2FF87CCE00D98AF1 /* CompanyCard.swift */; };
+		4B325D802FF87DDE00D98AF1 /* HeadquartersCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D7E2FF87DCF00D98AF1 /* HeadquartersCard.swift */; };
+		4B325D832FF87EBA00D98AF1 /* ResearchStatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D812FF87EA600D98AF1 /* ResearchStatusCard.swift */; };
+		4B325D862FF87F5500D98AF1 /* CompanyHealthCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D842FF87F4900D98AF1 /* CompanyHealthCard.swift */; };
+		4B325D8B2FF883D200D98AF1 /* AIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D892FF883CB00D98AF1 /* AIModel.swift */; };
+		4B325D8E2FF8855400D98AF1 /* AIModelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D8C2FF8854300D98AF1 /* AIModelsView.swift */; };
+		4B325D912FF8858700D98AF1 /* AIModelCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D8F2FF8857D00D98AF1 /* AIModelCard.swift */; };
+		4B325D942FF886BF00D98AF1 /* AIModelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D922FF886B600D98AF1 /* AIModelStatus.swift */; };
+		4B325D972FF892FD00D98AF1 /* CompetitorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D952FF892F000D98AF1 /* CompetitorModels.swift */; };
+		4B325D9A2FF8A66E00D98AF1 /* Candidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D982FF8A66700D98AF1 /* Candidate.swift */; };
+		4B325D9D2FF8A6D000D98AF1 /* HiringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D9B2FF8A6C700D98AF1 /* HiringManager.swift */; };
+		4B325DA02FF8AC2600D98AF1 /* CandidateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D9E2FF8AC1F00D98AF1 /* CandidateCard.swift */; };
+		4B325DA32FF8BCBC00D98AF1 /* CEO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DA12FF8BCB400D98AF1 /* CEO.swift */; };
+		4B325DA62FF8BD4400D98AF1 /* NewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DA42FF8BD3F00D98AF1 /* NewsManager.swift */; };
+		4B325DA92FF8C85800D98AF1 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DA72FF8C85100D98AF1 /* BoardView.swift */; };
+		4B325DAC2FF8C97B00D98AF1 /* InvestorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DAA2FF8C97200D98AF1 /* InvestorsView.swift */; };
+		4B325DAF2FF8CBDC00D98AF1 /* CompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DAD2FF8CBD300D98AF1 /* CompanyView.swift */; };
+		4B325DB22FF8CC1A00D98AF1 /* InnovationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DB02FF8CC0F00D98AF1 /* InnovationView.swift */; };
+		4B325DB52FF8CC4100D98AF1 /* IndustryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DB32FF8CC3A00D98AF1 /* IndustryView.swift */; };
+		4B325DB82FF8CF6B00D98AF1 /* DepartmentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DB62FF8CF6100D98AF1 /* DepartmentCard.swift */; };
+		4B325DBB2FF8D2E400D98AF1 /* ExecutiveSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DB92FF8D2D900D98AF1 /* ExecutiveSummaryCard.swift */; };
+		4B325DDE2FF9115400D98AF1 /* GameManager+Economy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DDD2FF9114600D98AF1 /* GameManager+Economy.swift */; };
+		4B325DE02FF9116800D98AF1 /* GameManager+Employees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DDF2FF9115B00D98AF1 /* GameManager+Employees.swift */; };
+		4B325DE22FF9117A00D98AF1 /* GameManager+Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DE12FF9117000D98AF1 /* GameManager+Products.swift */; };
+		4B325DE42FF9118C00D98AF1 /* GameManager+Research.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DE32FF9118000D98AF1 /* GameManager+Research.swift */; };
+		4B325DE62FF911A200D98AF1 /* GameManager+AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DE52FF9119400D98AF1 /* GameManager+AIModels.swift */; };
+		4B325DE82FF911BA00D98AF1 /* GameManager+Investors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DE72FF911A800D98AF1 /* GameManager+Investors.swift */; };
+		4B325DEA2FF911CC00D98AF1 /* GameManager+Market.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DE92FF911BF00D98AF1 /* GameManager+Market.swift */; };
+		4B325DEC2FF911DF00D98AF1 /* GameManager+Competitors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DEB2FF911D200D98AF1 /* GameManager+Competitors.swift */; };
+		4B325DEE2FF911F300D98AF1 /* GameManager+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DED2FF911E600D98AF1 /* GameManager+Events.swift */; };
+		4B325DF02FF9120400D98AF1 /* GameManager+Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DEF2FF911F900D98AF1 /* GameManager+Reports.swift */; };
+		4B325DF22FF9121500D98AF1 /* GameManager+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DF12FF9120A00D98AF1 /* GameManager+Time.swift */; };
+		4B325DF42FF9122700D98AF1 /* GameManager+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DF32FF9121C00D98AF1 /* GameManager+Notifications.swift */; };
+		4B325DFC2FF9823700D98AF1 /* CEOHeaderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DFB2FF9822F00D98AF1 /* CEOHeaderCard.swift */; };
+		4B325DFE2FF9830500D98AF1 /* CEOBriefingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DFD2FF982FB00D98AF1 /* CEOBriefingCard.swift */; };
+		4B325E002FF984DA00D98AF1 /* CEOMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325DFF2FF984D100D98AF1 /* CEOMessage.swift */; };
+		4B325E022FF9855C00D98AF1 /* GameManager+CEOAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E012FF9854E00D98AF1 /* GameManager+CEOAssistant.swift */; };
+		4B325E042FF987DB00D98AF1 /* CEOMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E032FF987D300D98AF1 /* CEOMessageRow.swift */; };
+		4B325E062FF99A6900D98AF1 /* CashFlowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */; };
+		4B325E082FF99BBA00D98AF1 /* ObjectivesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		4B325CDB2FF7296D00D98AF1 /* BuildButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildButton.swift; sourceTree = "<group>"; };
+		4B325CDC2FF7296D00D98AF1 /* EmployeeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCard.swift; sourceTree = "<group>"; };
+		4B325CDD2FF7296D00D98AF1 /* NewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCard.swift; sourceTree = "<group>"; };
+		4B325CDE2FF7296D00D98AF1 /* ProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCard.swift; sourceTree = "<group>"; };
+		4B325CDF2FF7296D00D98AF1 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		4B325CE02FF7296D00D98AF1 /* StatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
+		4B325CE22FF7296D00D98AF1 /* EconomyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EconomyManager.swift; sourceTree = "<group>"; };
+		4B325CE32FF7296D00D98AF1 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
+		4B325CE42FF7296D00D98AF1 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		4B325CE52FF7296D00D98AF1 /* SaveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveManager.swift; sourceTree = "<group>"; };
+		4B325CE72FF7296D00D98AF1 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		4B325CE82FF7296D00D98AF1 /* Employees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employees.swift; sourceTree = "<group>"; };
+		4B325CE92FF7296D00D98AF1 /* Investors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Investors.swift; sourceTree = "<group>"; };
+		4B325CEA2FF7296D00D98AF1 /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
+		4B325CEB2FF7296D00D98AF1 /* Research.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Research.swift; sourceTree = "<group>"; };
+		4B325CED2FF7296D00D98AF1 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		4B325CEE2FF7296D00D98AF1 /* EmployeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesView.swift; sourceTree = "<group>"; };
+		4B325CEF2FF7296D00D98AF1 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		4B325CF02FF7296D00D98AF1 /* OfficeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfficeView.swift; sourceTree = "<group>"; };
+		4B325CF12FF7296D00D98AF1 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
+		4B325CF22FF7296D00D98AF1 /* ResearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchView.swift; sourceTree = "<group>"; };
+		4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStartupTycoonApp.swift; sourceTree = "<group>"; };
+		4B325D0D2FF72B6E00D98AF1 /* InvestorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestorCard.swift; sourceTree = "<group>"; };
+		4B325D102FF73C8C00D98AF1 /* Technology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Technology.swift; sourceTree = "<group>"; };
+		4B325D1B2FF7422B00D98AF1 /* LockedProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedProductCard.swift; sourceTree = "<group>"; };
+		4B325D1E2FF743D000D98AF1 /* TimeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCard.swift; sourceTree = "<group>"; };
+		4B325D2D2FF766EF00D98AF1 /* FinanceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceCard.swift; sourceTree = "<group>"; };
+		4B325D2E2FF766EF00D98AF1 /* FinanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceRow.swift; sourceTree = "<group>"; };
+		4B325D312FF766F000D98AF1 /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
+		4B325D332FF766F000D98AF1 /* EventPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPopup.swift; sourceTree = "<group>"; };
+		4B325D552FF782B000D98AF1 /* CompetitorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitorCard.swift; sourceTree = "<group>"; };
+		4B325D562FF782B000D98AF1 /* MarketShareCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketShareCard.swift; sourceTree = "<group>"; };
+		4B325D572FF782B000D98AF1 /* MonthlyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyReportView.swift; sourceTree = "<group>"; };
+		4B325D582FF782B000D98AF1 /* NotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRow.swift; sourceTree = "<group>"; };
+		4B325D592FF782B000D98AF1 /* ReportRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRow.swift; sourceTree = "<group>"; };
+		4B325D5F2FF782B100D98AF1 /* Competitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Competitor.swift; sourceTree = "<group>"; };
+		4B325D602FF782B100D98AF1 /* MonthlyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyReport.swift; sourceTree = "<group>"; };
+		4B325D612FF782B100D98AF1 /* CompanyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyNotification.swift; sourceTree = "<group>"; };
+		4B325D652FF782B100D98AF1 /* MarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketView.swift; sourceTree = "<group>"; };
+		4B325D662FF782B100D98AF1 /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
+		4B325D692FF78AA800D98AF1 /* MarketingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingView.swift; sourceTree = "<group>"; };
+		4B325D6C2FF7B71500D98AF1 /* MonthProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthProgressCard.swift; sourceTree = "<group>"; };
+		4B325D6F2FF7B86F00D98AF1 /* GameSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSpeed.swift; sourceTree = "<group>"; };
+		4B325D722FF7B90700D98AF1 /* TimeControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControls.swift; sourceTree = "<group>"; };
+		4B325D752FF7BD5D00D98AF1 /* ResearchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchCard.swift; sourceTree = "<group>"; };
+		4B325D782FF8519200D98AF1 /* Office.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Office.swift; sourceTree = "<group>"; };
+		4B325D7B2FF87CCE00D98AF1 /* CompanyCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyCard.swift; sourceTree = "<group>"; };
+		4B325D7E2FF87DCF00D98AF1 /* HeadquartersCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadquartersCard.swift; sourceTree = "<group>"; };
+		4B325D812FF87EA600D98AF1 /* ResearchStatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchStatusCard.swift; sourceTree = "<group>"; };
+		4B325D842FF87F4900D98AF1 /* CompanyHealthCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyHealthCard.swift; sourceTree = "<group>"; };
+		4B325D892FF883CB00D98AF1 /* AIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModel.swift; sourceTree = "<group>"; };
+		4B325D8C2FF8854300D98AF1 /* AIModelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelsView.swift; sourceTree = "<group>"; };
+		4B325D8F2FF8857D00D98AF1 /* AIModelCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelCard.swift; sourceTree = "<group>"; };
+		4B325D922FF886B600D98AF1 /* AIModelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelStatus.swift; sourceTree = "<group>"; };
+		4B325D952FF892F000D98AF1 /* CompetitorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitorModels.swift; sourceTree = "<group>"; };
+		4B325D982FF8A66700D98AF1 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
+		4B325D9B2FF8A6C700D98AF1 /* HiringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiringManager.swift; sourceTree = "<group>"; };
+		4B325D9E2FF8AC1F00D98AF1 /* CandidateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateCard.swift; sourceTree = "<group>"; };
+		4B325DA12FF8BCB400D98AF1 /* CEO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEO.swift; sourceTree = "<group>"; };
+		4B325DA42FF8BD3F00D98AF1 /* NewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsManager.swift; sourceTree = "<group>"; };
+		4B325DA72FF8C85100D98AF1 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		4B325DAA2FF8C97200D98AF1 /* InvestorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestorsView.swift; sourceTree = "<group>"; };
+		4B325DAD2FF8CBD300D98AF1 /* CompanyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyView.swift; sourceTree = "<group>"; };
+		4B325DB02FF8CC0F00D98AF1 /* InnovationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnovationView.swift; sourceTree = "<group>"; };
+		4B325DB32FF8CC3A00D98AF1 /* IndustryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryView.swift; sourceTree = "<group>"; };
+		4B325DB62FF8CF6100D98AF1 /* DepartmentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentCard.swift; sourceTree = "<group>"; };
+		4B325DB92FF8D2D900D98AF1 /* ExecutiveSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutiveSummaryCard.swift; sourceTree = "<group>"; };
+		4B325DD92FF90F3300D98AF1 /* Architecture.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Architecture.md; sourceTree = "<group>"; };
+		4B325DDA2FF90F4700D98AF1 /* Roadmap.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Roadmap.md; sourceTree = "<group>"; };
+		4B325DDB2FF90F5800D98AF1 /* Changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changelog.md; sourceTree = "<group>"; };
+		4B325DDC2FF90F6800D98AF1 /* GameDesign.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = GameDesign.md; sourceTree = "<group>"; };
+		4B325DDD2FF9114600D98AF1 /* GameManager+Economy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Economy.swift"; sourceTree = "<group>"; };
+		4B325DDF2FF9115B00D98AF1 /* GameManager+Employees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Employees.swift"; sourceTree = "<group>"; };
+		4B325DE12FF9117000D98AF1 /* GameManager+Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Products.swift"; sourceTree = "<group>"; };
+		4B325DE32FF9118000D98AF1 /* GameManager+Research.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Research.swift"; sourceTree = "<group>"; };
+		4B325DE52FF9119400D98AF1 /* GameManager+AIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+AIModels.swift"; sourceTree = "<group>"; };
+		4B325DE72FF911A800D98AF1 /* GameManager+Investors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Investors.swift"; sourceTree = "<group>"; };
+		4B325DE92FF911BF00D98AF1 /* GameManager+Market.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Market.swift"; sourceTree = "<group>"; };
+		4B325DEB2FF911D200D98AF1 /* GameManager+Competitors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Competitors.swift"; sourceTree = "<group>"; };
+		4B325DED2FF911E600D98AF1 /* GameManager+Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Events.swift"; sourceTree = "<group>"; };
+		4B325DEF2FF911F900D98AF1 /* GameManager+Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Reports.swift"; sourceTree = "<group>"; };
+		4B325DF12FF9120A00D98AF1 /* GameManager+Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Time.swift"; sourceTree = "<group>"; };
+		4B325DF32FF9121C00D98AF1 /* GameManager+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+Notifications.swift"; sourceTree = "<group>"; };
+		4B325DFB2FF9822F00D98AF1 /* CEOHeaderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOHeaderCard.swift; sourceTree = "<group>"; };
+		4B325DFD2FF982FB00D98AF1 /* CEOBriefingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOBriefingCard.swift; sourceTree = "<group>"; };
+		4B325DFF2FF984D100D98AF1 /* CEOMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOMessage.swift; sourceTree = "<group>"; };
+		4B325E012FF9854E00D98AF1 /* GameManager+CEOAssistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+CEOAssistant.swift"; sourceTree = "<group>"; };
+		4B325E032FF987D300D98AF1 /* CEOMessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOMessageRow.swift; sourceTree = "<group>"; };
+		4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowCard.swift; sourceTree = "<group>"; };
+		4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectivesCard.swift; sourceTree = "<group>"; };
 		4BBEF4182FF2CFDE00278FF3 /* AIStartupTycoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIStartupTycoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4BBEF41A2FF2CFDE00278FF3 /* AIStartupTycoon */ = {
+		4B325DF62FF91AC700D98AF1 /* Constants */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AIStartupTycoon;
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -29,10 +208,324 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B325DBE2FF9001A00D98AF1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DF52FF9193000D98AF1 /* Shared */,
+				4B325DCB2FF9013E00D98AF1 /* Economy */,
+				4B325DCA2FF9013000D98AF1 /* Competition */,
+				4B325DC92FF9012400D98AF1 /* Investors */,
+				4B325DC82FF9011A00D98AF1 /* AI */,
+				4B325DC72FF9010E00D98AF1 /* Research */,
+				4B325DC62FF900FE00D98AF1 /* Products */,
+				4B325DC52FF900E700D98AF1 /* Employees */,
+				4B325DC42FF900D700D98AF1 /* Company */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4B325DBF2FF9002E00D98AF1 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DCF2FF9017300D98AF1 /* Gameplay */,
+				4B325DCE2FF9016900D98AF1 /* Simulation */,
+				4B325DCD2FF9015D00D98AF1 /* Persistence */,
+				4B325DCC2FF9015300D98AF1 /* Core */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		4B325DC02FF9003D00D98AF1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DD42FF901B400D98AF1 /* Shared */,
+				4B325DD32FF901AA00D98AF1 /* Industry */,
+				4B325DD22FF9019D00D98AF1 /* Innovation */,
+				4B325DD12FF9019300D98AF1 /* Company */,
+				4B325DD02FF9018400D98AF1 /* Dashboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4B325DC12FF9005400D98AF1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DD82FF901E000D98AF1 /* Common */,
+				4B325DD72FF901D600D98AF1 /* Progress */,
+				4B325DD62FF901CD00D98AF1 /* Controls */,
+				4B325DD52FF901C400D98AF1 /* Cards */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4B325DC22FF9006400D98AF1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4B325DC32FF9007000D98AF1 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DDC2FF90F6800D98AF1 /* GameDesign.md */,
+				4B325DDB2FF90F5800D98AF1 /* Changelog.md */,
+				4B325DDA2FF90F4700D98AF1 /* Roadmap.md */,
+				4B325DD92FF90F3300D98AF1 /* Architecture.md */,
+			);
+			path = Documentation;
+			sourceTree = "<group>";
+		};
+		4B325DC42FF900D700D98AF1 /* Company */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CE72FF7296D00D98AF1 /* Company.swift */,
+				4B325D782FF8519200D98AF1 /* Office.swift */,
+				4B325D612FF782B100D98AF1 /* CompanyNotification.swift */,
+			);
+			path = Company;
+			sourceTree = "<group>";
+		};
+		4B325DC52FF900E700D98AF1 /* Employees */ = {
+			isa = PBXGroup;
+			children = (
+				4B325D982FF8A66700D98AF1 /* Candidate.swift */,
+				4B325CE82FF7296D00D98AF1 /* Employees.swift */,
+			);
+			path = Employees;
+			sourceTree = "<group>";
+		};
+		4B325DC62FF900FE00D98AF1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CEA2FF7296D00D98AF1 /* Products.swift */,
+			);
+			path = Products;
+			sourceTree = "<group>";
+		};
+		4B325DC72FF9010E00D98AF1 /* Research */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CEB2FF7296D00D98AF1 /* Research.swift */,
+			);
+			path = Research;
+			sourceTree = "<group>";
+		};
+		4B325DC82FF9011A00D98AF1 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				4B325D892FF883CB00D98AF1 /* AIModel.swift */,
+				4B325D102FF73C8C00D98AF1 /* Technology.swift */,
+				4B325D922FF886B600D98AF1 /* AIModelStatus.swift */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		4B325DC92FF9012400D98AF1 /* Investors */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CE92FF7296D00D98AF1 /* Investors.swift */,
+			);
+			path = Investors;
+			sourceTree = "<group>";
+		};
+		4B325DCA2FF9013000D98AF1 /* Competition */ = {
+			isa = PBXGroup;
+			children = (
+				4B325D5F2FF782B100D98AF1 /* Competitor.swift */,
+				4B325DA12FF8BCB400D98AF1 /* CEO.swift */,
+				4B325D952FF892F000D98AF1 /* CompetitorModels.swift */,
+			);
+			path = Competition;
+			sourceTree = "<group>";
+		};
+		4B325DCB2FF9013E00D98AF1 /* Economy */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Economy;
+			sourceTree = "<group>";
+		};
+		4B325DCC2FF9015300D98AF1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				4B325E012FF9854E00D98AF1 /* GameManager+CEOAssistant.swift */,
+				4B325DF32FF9121C00D98AF1 /* GameManager+Notifications.swift */,
+				4B325DF12FF9120A00D98AF1 /* GameManager+Time.swift */,
+				4B325DEF2FF911F900D98AF1 /* GameManager+Reports.swift */,
+				4B325DED2FF911E600D98AF1 /* GameManager+Events.swift */,
+				4B325DEB2FF911D200D98AF1 /* GameManager+Competitors.swift */,
+				4B325DE92FF911BF00D98AF1 /* GameManager+Market.swift */,
+				4B325DE72FF911A800D98AF1 /* GameManager+Investors.swift */,
+				4B325DE52FF9119400D98AF1 /* GameManager+AIModels.swift */,
+				4B325DE32FF9118000D98AF1 /* GameManager+Research.swift */,
+				4B325DE12FF9117000D98AF1 /* GameManager+Products.swift */,
+				4B325DDF2FF9115B00D98AF1 /* GameManager+Employees.swift */,
+				4B325DDD2FF9114600D98AF1 /* GameManager+Economy.swift */,
+				4B325CE42FF7296D00D98AF1 /* GameManager.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		4B325DCD2FF9015D00D98AF1 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CE52FF7296D00D98AF1 /* SaveManager.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		4B325DCE2FF9016900D98AF1 /* Simulation */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CE32FF7296D00D98AF1 /* EventManager.swift */,
+				4B325DA42FF8BD3F00D98AF1 /* NewsManager.swift */,
+			);
+			path = Simulation;
+			sourceTree = "<group>";
+		};
+		4B325DCF2FF9017300D98AF1 /* Gameplay */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CE22FF7296D00D98AF1 /* EconomyManager.swift */,
+				4B325D9B2FF8A6C700D98AF1 /* HiringManager.swift */,
+			);
+			path = Gameplay;
+			sourceTree = "<group>";
+		};
+		4B325DD02FF9018400D98AF1 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CED2FF7296D00D98AF1 /* DashboardView.swift */,
+				4B325D662FF782B100D98AF1 /* NotificationCenterView.swift */,
+				4B325CEF2FF7296D00D98AF1 /* MainTabView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		4B325DD12FF9019300D98AF1 /* Company */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DAD2FF8CBD300D98AF1 /* CompanyView.swift */,
+				4B325CEE2FF7296D00D98AF1 /* EmployeesView.swift */,
+				4B325CF12FF7296D00D98AF1 /* ProductsView.swift */,
+				4B325CF02FF7296D00D98AF1 /* OfficeView.swift */,
+				4B325DAA2FF8C97200D98AF1 /* InvestorsView.swift */,
+				4B325DA72FF8C85100D98AF1 /* BoardView.swift */,
+			);
+			path = Company;
+			sourceTree = "<group>";
+		};
+		4B325DD22FF9019D00D98AF1 /* Innovation */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CF22FF7296D00D98AF1 /* ResearchView.swift */,
+				4B325D8C2FF8854300D98AF1 /* AIModelsView.swift */,
+				4B325DB02FF8CC0F00D98AF1 /* InnovationView.swift */,
+			);
+			path = Innovation;
+			sourceTree = "<group>";
+		};
+		4B325DD32FF901AA00D98AF1 /* Industry */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DB32FF8CC3A00D98AF1 /* IndustryView.swift */,
+				4B325D652FF782B100D98AF1 /* MarketView.swift */,
+				4B325D692FF78AA800D98AF1 /* MarketingView.swift */,
+			);
+			path = Industry;
+			sourceTree = "<group>";
+		};
+		4B325DD42FF901B400D98AF1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				4B325D332FF766F000D98AF1 /* EventPopup.swift */,
+				4B325D572FF782B000D98AF1 /* MonthlyReportView.swift */,
+				4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		4B325DD52FF901C400D98AF1 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */,
+				4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */,
+				4B325DFD2FF982FB00D98AF1 /* CEOBriefingCard.swift */,
+				4B325DFB2FF9822F00D98AF1 /* CEOHeaderCard.swift */,
+				4B325D8F2FF8857D00D98AF1 /* AIModelCard.swift */,
+				4B325D9E2FF8AC1F00D98AF1 /* CandidateCard.swift */,
+				4B325D7B2FF87CCE00D98AF1 /* CompanyCard.swift */,
+				4B325D842FF87F4900D98AF1 /* CompanyHealthCard.swift */,
+				4B325D552FF782B000D98AF1 /* CompetitorCard.swift */,
+				4B325DB62FF8CF6100D98AF1 /* DepartmentCard.swift */,
+				4B325CDC2FF7296D00D98AF1 /* EmployeeCard.swift */,
+				4B325DB92FF8D2D900D98AF1 /* ExecutiveSummaryCard.swift */,
+				4B325D2D2FF766EF00D98AF1 /* FinanceCard.swift */,
+				4B325D7E2FF87DCF00D98AF1 /* HeadquartersCard.swift */,
+				4B325D812FF87EA600D98AF1 /* ResearchStatusCard.swift */,
+				4B325CDD2FF7296D00D98AF1 /* NewsCard.swift */,
+				4B325D0D2FF72B6E00D98AF1 /* InvestorCard.swift */,
+				4B325CDE2FF7296D00D98AF1 /* ProductCard.swift */,
+				4B325D752FF7BD5D00D98AF1 /* ResearchCard.swift */,
+				4B325CE02FF7296D00D98AF1 /* StatCard.swift */,
+				4B325D1B2FF7422B00D98AF1 /* LockedProductCard.swift */,
+				4B325D562FF782B000D98AF1 /* MarketShareCard.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
+		4B325DD62FF901CD00D98AF1 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				4B325D722FF7B90700D98AF1 /* TimeControls.swift */,
+				4B325D1E2FF743D000D98AF1 /* TimeCard.swift */,
+				4B325D6C2FF7B71500D98AF1 /* MonthProgressCard.swift */,
+				4B325CDB2FF7296D00D98AF1 /* BuildButton.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		4B325DD72FF901D600D98AF1 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				4B325CDF2FF7296D00D98AF1 /* ProgressBar.swift */,
+			);
+			path = Progress;
+			sourceTree = "<group>";
+		};
+		4B325DD82FF901E000D98AF1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4B325E032FF987D300D98AF1 /* CEOMessageRow.swift */,
+				4B325D2E2FF766EF00D98AF1 /* FinanceRow.swift */,
+				4B325D582FF782B000D98AF1 /* NotificationRow.swift */,
+				4B325D592FF782B000D98AF1 /* ReportRow.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		4B325DF52FF9193000D98AF1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				4B325DFF2FF984D100D98AF1 /* CEOMessage.swift */,
+				4B325D312FF766F000D98AF1 /* GameEvent.swift */,
+				4B325D6F2FF7B86F00D98AF1 /* GameSpeed.swift */,
+				4B325D602FF782B100D98AF1 /* MonthlyReport.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		4BBEF40F2FF2CFDE00278FF3 = {
 			isa = PBXGroup;
 			children = (
-				4BBEF41A2FF2CFDE00278FF3 /* AIStartupTycoon */,
+				4B325DF62FF91AC700D98AF1 /* Constants */,
+				4B325DC32FF9007000D98AF1 /* Documentation */,
+				4B325DC22FF9006400D98AF1 /* Resources */,
+				4B325DC12FF9005400D98AF1 /* Components */,
+				4B325DC02FF9003D00D98AF1 /* Views */,
+				4B325DBF2FF9002E00D98AF1 /* Managers */,
+				4B325DBE2FF9001A00D98AF1 /* Models */,
 				4BBEF4192FF2CFDE00278FF3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,9 +552,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				4BBEF41A2FF2CFDE00278FF3 /* AIStartupTycoon */,
 			);
 			name = AIStartupTycoon;
 			packageProductDependencies = (
@@ -119,6 +609,92 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B325D832FF87EBA00D98AF1 /* ResearchStatusCard.swift in Sources */,
+				4B325DE82FF911BA00D98AF1 /* GameManager+Investors.swift in Sources */,
+				4B325CF62FF7296D00D98AF1 /* BuildButton.swift in Sources */,
+				4B325D342FF766F000D98AF1 /* EventPopup.swift in Sources */,
+				4B325D862FF87F5500D98AF1 /* CompanyHealthCard.swift in Sources */,
+				4B325CF72FF7296D00D98AF1 /* EmployeeCard.swift in Sources */,
+				4B325DB52FF8CC4100D98AF1 /* IndustryView.swift in Sources */,
+				4B325CF82FF7296D00D98AF1 /* NewsCard.swift in Sources */,
+				4B325DF22FF9121500D98AF1 /* GameManager+Time.swift in Sources */,
+				4B325D1D2FF7423700D98AF1 /* LockedProductCard.swift in Sources */,
+				4B325E062FF99A6900D98AF1 /* CashFlowCard.swift in Sources */,
+				4B325D0F2FF72B7600D98AF1 /* InvestorCard.swift in Sources */,
+				4B325E002FF984DA00D98AF1 /* CEOMessage.swift in Sources */,
+				4B325CF92FF7296D00D98AF1 /* ProductCard.swift in Sources */,
+				4B325D7A2FF8519500D98AF1 /* Office.swift in Sources */,
+				4B325D742FF7B91400D98AF1 /* TimeControls.swift in Sources */,
+				4B325CFA2FF7296D00D98AF1 /* ProgressBar.swift in Sources */,
+				4B325CFB2FF7296D00D98AF1 /* StatCard.swift in Sources */,
+				4B325D122FF73C9300D98AF1 /* Technology.swift in Sources */,
+				4B325E042FF987DB00D98AF1 /* CEOMessageRow.swift in Sources */,
+				4B325CFC2FF7296D00D98AF1 /* EconomyManager.swift in Sources */,
+				4B325CFD2FF7296D00D98AF1 /* EventManager.swift in Sources */,
+				4B325D772FF7BD6A00D98AF1 /* ResearchCard.swift in Sources */,
+				4B325CFE2FF7296D00D98AF1 /* GameManager.swift in Sources */,
+				4B325CFF2FF7296D00D98AF1 /* SaveManager.swift in Sources */,
+				4B325D6E2FF7B72000D98AF1 /* MonthProgressCard.swift in Sources */,
+				4B325D912FF8858700D98AF1 /* AIModelCard.swift in Sources */,
+				4B325DFC2FF9823700D98AF1 /* CEOHeaderCard.swift in Sources */,
+				4B325DDE2FF9115400D98AF1 /* GameManager+Economy.swift in Sources */,
+				4B325D202FF743D500D98AF1 /* TimeCard.swift in Sources */,
+				4B325D002FF7296D00D98AF1 /* Company.swift in Sources */,
+				4B325D802FF87DDE00D98AF1 /* HeadquartersCard.swift in Sources */,
+				4B325D2F2FF766EF00D98AF1 /* FinanceCard.swift in Sources */,
+				4B325DE62FF911A200D98AF1 /* GameManager+AIModels.swift in Sources */,
+				4B325D302FF766EF00D98AF1 /* FinanceRow.swift in Sources */,
+				4B325DBB2FF8D2E400D98AF1 /* ExecutiveSummaryCard.swift in Sources */,
+				4B325D012FF7296D00D98AF1 /* Employees.swift in Sources */,
+				4B325D022FF7296D00D98AF1 /* Investors.swift in Sources */,
+				4B325D032FF7296D00D98AF1 /* Products.swift in Sources */,
+				4B325D8B2FF883D200D98AF1 /* AIModel.swift in Sources */,
+				4B325D042FF7296D00D98AF1 /* Research.swift in Sources */,
+				4B325D052FF7296D00D98AF1 /* DashboardView.swift in Sources */,
+				4B325D062FF7296D00D98AF1 /* EmployeesView.swift in Sources */,
+				4B325E022FF9855C00D98AF1 /* GameManager+CEOAssistant.swift in Sources */,
+				4B325D322FF766F000D98AF1 /* GameEvent.swift in Sources */,
+				4B325D5A2FF782B000D98AF1 /* CompetitorCard.swift in Sources */,
+				4B325D5B2FF782B000D98AF1 /* MarketShareCard.swift in Sources */,
+				4B325DEC2FF911DF00D98AF1 /* GameManager+Competitors.swift in Sources */,
+				4B325D712FF7B87400D98AF1 /* GameSpeed.swift in Sources */,
+				4B325DA02FF8AC2600D98AF1 /* CandidateCard.swift in Sources */,
+				4B325DE42FF9118C00D98AF1 /* GameManager+Research.swift in Sources */,
+				4B325D5C2FF782B000D98AF1 /* MonthlyReportView.swift in Sources */,
+				4B325D5D2FF782B000D98AF1 /* NotificationRow.swift in Sources */,
+				4B325D9A2FF8A66E00D98AF1 /* Candidate.swift in Sources */,
+				4B325D6B2FF78AB100D98AF1 /* MarketingView.swift in Sources */,
+				4B325D5E2FF782B000D98AF1 /* ReportRow.swift in Sources */,
+				4B325DFE2FF9830500D98AF1 /* CEOBriefingCard.swift in Sources */,
+				4B325D072FF7296D00D98AF1 /* MainTabView.swift in Sources */,
+				4B325DAF2FF8CBDC00D98AF1 /* CompanyView.swift in Sources */,
+				4B325DF02FF9120400D98AF1 /* GameManager+Reports.swift in Sources */,
+				4B325D082FF7296D00D98AF1 /* OfficeView.swift in Sources */,
+				4B325D8E2FF8855400D98AF1 /* AIModelsView.swift in Sources */,
+				4B325DB22FF8CC1A00D98AF1 /* InnovationView.swift in Sources */,
+				4B325DAC2FF8C97B00D98AF1 /* InvestorsView.swift in Sources */,
+				4B325D622FF782B100D98AF1 /* Competitor.swift in Sources */,
+				4B325E082FF99BBA00D98AF1 /* ObjectivesCard.swift in Sources */,
+				4B325DB82FF8CF6B00D98AF1 /* DepartmentCard.swift in Sources */,
+				4B325DA92FF8C85800D98AF1 /* BoardView.swift in Sources */,
+				4B325D7D2FF87CD600D98AF1 /* CompanyCard.swift in Sources */,
+				4B325DEA2FF911CC00D98AF1 /* GameManager+Market.swift in Sources */,
+				4B325D632FF782B100D98AF1 /* MonthlyReport.swift in Sources */,
+				4B325D642FF782B100D98AF1 /* CompanyNotification.swift in Sources */,
+				4B325D092FF7296D00D98AF1 /* ProductsView.swift in Sources */,
+				4B325D672FF782B100D98AF1 /* MarketView.swift in Sources */,
+				4B325DE02FF9116800D98AF1 /* GameManager+Employees.swift in Sources */,
+				4B325DA62FF8BD4400D98AF1 /* NewsManager.swift in Sources */,
+				4B325D9D2FF8A6D000D98AF1 /* HiringManager.swift in Sources */,
+				4B325D682FF782B100D98AF1 /* NotificationCenterView.swift in Sources */,
+				4B325DF42FF9122700D98AF1 /* GameManager+Notifications.swift in Sources */,
+				4B325D0A2FF7296D00D98AF1 /* ResearchView.swift in Sources */,
+				4B325D972FF892FD00D98AF1 /* CompetitorModels.swift in Sources */,
+				4B325DA32FF8BCBC00D98AF1 /* CEO.swift in Sources */,
+				4B325DEE2FF911F300D98AF1 /* GameManager+Events.swift in Sources */,
+				4B325D0B2FF7296D00D98AF1 /* AIStartupTycoonApp.swift in Sources */,
+				4B325D942FF886BF00D98AF1 /* AIModelStatus.swift in Sources */,
+				4B325DE22FF9117A00D98AF1 /* GameManager+Products.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,6 +27,28 @@ struct Competitor: Identifiable {
     var nextModelProgress: Double = 100
 
     var aiRating: Double = 50
+    
+    var ceo: CEO
+    
+    init(
+        name: String,
+        ceo: CEO,
+        cash: Double,
+        revenue: Double,
+        valuation: Double,
+        employees: Int,
+        products: Int,
+        marketShare: Double
+    ) {
+        self.name = name
+        self.ceo = ceo
+        self.cash = cash
+        self.revenue = revenue
+        self.valuation = valuation
+        self.employees = employees
+        self.products = products
+        self.marketShare = marketShare
+    }
 
 }
 //  Competitor.swift

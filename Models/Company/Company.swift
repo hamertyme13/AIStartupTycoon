@@ -7,6 +7,8 @@ class Company {
     // MARK: Company Info
 
     var name = "My AI Startup"
+    
+    var ceoBriefing: [CEOMessage] = []
 
     // MARK: Economy
 
@@ -101,24 +103,31 @@ class Company {
             name: "OpenAI Ventures",
             investment: 250_000,
             equity: 15,
-            description: "AI-focused venture capital."
+            description: "AI-focused venture capital firm specializing in frontier research.",
+            focus: .research
         ),
 
         Investor(
             name: "Y Combinator",
             investment: 500_000,
             equity: 20,
-            description: "Startup accelerator."
+            description: "Startup accelerator focused on rapid company growth.",
+            focus: .growth
         ),
 
         Investor(
             name: "Sequoia Capital",
             investment: 1_000_000,
             equity: 25,
-            description: "Global venture capital firm."
+            description: "Global venture capital firm investing in world-changing companies.",
+            focus: .enterprise
         )
 
     ]
+    
+    // MARK: - Board of Directors
+
+    var activeInvestors: [Investor] = []
     
     var founderOwnership = 100.0
     var currentMonth = 1
@@ -290,6 +299,53 @@ class Company {
         monthlyRevenue - monthlyExpenses
     }
     
+    var researchMultiplier: Double {
+
+        var bonus = 1.0
+
+        for investor in activeInvestors {
+
+            switch investor.focus {
+
+            case .research:
+                bonus += 0.20
+
+            default:
+                break
+
+            }
+
+        }
+
+        return bonus
+
+    }
+
+    var revenueMultiplier: Double {
+
+        var bonus = 1.0
+
+        for investor in activeInvestors {
+
+            switch investor.focus {
+
+            case .growth:
+                bonus += 0.10
+
+            case .enterprise:
+                bonus += 0.05
+
+            default:
+                break
+
+            }
+
+        }
+
+        return bonus
+
+    }
+    
     var burnRate: Double {
         monthlyExpenses
     }
@@ -378,6 +434,13 @@ class Company {
 
         Competitor(
             name: "NeuralForge AI",
+            
+            ceo: CEO(
+                name: "David Stone",
+                title: "Founder & CEO",
+                personality: .engineer
+            ),
+            
             cash: 50_000,
             revenue: 2_000,
             valuation: 500_000,
@@ -388,6 +451,13 @@ class Company {
 
         Competitor(
             name: "Titan Intelligence",
+            
+            ceo: CEO(
+                name: "Marcus Hale",
+                title: "CEO",
+                personality: .dealmaker
+            ),
+            
             cash: 120_000,
             revenue: 5_500,
             valuation: 1_500_000,
@@ -398,6 +468,13 @@ class Company {
 
         Competitor(
             name: "QuantumMind",
+            
+            ceo: CEO(
+                name: "Dr. Elena Park",
+                title: "Founder & CEO",
+                personality: .visionary
+            ),
+            
             cash: 80_000,
             revenue: 3_200,
             valuation: 900_000,

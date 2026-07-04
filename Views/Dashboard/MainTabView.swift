@@ -21,44 +21,33 @@ struct MainTabView: View {
                     Label("Notifications", systemImage: "bell.fill")
                 }
 
-            ProductsView()
-                .tabItem {
-                    Label("Products", systemImage: "shippingbox.fill")
-                }
-
-            EmployeesView()
-                .tabItem {
-                    Label("Employees", systemImage: "person.3.fill")
-                }
-
-            ResearchView()
-                .tabItem {
-                    Label("Research", systemImage: "brain.head.profile")
-                }
-            
-            AIModelsView()
-                .tabItem {
-                    Label("AI Models", systemImage: "cpu.fill")
-                }
-
-            OfficeView()
+            CompanyView()
                 .tabItem {
                     Label("Company", systemImage: "building.2.fill")
                 }
+            InnovationView()
+                .tabItem {
+                    Label("Innovation", systemImage: "lightbulb.fill")
+                }
+
+            IndustryView()
+                .tabItem {
+                    Label("Industry", systemImage: "globe.fill")
+                }
             
-            MarketView()
+            InvestorsView()
                 .tabItem {
                     Label(
-                        "Market",
-                        systemImage: "chart.bar.xaxis"
+                        "Investors",
+                        systemImage: "dollarsign.circle.fill"
                     )
                 }
             
-            MarketingView()
+            BoardView()
                 .tabItem {
-                    Label("Marketing",
-                          systemImage: "megaphone.fill")
+                    Label("Board", systemImage: "person.3.fill")
                 }
+            
     
         }
         .sheet(item: $game.latestReport) { report in
