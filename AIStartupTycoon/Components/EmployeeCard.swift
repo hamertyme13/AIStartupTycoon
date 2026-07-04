@@ -3,6 +3,29 @@ import SwiftUI
 struct EmployeeCard: View {
 
     let employee: Employee
+    
+    private var potentialStars: String {
+
+        switch employee.potential {
+
+        case 95...100:
+            return "★★★★★"
+
+        case 85..<95:
+            return "★★★★☆"
+
+        case 75..<85:
+            return "★★★☆☆"
+
+        case 65..<75:
+            return "★★☆☆☆"
+
+        default:
+            return "★☆☆☆☆"
+
+        }
+
+    }
 
     var body: some View {
 
@@ -23,6 +46,20 @@ struct EmployeeCard: View {
                     Text("Level \(employee.level)")
                         .font(.caption)
                         .foregroundStyle(.blue)
+                    
+                    Text(employee.specialty)
+                        .font(.caption)
+                        .foregroundStyle(.purple)
+                    
+                    HStack {
+
+                        Label("Potential", systemImage: "star.fill")
+
+                        Spacer()
+
+                        Text(potentialStars)
+
+                    }
 
                 }
 
@@ -104,12 +141,7 @@ struct EmployeeCard: View {
 #Preview {
 
     EmployeeCard(
-        employee: Employee(
-            name: "Emily",
-            role: .seniorEngineer,
-            salary: 9000,
-            skill: 88
-        )
+        employee: .preview
     )
 
 }

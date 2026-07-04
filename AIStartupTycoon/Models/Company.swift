@@ -40,10 +40,14 @@ class Company {
             name: "You",
             role: .juniorEngineer,
             salary: 0,
-            skill: 50
+            skill: 50,
+            specialty: "Startup Founder",
+            potential: 100
         )
 
     ]
+    
+    var talentMarket: [Candidate] = []
     
     // MARK: - Research
 
@@ -270,8 +274,9 @@ class Company {
     
     var monthlyExpenses: Double {
 
-        let payroll = employees.reduce(0) { total, employee in
-            total + employee.salary
+        let payroll = employees.reduce(0) {
+            
+            $0 + $1.salary
         }
 
         return payroll
@@ -364,8 +369,6 @@ class Company {
     }
     
  // MARK: Expenses
-    
-    var officeRent: Double = 1500
 
     var serverCost: Double = 500
 

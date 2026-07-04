@@ -13,6 +13,10 @@ class GameManager {
     var currentEvent: GameEvent?
 
     var latestReport: MonthlyReport?
+    
+    init() {
+        refreshTalentMarket()
+    }
 
     // MARK: - Time
     
@@ -53,15 +57,20 @@ class GameManager {
 
         tick()
 
+        // Employees
         employeeWork()
-
         employeeResearch()
+        awardEmployeeExperience()
+        checkEmployeePromotions()
 
-        updateEmployees()
-
+        // Products
         growProducts()
-        
+
+        // AI
         updateModelTraining()
+
+        // Company
+        updateEmployees()
 
     }
 
@@ -206,34 +215,64 @@ class GameManager {
     }
 
     // MARK: - Employees
+    
+    func hire(_ candidate: Candidate) {
 
-    func hireEngineer() {
+        guard company.cash >= candidate.salary else {
 
-        let cost = 500.0
-
-        guard spendCash(cost) else {
-            
             addNotification(
-                title: "❌ Not Enough Cash",
-                message: "You can't afford another engineer."
+                title: "Not Enough Cash",
+                message: "You can't afford to hire \(candidate.name)."
             )
-            
+
             return
+
         }
 
-        let employee = Employee(
-            name: "Engineer \(company.employees.count)",
-            role: .juniorEngineer,
-            salary: 4000,
-            skill: Int.random(in: 40...70)
+        var employee = Employee(
+
+            name: candidate.name,
+
+            role: candidate.role,
+
+            salary: candidate.salary,
+
+            skill: candidate.skill,
+            
+            specialty: candidate.specialty,
+            
+            potential: candidate.potential
+
         )
+        
+        employee.experience = Double(candidate.skill)
 
         company.employees.append(employee)
 
+        company.talentMarket.removeAll {
+
+            $0.id == candidate.id
+
+        }
+
         addNotification(
-            title: "👨‍💻 New Hire",
-            message: "\(employee.name) joined the company."
+
+            title: "New Hire",
+
+            message: "\(candidate.name) joined the company!"
+
         )
+        
+        company.latestNews =
+        """
+        🎉 \(candidate.name) joined the company!
+
+        Role:
+        \(candidate.role.rawValue)
+
+        Specialty:
+        \(candidate.specialty)
+        """
 
     }
 
@@ -289,6 +328,114 @@ class GameManager {
                     title: "🎉 Promotion",
                     message: "\(company.employees[index].name) was promoted to Senior Engineer!"
                 )
+
+            }
+
+        }
+
+    }
+    
+    func promoteEmployee(at index: Int) {
+
+        var employee = company.employees[index]
+
+        switch employee.role {
+
+        case .juniorEngineer:
+            employee.role = .engineer
+
+        case .engineer:
+            employee.role = .seniorEngineer
+
+        case .seniorEngineer:
+            employee.role = .staffEngineer
+
+        case .staffEngineer:
+            employee.role = .principalEngineer
+
+        case .principalEngineer:
+            employee.role = .distinguishedEngineer
+
+        case .researchAssistant:
+            employee.role = .researchScientist
+
+        case .researchScientist:
+            employee.role = .seniorScientist
+
+        case .seniorScientist:
+            employee.role = .principalScientist
+
+        case .principalScientist:
+            employee.role = .chiefScientist
+
+        case .distinguishedEngineer,
+             .chiefScientist,
+             .productManager:
+            return
+        }
+
+        employee.level += 1
+        
+        let skillGain: Int
+
+        switch employee.potential {
+
+        case 95...100:
+            skillGain = 7
+
+        case 85..<95:
+            skillGain = 6
+
+        case 75..<85:
+            skillGain = 5
+
+        case 65..<75:
+            skillGain = 4
+
+        default:
+            skillGain = 3
+
+        }
+
+        employee.skill += skillGain
+        employee.salary += Double(skillGain * 300)
+
+        employee.experience = 0
+
+        company.employees[index] = employee
+
+        addNotification(
+            title: "🎉 Promotion",
+            message:
+        """
+        \(employee.name) is now a \(employee.role.rawValue)!
+
+        +\(skillGain) Skill
+        +$\(Int(Double(skillGain * 300))) Salary
+        """
+        )
+
+    }
+    
+    func awardEmployeeExperience() {
+
+        for index in company.employees.indices {
+
+            company.employees[index].experience +=
+                company.employees[index].productivity
+
+        }
+
+    }
+    
+    func checkEmployeePromotions() {
+
+        for index in company.employees.indices {
+
+            if company.employees[index].experience >=
+                company.employees[index].experienceNeeded {
+
+                promoteEmployee(at: index)
 
             }
 
@@ -609,10 +756,26 @@ class GameManager {
         createMonthlyReport()
 
         advanceCalendar()
+        
+        refreshTalentMarket()
 
         updateCompetitors()
 
         rollForEvent()
+
+    }
+    
+    private func refreshTalentMarket() {
+
+        company.talentMarket.removeAll()
+
+        for _ in 0..<3 {
+
+            company.talentMarket.append(
+                HiringManager.generateCandidate()
+            )
+
+        }
 
     }
 
@@ -639,7 +802,7 @@ class GameManager {
 
             payroll: payroll,
 
-            officeRent: company.officeRent,
+            officeRent: company.currentOffice.monthlyRent,
 
             serverCost: company.serverCost,
 
@@ -685,6 +848,30 @@ class GameManager {
 
             company.competitors[index].valuation +=
                 Double.random(in: 20_000...80_000)
+            
+            company.competitors[index].researchProgress +=
+                Double.random(in: 2...8)
+            
+            if company.competitors[index].researchProgress >=
+                company.competitors[index].nextModelProgress {
+
+                company.competitors[index].researchProgress = 0
+
+                company.competitors[index].aiModelsReleased += 1
+
+                company.competitors[index].aiRating +=
+                    Double.random(in: 4...8)
+
+                company.competitors[index].currentModel =
+                    CompetitorModels.names.randomElement()!
+
+                addNotification(
+                    title: "Industry News",
+                    message:
+                        "\(company.competitors[index].name) released \(company.competitors[index].currentModel)."
+                )
+
+            }
 
             if Int.random(in: 1...100) <= 30 {
 

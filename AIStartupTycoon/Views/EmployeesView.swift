@@ -10,28 +10,51 @@ struct EmployeesView: View {
 
             ScrollView {
 
-                VStack(spacing: 20) {
+                VStack(spacing: 24) {
 
-                    Button {
+                    // MARK: Talent Market
 
-                        withAnimation(.spring()) {
+                    Text("Talent Market")
+                        .font(.largeTitle)
+                        .bold()
 
-                            game.hireEngineer()
+                    Text("Recruit talented people to grow your company.")
+                        .foregroundStyle(.secondary)
+
+                    if game.company.talentMarket.isEmpty {
+
+                        ContentUnavailableView(
+                            "No Candidates Available",
+                            systemImage: "person.crop.circle.badge.questionmark",
+                            description: Text("New candidates will appear next month.")
+                        )
+
+                    } else {
+
+                        ForEach(game.company.talentMarket) { candidate in
+
+                            CandidateCard(
+                                candidate: candidate
+                            )
 
                         }
 
-                    } label: {
-
-                        Label("Hire Engineer ($500)", systemImage: "person.badge.plus")
-
-                            .frame(maxWidth: .infinity)
-
                     }
-                    .buttonStyle(.borderedProminent)
+
+                    Divider()
+                        .padding(.vertical)
+
+                    // MARK: Current Employees
+
+                    Text("Current Employees")
+                        .font(.largeTitle)
+                        .bold()
 
                     ForEach(game.company.employees) { employee in
 
-                        EmployeeCard(employee: employee)
+                        EmployeeCard(
+                            employee: employee
+                        )
 
                     }
 

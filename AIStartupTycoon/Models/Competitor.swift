@@ -17,6 +17,16 @@ struct Competitor: Identifiable {
     var products: Int
 
     var marketShare: Double
+    
+    var currentModel = "None"
+
+    var aiModelsReleased = 0
+
+    var researchProgress: Double = 0
+
+    var nextModelProgress: Double = 100
+
+    var aiRating: Double = 50
 
 }
 //  Competitor.swift
