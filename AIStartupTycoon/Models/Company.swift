@@ -199,6 +199,75 @@ class Company {
 
     ]
     
+    var aiModels: [AIModel] = [
+
+        AIModel(
+            name: "Neuron-1",
+            description: "First conversational AI model.",
+            requiredTechnology: "Chatbots",
+            trainingCost: 25_000,
+            requiredResearch: 100,
+            revenueBonus: 500,
+            marketShareBonus: 2,
+            valuationBonus: 100_000
+        ),
+
+        AIModel(
+            name: "Vision-X",
+            description: "Generates realistic images.",
+            requiredTechnology: "Image Generation",
+            trainingCost: 100_000,
+            requiredResearch: 250,
+            revenueBonus: 2_000,
+            marketShareBonus: 4,
+            valuationBonus: 500_000
+        ),
+
+        AIModel(
+            name: "Echo",
+            description: "Advanced voice assistant.",
+            requiredTechnology: "Voice AI",
+            trainingCost: 350_000,
+            requiredResearch: 500,
+            revenueBonus: 7_500,
+            marketShareBonus: 7,
+            valuationBonus: 1_500_000
+        ),
+
+        AIModel(
+            name: "Atlas",
+            description: "Autonomous AI workforce.",
+            requiredTechnology: "AI Agents",
+            trainingCost: 1_000_000,
+            requiredResearch: 1000,
+            revenueBonus: 25_000,
+            marketShareBonus: 10,
+            valuationBonus: 10_000_000
+        ),
+
+        AIModel(
+            name: "Genesis",
+            description: "Artificial General Intelligence.",
+            requiredTechnology: "Artificial General Intelligence",
+            trainingCost: 10_000_000,
+            requiredResearch: 5000,
+            revenueBonus: 250_000,
+            marketShareBonus: 20,
+            valuationBonus: 100_000_000
+        )
+
+    ]
+    
+    func hasUnlockedTechnology(_ name: String) -> Bool {
+
+        technologies.contains {
+
+            $0.name == name && $0.unlocked
+
+        }
+
+    }
+    
     var monthlyExpenses: Double {
 
         let payroll = employees.reduce(0) { total, employee in
@@ -335,6 +404,8 @@ class Company {
         )
 
     ]
+    
+    
     
     
 

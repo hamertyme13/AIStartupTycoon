@@ -35,6 +35,11 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Research", systemImage: "brain.head.profile")
                 }
+            
+            AIModelsView()
+                .tabItem {
+                    Label("AI Models", systemImage: "cpu.fill")
+                }
 
             OfficeView()
                 .tabItem {

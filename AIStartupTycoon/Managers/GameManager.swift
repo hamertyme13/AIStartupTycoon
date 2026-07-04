@@ -60,6 +60,8 @@ class GameManager {
         updateEmployees()
 
         growProducts()
+        
+        updateModelTraining()
 
     }
 
@@ -414,8 +416,153 @@ class GameManager {
             )
 
             unlockProducts()
+            updateAIModelAvailability()
 
         }
+
+    }
+    
+    func updateAIModelAvailability() {
+
+        for index in company.aiModels.indices {
+
+            guard company.aiModels[index].status == .locked else {
+
+                continue
+
+            }
+
+            if company.hasUnlockedTechnology(
+                company.aiModels[index].requiredTechnology
+            ) {
+
+                company.aiModels[index].status = .readyToTrain
+
+                addNotification(
+                    title: "🤖 AI Model Available",
+                    message: "\(company.aiModels[index].name) is ready to train!"
+                )
+
+            }
+
+        }
+
+    }
+    
+    func beginTraining(modelID: UUID) {
+
+        guard let index = company.aiModels.firstIndex(where: {
+            $0.id == modelID
+        }) else {
+
+            return
+
+        }
+
+        guard company.cash >= company.aiModels[index].trainingCost else {
+
+            addNotification(
+                title: "Insufficient Funds",
+                message: "Not enough cash to begin training."
+            )
+
+            return
+
+        }
+
+        company.cash -= company.aiModels[index].trainingCost
+
+        company.aiModels[index].status = .training
+
+        company.aiModels[index].trainingProgress = 0
+
+        addNotification(
+            title: "Training Started",
+            message: "\(company.aiModels[index].name) is now training."
+        )
+
+    }
+    
+    func updateModelTraining() {
+
+        for index in company.aiModels.indices {
+
+            guard company.aiModels[index].status == .training else {
+
+                continue
+
+            }
+
+            let researchPower = company.employees.reduce(0.0) {
+
+                $0 + $1.researchOutput
+
+            }
+
+            let officeBonus =
+                company.currentOffice.researchBonus
+
+            company.aiModels[index].trainingProgress +=
+                researchPower * (1 + officeBonus)
+
+            if company.aiModels[index].trainingProgress >= 100 {
+
+                company.aiModels[index].trainingProgress = 100
+
+                company.aiModels[index].status = .readyToRelease
+
+                addNotification(
+                    title: "Training Complete",
+                    message: "\(company.aiModels[index].name) is ready to launch!"
+                )
+
+            }
+
+        }
+
+    }
+    
+    func releaseModel(modelID: UUID) {
+
+        guard let index = company.aiModels.firstIndex(where: {
+            $0.id == modelID
+        }) else {
+
+            return
+
+        }
+
+        guard company.aiModels[index].status == .readyToRelease else {
+
+            return
+
+        }
+
+        let model = company.aiModels[index]
+
+        company.monthlyRevenue += model.revenueBonus
+
+        company.companyValue += model.valuationBonus
+
+        changeMarketShare(by: model.marketShareBonus)
+
+        company.aiModels[index].status = .released
+
+        addNotification(
+            title: "🚀 Model Released",
+            message: "\(model.name) launched successfully!"
+        )
+        
+        company.latestNews =
+        """
+        🚀 \(model.name) launches worldwide!
+
+        Revenue +$\(Int(model.revenueBonus))
+
+        Market Share +\(Int(model.marketShareBonus))%
+
+        Valuation +$\(Int(model.valuationBonus).formatted())
+        """
 
     }
 
