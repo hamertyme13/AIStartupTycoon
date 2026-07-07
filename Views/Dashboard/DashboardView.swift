@@ -76,6 +76,14 @@ struct DashboardView: View {
         }
         .onReceive(timer) { _ in
             
+            guard game.gameOutcome == nil else {
+                return
+            }
+
+            guard game.currentEvent == nil else {
+                return
+            }
+            
             guard game.gameSpeed != .paused else {
                 return
             }
@@ -115,4 +123,3 @@ struct DashboardView: View {
         .environment(GameManager())
         
 }
-

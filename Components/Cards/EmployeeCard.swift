@@ -3,6 +3,8 @@ import SwiftUI
 struct EmployeeCard: View {
 
     let employee: Employee
+
+    var onDepartmentChange: ((EmployeeDepartment) -> Void)?
     
     private var potentialStars: String {
 
@@ -50,6 +52,13 @@ struct EmployeeCard: View {
                     Text(employee.specialty)
                         .font(.caption)
                         .foregroundStyle(.purple)
+
+                    Label(
+                        employee.department.rawValue,
+                        systemImage: employee.department.icon
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                     
                     HStack {
 
@@ -105,6 +114,32 @@ struct EmployeeCard: View {
                 Spacer()
 
                 Text("$\(Int(employee.salary))/mo")
+
+            }
+
+            if let onDepartmentChange {
+
+                Picker("Department", selection: Binding(
+                    get: {
+                        employee.department
+                    },
+                    set: { department in
+                        onDepartmentChange(department)
+                    }
+                )) {
+
+                    ForEach(EmployeeDepartment.allCases) { department in
+
+                        Label(
+                            department.rawValue,
+                            systemImage: department.icon
+                        )
+                        .tag(department)
+
+                    }
+
+                }
+                .pickerStyle(.menu)
 
             }
 

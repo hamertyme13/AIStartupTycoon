@@ -4,7 +4,7 @@ struct EventPopup: View {
 
     let event: GameEvent
 
-    let dismiss: () -> Void
+    let choose: (GameEventOption) -> Void
 
     var body: some View {
 
@@ -17,33 +17,101 @@ struct EventPopup: View {
             Text(event.description)
                 .multilineTextAlignment(.center)
 
-            if event.cashReward != 0 {
+            ForEach(event.options) { option in
 
-                Text("Cash: \(event.cashReward >= 0 ? "+" : "")$\(Int(event.cashReward).formatted())")
+                Button {
+
+                    choose(option)
+
+                } label: {
+
+                    VStack(alignment: .leading, spacing: 8) {
+
+                        Text(option.title)
+                            .font(.headline)
+
+                        Text(option.description)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        VStack(alignment: .leading, spacing: 4) {
+
+                            effectText(
+                                label: "Cash",
+                                value: signedMoney(option.cashEffect)
+                            )
+
+                            effectText(
+                                label: "Valuation",
+                                value: signedMoney(option.companyValueEffect)
+                            )
+
+                            effectText(
+                                label: "Customers",
+                                value: signedNumber(option.customerEffect)
+                            )
+
+                            effectText(
+                                label: "Research",
+                                value: signedNumber(Int(option.researchEffect))
+                            )
+
+                            effectText(
+                                label: "Reputation",
+                                value: signedNumber(option.reputationEffect)
+                            )
+
+                            effectText(
+                                label: "Market Share",
+                                value:
+                                    "\(option.marketShareEffect >= 0 ? "+" : "")\(String(format: "%.1f", option.marketShareEffect))%"
+                            )
+
+                        }
+                        .font(.caption)
+
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 6)
+
+                }
+                .buttonStyle(.bordered)
 
             }
-
-            if event.companyValueReward != 0 {
-
-                Text("Company Value: \(event.companyValueReward >= 0 ? "+" : "")$\(Int(event.companyValueReward).formatted())")
-
-            }
-
-            if event.customerReward != 0 {
-
-                Text("Customers: \(event.customerReward >= 0 ? "+" : "")\(event.customerReward.formatted())")
-
-            }
-
-            Button("Continue") {
-
-                dismiss()
-
-            }
-            .buttonStyle(.borderedProminent)
 
         }
         .padding(30)
+
+    }
+
+    @ViewBuilder
+    private func effectText(
+        label: String,
+        value: String
+    ) -> some View {
+
+        if value != "+$0" &&
+           value != "$0" &&
+           value != "+0" &&
+           value != "0" &&
+           value != "+0.0%" &&
+           value != "0.0%" {
+
+            Text("\(label): \(value)")
+
+        }
+
+    }
+
+    private func signedMoney(_ value: Double) -> String {
+
+        "\(value >= 0 ? "+" : "")$\(Int(value).formatted())"
+
+    }
+
+    private func signedNumber(_ value: Int) -> String {
+
+        "\(value >= 0 ? "+" : "")\(value.formatted())"
 
     }
 
@@ -53,4 +121,3 @@ struct EventPopup: View {
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-
