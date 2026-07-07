@@ -59,6 +59,49 @@ struct MainTabView: View {
             }
 
         }
+        .sheet(item: $game.currentEvent) { event in
+
+            EventPopup(event: event) { option in
+
+                game.apply(
+                    option,
+                    from: event
+                )
+
+            }
+
+        }
+        .interactiveDismissDisabled(game.currentEvent != nil)
+        .sheet(item: $game.gameOutcome) { outcome in
+
+            VStack(spacing: 20) {
+
+                Text(outcome.title)
+                    .font(.largeTitle)
+                    .bold()
+
+                Text(outcome.message)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+
+                Button {
+
+                    game.gameOutcome = nil
+
+                } label: {
+
+                    Label(
+                        "Review Company",
+                        systemImage: "building.2.fill"
+                    )
+
+                }
+                .buttonStyle(.borderedProminent)
+
+            }
+            .padding(30)
+
+        }
 
     }
 

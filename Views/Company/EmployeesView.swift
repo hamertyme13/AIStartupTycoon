@@ -50,10 +50,16 @@ struct EmployeesView: View {
                         .font(.largeTitle)
                         .bold()
 
-                    ForEach(game.company.employees) { employee in
+                    ForEach(game.company.employees.indices, id: \.self) { index in
 
                         EmployeeCard(
-                            employee: employee
+                            employee: game.company.employees[index],
+                            onDepartmentChange: { department in
+                                game.assignEmployee(
+                                    at: index,
+                                    to: department
+                                )
+                            }
                         )
 
                     }

@@ -1,6 +1,53 @@
 import Foundation
 import Observation
 
+enum GameOutcome: Identifiable {
+
+    case victory(String)
+    case failure(String)
+
+    var id: String {
+
+        switch self {
+
+        case .victory(let message):
+            return "victory-\(message)"
+
+        case .failure(let message):
+            return "failure-\(message)"
+
+        }
+
+    }
+
+    var title: String {
+
+        switch self {
+
+        case .victory:
+            return "Victory"
+
+        case .failure:
+            return "Company Failed"
+
+        }
+
+    }
+
+    var message: String {
+
+        switch self {
+
+        case .victory(let message),
+             .failure(let message):
+            return message
+
+        }
+
+    }
+
+}
+
 @Observable
 class GameManager {
 
@@ -13,6 +60,8 @@ class GameManager {
     var currentEvent: GameEvent?
 
     var latestReport: MonthlyReport?
+
+    var gameOutcome: GameOutcome?
     
     init() {
         refreshTalentMarket()
@@ -30,7 +79,7 @@ class GameManager {
     
     // MARK: - Notifications
 
-    private func addNotification(title: String, message: String) {
+    internal func addNotification(title: String, message: String) {
 
         company.latestNews = message
 
@@ -68,9 +117,6 @@ class GameManager {
 
         // AI
         updateModelTraining()
-
-        // Company
-        updateEmployees()
 
     }
 
@@ -199,6 +245,16 @@ class GameManager {
 
     func growProducts() {
 
+        let productBonus = 1 +
+            Double(company.employees.filter {
+                $0.department == .product
+            }.count) * 0.05
+
+        let growthBonus = 1 +
+            Double(company.employees.filter {
+                $0.department == .growth
+            }.count) * 0.08
+
         for index in company.products.indices {
 
             guard company.products[index].unlocked else { continue }
@@ -208,7 +264,7 @@ class GameManager {
             let bonus = growth * (Double(company.reputation) / 100)
 
             company.products[index].customers +=
-                Int(growth + bonus)
+                Int((growth + bonus) * productBonus * growthBonus)
 
         }
 
@@ -247,6 +303,23 @@ class GameManager {
         
         employee.experience = Double(candidate.skill)
 
+        switch candidate.role {
+
+        case .researchAssistant,
+             .researchScientist,
+             .seniorScientist,
+             .principalScientist,
+             .chiefScientist:
+            employee.department = .research
+
+        case .productManager:
+            employee.department = .product
+
+        default:
+            employee.department = .engineering
+
+        }
+
         company.employees.append(employee)
 
         company.talentMarket.removeAll {
@@ -273,6 +346,27 @@ class GameManager {
         Specialty:
         \(candidate.specialty)
         """
+
+    }
+
+    func assignEmployee(
+        at index: Int,
+        to department: EmployeeDepartment
+    ) {
+
+        guard company.employees.indices.contains(index) else {
+
+            return
+
+        }
+
+        company.employees[index].department = department
+
+        addNotification(
+            title: "Department Updated",
+            message:
+                "\(company.employees[index].name) moved to \(department.rawValue)."
+        )
 
     }
 
@@ -763,6 +857,8 @@ class GameManager {
 
     func nextMonth() {
 
+        guard gameOutcome == nil else { return }
+
         processMonthlyFinances()
 
         createMonthlyReport()
@@ -770,8 +866,6 @@ class GameManager {
         advanceCalendar()
         
         refreshTalentMarket()
-
-        updateCompetitors()
         
         company.latestNews = NewsManager.randomHeadline(
             competitors: company.competitors
@@ -779,7 +873,11 @@ class GameManager {
 
         rollForEvent()
         
+        simulateCompetitors()
+        
         generateCEOBriefing()
+
+        evaluateGameOutcome()
 
     }
     
@@ -859,70 +957,7 @@ class GameManager {
 
     func updateCompetitors() {
 
-        for index in company.competitors.indices {
-
-            company.competitors[index].cash +=
-                company.competitors[index].revenue
-
-            company.competitors[index].valuation +=
-                Double.random(in: 20_000...80_000)
-            
-            company.competitors[index].researchProgress +=
-                Double.random(in: 2...8)
-            
-            if company.competitors[index].researchProgress >=
-                company.competitors[index].nextModelProgress {
-
-                company.competitors[index].researchProgress = 0
-
-                company.competitors[index].aiModelsReleased += 1
-
-                company.competitors[index].aiRating +=
-                    Double.random(in: 4...8)
-
-                company.competitors[index].currentModel =
-                    CompetitorModels.names.randomElement()!
-
-                addNotification(
-                    title: "Industry News",
-                    message:
-                        "\(company.competitors[index].name) released \(company.competitors[index].currentModel)."
-                )
-
-            }
-
-            if Int.random(in: 1...100) <= 30 {
-
-                company.competitors[index].employees += 1
-
-            }
-
-            if Int.random(in: 1...100) <= 15 {
-
-                company.competitors[index].products += 1
-
-                company.competitors[index].revenue +=
-                    Double.random(in: 200...800)
-
-                changeMarketShare(by: -0.2)
-
-            }
-
-            let change = Double.random(in: -1.5...1.5)
-
-            company.competitors[index].marketShare =
-                max(2, company.competitors[index].marketShare + change)
-
-        }
-
-        let competitorShare = company.competitors.reduce(0) {
-
-            $0 + $1.marketShare
-
-        }
-
-        company.marketShare =
-            max(1, min(95, 100 - competitorShare))
+        simulateCompetitors()
 
     }
 
@@ -940,25 +975,41 @@ class GameManager {
 
     }
 
-    func apply(_ event: GameEvent) {
+    func apply(
+        _ option: GameEventOption,
+        from event: GameEvent
+    ) {
 
-        addCash(event.cashReward)
+        addCash(option.cashEffect)
 
-        company.companyValue += event.companyValueReward
+        company.companyValue += option.companyValueEffect
+
+        company.researchPoints =
+            max(0, company.researchPoints + option.researchEffect)
+
+        company.reputation =
+            min(100, max(0, company.reputation + option.reputationEffect))
+
+        changeMarketShare(by: option.marketShareEffect)
 
         if let first = company.products.indices.first {
 
             company.products[first].customers +=
-                event.customerReward
+                option.customerEffect
+
+            company.products[first].customers =
+                max(0, company.products[first].customers)
 
         }
 
         addNotification(
-            title: "🎲 Random Event",
-            message: event.title
+            title: event.title,
+            message: option.title
         )
 
         currentEvent = nil
+
+        evaluateGameOutcome()
 
     }
     // MARK: - Economy Helpers
@@ -1066,6 +1117,8 @@ class GameManager {
     
     func skipToNextMonth() {
 
+        guard gameOutcome == nil else { return }
+
         while secondsElapsed < secondsPerMonth {
 
             advanceOneSecond()
@@ -1077,6 +1130,80 @@ class GameManager {
         secondsElapsed = 0
 
         nextMonth()
+
+    }
+
+    func evaluateGameOutcome() {
+
+        guard gameOutcome == nil else { return }
+
+        if company.cash < -25_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .failure(
+                "Your startup ran out of cash and could not cover its obligations."
+            )
+
+            addNotification(
+                title: "Company Failed",
+                message: "Your startup ran out of cash."
+            )
+
+            return
+
+        }
+
+        if company.founderOwnership < 20 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .failure(
+                "You diluted below 20% ownership and lost control of the company."
+            )
+
+            addNotification(
+                title: "Founder Control Lost",
+                message: "Founder ownership fell below 20%."
+            )
+
+            return
+
+        }
+
+        if company.hasUnlockedTechnology("Artificial General Intelligence") &&
+           company.companyValue >= 100_000_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a $100M AGI company and became the defining startup of the era."
+            )
+
+            addNotification(
+                title: "Victory",
+                message: "Your company reached AGI and a $100M valuation."
+            )
+
+            return
+
+        }
+
+        if company.marketShare >= 60 &&
+           company.monthlyRevenue >= 100_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You captured the AI market with dominant share and serious revenue."
+            )
+
+            addNotification(
+                title: "Market Dominance",
+                message: "Your startup now leads the AI industry."
+            )
+
+        }
 
     }
     

@@ -93,6 +93,7 @@
 		4B325E042FF987DB00D98AF1 /* CEOMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E032FF987D300D98AF1 /* CEOMessageRow.swift */; };
 		4B325E062FF99A6900D98AF1 /* CashFlowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */; };
 		4B325E082FF99BBA00D98AF1 /* ObjectivesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */; };
+		4B325E0A2FF9AD0B00D98AF1 /* GameManager+CompetitorSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E092FF9ACFB00D98AF1 /* GameManager+CompetitorSimulation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,6 +187,7 @@
 		4B325E032FF987D300D98AF1 /* CEOMessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOMessageRow.swift; sourceTree = "<group>"; };
 		4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowCard.swift; sourceTree = "<group>"; };
 		4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectivesCard.swift; sourceTree = "<group>"; };
+		4B325E092FF9ACFB00D98AF1 /* GameManager+CompetitorSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+CompetitorSimulation.swift"; sourceTree = "<group>"; };
 		4BBEF4182FF2CFDE00278FF3 /* AIStartupTycoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIStartupTycoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -378,6 +380,7 @@
 		4B325DCE2FF9016900D98AF1 /* Simulation */ = {
 			isa = PBXGroup;
 			children = (
+				4B325E092FF9ACFB00D98AF1 /* GameManager+CompetitorSimulation.swift */,
 				4B325CE32FF7296D00D98AF1 /* EventManager.swift */,
 				4B325DA42FF8BD3F00D98AF1 /* NewsManager.swift */,
 			);
@@ -614,6 +617,7 @@
 				4B325CF62FF7296D00D98AF1 /* BuildButton.swift in Sources */,
 				4B325D342FF766F000D98AF1 /* EventPopup.swift in Sources */,
 				4B325D862FF87F5500D98AF1 /* CompanyHealthCard.swift in Sources */,
+				4B325E0A2FF9AD0B00D98AF1 /* GameManager+CompetitorSimulation.swift in Sources */,
 				4B325CF72FF7296D00D98AF1 /* EmployeeCard.swift in Sources */,
 				4B325DB52FF8CC4100D98AF1 /* IndustryView.swift in Sources */,
 				4B325CF82FF7296D00D98AF1 /* NewsCard.swift in Sources */,

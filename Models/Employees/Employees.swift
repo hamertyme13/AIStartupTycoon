@@ -28,6 +28,79 @@ enum EmployeeRole: String, CaseIterable {
 
 }
 
+enum EmployeeDepartment: String, CaseIterable, Identifiable {
+
+    case engineering = "Engineering"
+    case research = "Research"
+    case product = "Product"
+    case growth = "Growth"
+
+    var id: String {
+        rawValue
+    }
+
+    var icon: String {
+
+        switch self {
+
+        case .engineering:
+            return "hammer.fill"
+
+        case .research:
+            return "flask.fill"
+
+        case .product:
+            return "shippingbox.fill"
+
+        case .growth:
+            return "chart.line.uptrend.xyaxis"
+
+        }
+
+    }
+
+    var productivityMultiplier: Double {
+
+        switch self {
+
+        case .engineering:
+            return 1.15
+
+        case .research:
+            return 0.85
+
+        case .product:
+            return 1.05
+
+        case .growth:
+            return 0.90
+
+        }
+
+    }
+
+    var researchMultiplier: Double {
+
+        switch self {
+
+        case .engineering:
+            return 0.95
+
+        case .research:
+            return 1.30
+
+        case .product:
+            return 1.00
+
+        case .growth:
+            return 0.70
+
+        }
+
+    }
+
+}
+
 struct Employee: Identifiable {
 
     let id = UUID()
@@ -43,6 +116,8 @@ struct Employee: Identifiable {
     var specialty: String
     
     var potential: Int
+
+    var department: EmployeeDepartment = .engineering
     
     var level = 1
 
@@ -83,7 +158,9 @@ struct Employee: Identifiable {
 
         }
 
-        return (Double(skill) / 100.0) * roleBonus
+        return (Double(skill) / 100.0) *
+            roleBonus *
+            department.productivityMultiplier
 
     }
     
@@ -93,42 +170,42 @@ struct Employee: Identifiable {
 
         // Engineers
         case .juniorEngineer:
-            return 0.5
+            return 0.5 * department.researchMultiplier
 
         case .engineer:
-            return 1.0
+            return 1.0 * department.researchMultiplier
 
         case .seniorEngineer:
-            return 2.0
+            return 2.0 * department.researchMultiplier
 
         case .staffEngineer:
-            return 3.0
+            return 3.0 * department.researchMultiplier
 
         case .principalEngineer:
-            return 4.0
+            return 4.0 * department.researchMultiplier
 
         case .distinguishedEngineer:
-            return 5.0
+            return 5.0 * department.researchMultiplier
 
         // Research Path
         case .researchAssistant:
-            return 3.0
+            return 3.0 * department.researchMultiplier
 
         case .researchScientist:
-            return 5.0
+            return 5.0 * department.researchMultiplier
 
         case .seniorScientist:
-            return 7.0
+            return 7.0 * department.researchMultiplier
 
         case .principalScientist:
-            return 9.0
+            return 9.0 * department.researchMultiplier
 
         case .chiefScientist:
-            return 12.0
+            return 12.0 * department.researchMultiplier
 
         // Management
         case .productManager:
-            return 0.5
+            return 0.5 * department.researchMultiplier
 
         }
 
