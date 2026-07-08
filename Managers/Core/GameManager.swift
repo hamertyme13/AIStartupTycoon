@@ -914,10 +914,22 @@ class GameManager {
 
         }
 
-        addCash(company.investors[index].investment)
+        let investor = company.investors[index]
+        let contribution = investor.contribution
+
+        addCash(investor.investment)
 
         company.founderOwnership -=
-            company.investors[index].equity
+            investor.equity
+
+        company.companyValue += contribution.valuationBonus
+        company.monthlyRevenue += contribution.monthlyRevenueBoost
+        company.researchPoints += contribution.researchPointGrant
+        company.customerGrowthMultiplier += contribution.customerGrowthBonus
+        company.reputation =
+            min(100, company.reputation + contribution.reputationBonus)
+
+        changeMarketShare(by: contribution.marketShareBonus)
 
         company.investors[index].invested = true
 
@@ -928,6 +940,18 @@ class GameManager {
             company.investors[index]
         )
 
+        if contribution.candidateBoost > 0 {
+
+            for _ in 0..<contribution.candidateBoost {
+
+                company.talentMarket.append(
+                    HiringManager.generateCandidate()
+                )
+
+            }
+
+        }
+
         company.completedTutorialSteps.insert("firstInvestment")
         
         addNotification(
@@ -936,7 +960,10 @@ class GameManager {
         """
         \(company.investors[index].name)
 
-        Invested $\(Int(company.investors[index].investment).formatted())
+        Invested $\(Int(investor.investment).formatted())
+
+        Contribution:
+        \(contribution.title)
 
         Founder Ownership:
         \(Int(company.founderOwnership))%

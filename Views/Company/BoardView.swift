@@ -53,6 +53,10 @@ struct BoardView: View {
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
 
+                                        Text(investor.personality.rawValue)
+                                            .font(.caption)
+                                            .foregroundStyle(RogueCircuitTheme.signalGreen)
+
                                     }
 
                                     Spacer()
@@ -73,6 +77,21 @@ struct BoardView: View {
                                     Text(investor.focus.rawValue)
 
                                 }
+
+                                HStack {
+
+                                    Text("Contribution")
+
+                                    Spacer()
+
+                                    Text(investor.contribution.title)
+                                        .multilineTextAlignment(.trailing)
+
+                                }
+
+                                Text(investor.contribution.summary)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
 
                                 if let investedDate = investor.investedDate {
 
@@ -121,4 +140,3 @@ struct BoardView: View {
 //
 //  Created by Joshua Hamer on 7/4/26.
 //
-

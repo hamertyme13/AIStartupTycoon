@@ -242,7 +242,21 @@ class Company {
             investment: 250_000,
             equity: 15,
             description: "AI-focused venture capital firm specializing in frontier research.",
-            focus: .research
+            focus: .research,
+            personality: .technical,
+            contribution: Investor.Contribution(
+                title: "Research Credits",
+                summary: "Boosts research velocity and grants an immediate research reserve.",
+                researchMultiplierBonus: 0.20,
+                revenueMultiplierBonus: 0,
+                monthlyRevenueBoost: 0,
+                marketShareBonus: 0,
+                reputationBonus: 3,
+                valuationBonus: 150_000,
+                customerGrowthBonus: 0,
+                researchPointGrant: 150,
+                candidateBoost: 0
+            )
         ),
 
         Investor(
@@ -250,7 +264,21 @@ class Company {
             investment: 500_000,
             equity: 20,
             description: "Startup accelerator focused on rapid company growth.",
-            focus: .growth
+            focus: .growth,
+            personality: .operatorMindset,
+            contribution: Investor.Contribution(
+                title: "Startup Operating Playbook",
+                summary: "Improves customer growth and brings more candidates into the hiring market.",
+                researchMultiplierBonus: 0,
+                revenueMultiplierBonus: 0.08,
+                monthlyRevenueBoost: 1_000,
+                marketShareBonus: 1,
+                reputationBonus: 4,
+                valuationBonus: 300_000,
+                customerGrowthBonus: 0.08,
+                researchPointGrant: 0,
+                candidateBoost: 2
+            )
         ),
 
         Investor(
@@ -258,7 +286,131 @@ class Company {
             investment: 1_000_000,
             equity: 25,
             description: "Global venture capital firm investing in world-changing companies.",
-            focus: .enterprise
+            focus: .enterprise,
+            personality: .aggressive,
+            contribution: Investor.Contribution(
+                title: "Enterprise Expansion",
+                summary: "Adds enterprise revenue, valuation lift, and market credibility.",
+                researchMultiplierBonus: 0,
+                revenueMultiplierBonus: 0.12,
+                monthlyRevenueBoost: 4_000,
+                marketShareBonus: 2,
+                reputationBonus: 5,
+                valuationBonus: 1_200_000,
+                customerGrowthBonus: 0.04,
+                researchPointGrant: 0,
+                candidateBoost: 1
+            )
+        ),
+
+        Investor(
+            name: "Rogue Circuit Capital",
+            investment: 350_000,
+            equity: 12,
+            description: "Founder-friendly seed fund backing sharp technical teams.",
+            focus: .recruiting,
+            personality: .connector,
+            contribution: Investor.Contribution(
+                title: "Talent Network",
+                summary: "Expands recruiting reach and improves reputation without heavy dilution.",
+                researchMultiplierBonus: 0.05,
+                revenueMultiplierBonus: 0,
+                monthlyRevenueBoost: 500,
+                marketShareBonus: 0.5,
+                reputationBonus: 6,
+                valuationBonus: 200_000,
+                customerGrowthBonus: 0.03,
+                researchPointGrant: 50,
+                candidateBoost: 3
+            )
+        ),
+
+        Investor(
+            name: "Greylock Operators Guild",
+            investment: 750_000,
+            equity: 18,
+            description: "Operator-led investors who care about durable execution.",
+            focus: .enterprise,
+            personality: .patient,
+            contribution: Investor.Contribution(
+                title: "Go-To-Market Bench",
+                summary: "Improves revenue quality and opens enterprise buyer channels.",
+                researchMultiplierBonus: 0,
+                revenueMultiplierBonus: 0.10,
+                monthlyRevenueBoost: 2_500,
+                marketShareBonus: 1.2,
+                reputationBonus: 3,
+                valuationBonus: 650_000,
+                customerGrowthBonus: 0.02,
+                researchPointGrant: 0,
+                candidateBoost: 1
+            )
+        ),
+
+        Investor(
+            name: "Contrary Signal Fund",
+            investment: 180_000,
+            equity: 8,
+            description: "Small check, unusual conviction, minimal control pressure.",
+            focus: .growth,
+            personality: .contrarian,
+            contribution: Investor.Contribution(
+                title: "Contrarian Narrative",
+                summary: "Adds reputation and early buzz while preserving ownership.",
+                researchMultiplierBonus: 0,
+                revenueMultiplierBonus: 0.04,
+                monthlyRevenueBoost: 250,
+                marketShareBonus: 0.8,
+                reputationBonus: 5,
+                valuationBonus: 125_000,
+                customerGrowthBonus: 0.05,
+                researchPointGrant: 0,
+                candidateBoost: 0
+            )
+        ),
+
+        Investor(
+            name: "Frontier Compute Partners",
+            investment: 1_500_000,
+            equity: 30,
+            description: "Deep-pocketed fund with access to scarce compute and AI labs.",
+            focus: .frontier,
+            personality: .visionary,
+            contribution: Investor.Contribution(
+                title: "Compute Allocation",
+                summary: "Greatly accelerates frontier research at the cost of heavy dilution.",
+                researchMultiplierBonus: 0.30,
+                revenueMultiplierBonus: 0,
+                monthlyRevenueBoost: 0,
+                marketShareBonus: 1,
+                reputationBonus: 7,
+                valuationBonus: 2_000_000,
+                customerGrowthBonus: 0,
+                researchPointGrant: 350,
+                candidateBoost: 1
+            )
+        ),
+
+        Investor(
+            name: "Main Street Angels",
+            investment: 90_000,
+            equity: 5,
+            description: "Local angel syndicate offering patient capital and early customers.",
+            focus: .enterprise,
+            personality: .patient,
+            contribution: Investor.Contribution(
+                title: "First Customer Network",
+                summary: "Adds modest revenue and keeps the founder firmly in control.",
+                researchMultiplierBonus: 0,
+                revenueMultiplierBonus: 0.02,
+                monthlyRevenueBoost: 800,
+                marketShareBonus: 0.3,
+                reputationBonus: 2,
+                valuationBonus: 60_000,
+                customerGrowthBonus: 0.02,
+                researchPointGrant: 0,
+                candidateBoost: 0
+            )
         )
 
     ]
@@ -527,15 +679,7 @@ class Company {
 
         for investor in activeInvestors {
 
-            switch investor.focus {
-
-            case .research:
-                bonus += 0.20
-
-            default:
-                break
-
-            }
+            bonus += investor.contribution.researchMultiplierBonus
 
         }
 
@@ -549,18 +693,7 @@ class Company {
 
         for investor in activeInvestors {
 
-            switch investor.focus {
-
-            case .growth:
-                bonus += 0.10
-
-            case .enterprise:
-                bonus += 0.05
-
-            default:
-                break
-
-            }
+            bonus += investor.contribution.revenueMultiplierBonus
 
         }
 
