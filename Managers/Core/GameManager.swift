@@ -401,7 +401,11 @@ class GameManager {
 
             name: candidate.name,
 
+            gender: candidate.gender,
+
             role: candidate.role,
+
+            careerPath: candidate.careerPath,
 
             salary: candidate.salary,
 
@@ -409,28 +413,14 @@ class GameManager {
             
             specialty: candidate.specialty,
             
-            potential: candidate.potential
+            potential: candidate.potential,
+
+            avatar: candidate.avatar
 
         )
         
         employee.experience = Double(candidate.skill)
-
-        switch candidate.role {
-
-        case .researchAssistant,
-             .researchScientist,
-             .seniorScientist,
-             .principalScientist,
-             .chiefScientist:
-            employee.department = .research
-
-        case .productManager:
-            employee.department = .product
-
-        default:
-            employee.department = .engineering
-
-        }
+        employee.department = candidate.careerPath.defaultDepartment
 
         company.employees.append(employee)
 
@@ -453,7 +443,7 @@ class GameManager {
         🎉 \(candidate.name) joined the company!
 
         Role:
-        \(candidate.role.rawValue)
+        \(candidate.careerPath.title(for: 1))
 
         Specialty:
         \(candidate.specialty)
@@ -525,22 +515,6 @@ class GameManager {
 
             }
             
-            if company.employees[index].level >= 5 &&
-               company.employees[index].role == .juniorEngineer {
-
-                company.employees[index].role = .seniorEngineer
-
-                company.employees[index].skill += 5
-
-                company.employees[index].salary += 1500
-
-                addNotification(
-                    title: "🎉 Promotion",
-                    message: "\(company.employees[index].name) was promoted to Senior Engineer!"
-                )
-
-            }
-
         }
 
     }
@@ -549,42 +523,17 @@ class GameManager {
 
         var employee = company.employees[index]
 
-        switch employee.role {
+        guard employee.level < 8 else {
 
-        case .juniorEngineer:
-            employee.role = .engineer
+            employee.experience = employee.experienceNeeded
+            company.employees[index] = employee
 
-        case .engineer:
-            employee.role = .seniorEngineer
-
-        case .seniorEngineer:
-            employee.role = .staffEngineer
-
-        case .staffEngineer:
-            employee.role = .principalEngineer
-
-        case .principalEngineer:
-            employee.role = .distinguishedEngineer
-
-        case .researchAssistant:
-            employee.role = .researchScientist
-
-        case .researchScientist:
-            employee.role = .seniorScientist
-
-        case .seniorScientist:
-            employee.role = .principalScientist
-
-        case .principalScientist:
-            employee.role = .chiefScientist
-
-        case .distinguishedEngineer,
-             .chiefScientist,
-             .productManager:
             return
+
         }
 
         employee.level += 1
+        employee.role = employee.careerPath.role(for: employee.level)
         
         let skillGain: Int
 
@@ -618,7 +567,7 @@ class GameManager {
             title: "🎉 Promotion",
             message:
         """
-        \(employee.name) is now a \(employee.role.rawValue)!
+        \(employee.name) is now a \(employee.careerTitle)!
 
         +\(skillGain) Skill
         +$\(Int(Double(skillGain * 300))) Salary

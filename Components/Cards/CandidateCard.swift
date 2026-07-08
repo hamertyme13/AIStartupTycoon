@@ -12,9 +12,11 @@ struct CandidateCard: View {
 
             HStack {
 
-                Image(systemName: "person.crop.circle.badge.plus")
-                    .font(.largeTitle)
-                    .foregroundStyle(.green)
+                EmployeeAvatarView(
+                    avatar: candidate.avatar,
+                    gender: candidate.gender,
+                    size: 64
+                )
 
                 VStack(alignment: .leading) {
 
@@ -22,7 +24,11 @@ struct CandidateCard: View {
                         .font(.title3)
                         .bold()
 
-                    Text(candidate.role.rawValue)
+                    Text(candidate.careerPath.title(for: 1))
+                        .foregroundStyle(.secondary)
+
+                    Text(candidate.gender.rawValue)
+                        .font(.caption)
                         .foregroundStyle(.secondary)
 
                 }
@@ -32,6 +38,17 @@ struct CandidateCard: View {
             }
 
             Divider()
+
+            HStack {
+
+                Text("Career Path")
+
+                Spacer()
+
+                Text(candidate.careerPath.rawValue)
+                    .bold()
+
+            }
 
             HStack {
 
@@ -103,11 +120,14 @@ struct CandidateCard: View {
     CandidateCard(
         candidate: Candidate(
             name: "Emily Carter",
+            gender: .female,
             role: .researchAssistant,
+            careerPath: .research,
             skill: 74,
             salary: 5600,
             potential: 97,
-            specialty: "Computer Vision"
+            specialty: "Computer Vision",
+            avatar: EmployeeAvatar.random(for: .female)
         )
     )
     .environment(GameManager())
@@ -118,4 +138,3 @@ struct CandidateCard: View {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-
