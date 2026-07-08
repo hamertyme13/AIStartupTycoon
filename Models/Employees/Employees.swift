@@ -1,6 +1,6 @@
 import Foundation
 
-enum EmployeeRole: String, CaseIterable {
+enum EmployeeRole: String, CaseIterable, Codable {
 
     case juniorEngineer = "Junior Engineer"
 
@@ -28,7 +28,7 @@ enum EmployeeRole: String, CaseIterable {
 
 }
 
-enum EmployeeDepartment: String, CaseIterable, Identifiable {
+enum EmployeeDepartment: String, CaseIterable, Identifiable, Codable {
 
     case engineering = "Engineering"
     case research = "Research"
@@ -101,9 +101,9 @@ enum EmployeeDepartment: String, CaseIterable, Identifiable {
 
 }
 
-struct Employee: Identifiable {
+struct Employee: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
     

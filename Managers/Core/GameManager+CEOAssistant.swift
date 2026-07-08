@@ -70,6 +70,47 @@ extension GameManager {
 
         }
 
+        if !company.completedTutorialSteps.contains("firstProduct") {
+
+            addCEOMessage(
+                priority: .opportunity,
+                title: "First Product",
+                message: "Upgrade your AI Chatbot to start building a customer base."
+            )
+
+        }
+
+        if company.activeResearch == nil &&
+           !company.technologies.allSatisfy({ $0.unlocked }) {
+
+            addCEOMessage(
+                priority: .opportunity,
+                title: "Research Roadmap",
+                message: "Start a research project to unlock stronger products and models."
+            )
+
+        }
+
+        if company.customerSatisfaction < 60 {
+
+            addCEOMessage(
+                priority: .attention,
+                title: "Customer Churn",
+                message: "Satisfaction is slipping. Assign more people to Product or Engineering."
+            )
+
+        }
+
+        if let worldEvent = company.activeWorldEvent {
+
+            addCEOMessage(
+                priority: .industry,
+                title: worldEvent.title,
+                message: worldEvent.summary
+            )
+
+        }
+
     }
 
 }
@@ -78,4 +119,3 @@ extension GameManager {
 //
 //  Created by Joshua Hamer on 7/4/26.
 //
-

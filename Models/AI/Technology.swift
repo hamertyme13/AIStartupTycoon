@@ -1,8 +1,8 @@
 import Foundation
 
-struct Technology: Identifiable {
+struct Technology: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -20,4 +20,3 @@ struct Technology: Identifiable {
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-

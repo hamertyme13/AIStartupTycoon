@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-enum GameOutcome: Identifiable {
+enum GameOutcome: Identifiable, Codable {
 
     case victory(String)
     case failure(String)
@@ -62,9 +62,33 @@ class GameManager {
     var latestReport: MonthlyReport?
 
     var gameOutcome: GameOutcome?
+
+    var hasStartedGame = false
+
+    var showNewGameSetup = false
+
+    var lastChurnedCustomers = 0
     
     init() {
-        refreshTalentMarket()
+
+        if let save = SaveManager.load() {
+
+            company = save.company.restoreCompany()
+            secondsElapsed = save.secondsElapsed
+            gameSpeed = save.gameSpeed
+            gameOutcome = save.gameOutcome
+            hasStartedGame = save.hasStartedGame
+            showNewGameSetup = !save.hasStartedGame
+
+        } else {
+
+            showNewGameSetup = true
+            refreshTalentMarket()
+
+        }
+
+        generateCEOBriefing()
+
     }
 
     // MARK: - Time
@@ -75,6 +99,81 @@ class GameManager {
         
         gameSpeed.secondsPerMonth
         
+    }
+
+    func startNewGame(
+        scenario: Company.Scenario
+    ) {
+
+        company = Company()
+        company.selectedScenario = scenario
+        company.cash = scenario.startingCash
+        company.founderOwnership = scenario.startingOwnership
+        company.reputation = scenario.startingReputation
+        company.customerGrowthMultiplier = scenario.demandMultiplier
+
+        switch scenario {
+
+        case .vcRocketShip:
+            company.companyValue = 250_000
+            company.monthlyRevenue = 600
+
+        case .aiWinter:
+            company.monthlyRevenue = 150
+            company.customerSatisfaction = 72
+
+        case .openSourceWar:
+            company.marketShare = 55
+            company.competitors[0].marketShare += 5
+            company.competitors[1].marketShare += 5
+
+        case .bootstrappedFounder:
+            break
+
+        }
+
+        secondsElapsed = 0
+        gameSpeed = .paused
+        currentEvent = nil
+        latestReport = nil
+        gameOutcome = nil
+        hasStartedGame = true
+        showNewGameSetup = false
+
+        refreshTalentMarket()
+        generateCEOBriefing()
+        saveGame()
+
+    }
+
+    func resetGame() {
+
+        SaveManager.deleteSave()
+        company = Company()
+        secondsElapsed = 0
+        gameSpeed = .paused
+        currentEvent = nil
+        latestReport = nil
+        gameOutcome = nil
+        hasStartedGame = false
+        showNewGameSetup = true
+        refreshTalentMarket()
+        generateCEOBriefing()
+
+    }
+
+    func saveGame() {
+
+        SaveManager.save(
+            SaveManager.SaveData(
+                company: SaveManager.CompanySnapshot(company: company),
+                secondsElapsed: secondsElapsed,
+                gameSpeed: gameSpeed,
+                gameOutcome: gameOutcome,
+                hasStartedGame: hasStartedGame
+            )
+        )
+
     }
     
     // MARK: - Notifications
@@ -151,6 +250,8 @@ class GameManager {
 
         company.products[index].level += 1
 
+        company.completedTutorialSteps.insert("firstProduct")
+
         company.products[index].customers += 100
 
         company.monthlyRevenue +=
@@ -167,6 +268,8 @@ class GameManager {
         )
 
         unlockProducts()
+
+        saveGame()
 
     }
 
@@ -245,6 +348,10 @@ class GameManager {
 
     func growProducts() {
 
+        let demandMultiplier =
+            company.customerGrowthMultiplier *
+            (company.activeWorldEvent?.demandMultiplier ?? 1)
+
         let productBonus = 1 +
             Double(company.employees.filter {
                 $0.department == .product
@@ -264,7 +371,12 @@ class GameManager {
             let bonus = growth * (Double(company.reputation) / 100)
 
             company.products[index].customers +=
-                Int((growth + bonus) * productBonus * growthBonus)
+                Int(
+                    (growth + bonus) *
+                    productBonus *
+                    growthBonus *
+                    demandMultiplier
+                )
 
         }
 
@@ -347,6 +459,8 @@ class GameManager {
         \(candidate.specialty)
         """
 
+        saveGame()
+
     }
 
     func assignEmployee(
@@ -367,6 +481,8 @@ class GameManager {
             message:
                 "\(company.employees[index].name) moved to \(department.rawValue)."
         )
+
+        saveGame()
 
     }
 
@@ -561,10 +677,14 @@ class GameManager {
 
         company.activeResearch = company.technologies[index].id
 
+        company.completedTutorialSteps.insert("firstResearch")
+
         addNotification(
             title: "🧠 Research Started",
             message: company.technologies[index].name
         )
+
+        saveGame()
 
     }
     
@@ -628,7 +748,8 @@ class GameManager {
 
             let researchPower =
                 employee.researchOutput *
-                (1 + company.currentOffice.researchBonus)
+                (1 + company.currentOffice.researchBonus) *
+                (company.activeWorldEvent?.researchMultiplier ?? 1)
 
             return total + researchPower
 
@@ -722,6 +843,8 @@ class GameManager {
             message: "\(company.aiModels[index].name) is now training."
         )
 
+        saveGame()
+
     }
     
     func updateModelTraining() {
@@ -805,6 +928,8 @@ class GameManager {
         Valuation +$\(Int(model.valuationBonus).formatted())
         """
 
+        saveGame()
+
     }
 
     // MARK: - Investors
@@ -837,6 +962,8 @@ class GameManager {
         company.activeInvestors.append(
             company.investors[index]
         )
+
+        company.completedTutorialSteps.insert("firstInvestment")
         
         addNotification(
             title: "💰 Seed Funding",
@@ -851,6 +978,8 @@ class GameManager {
         """
         )
 
+        saveGame()
+
     }
 
     // MARK: - Monthly Simulation
@@ -858,6 +987,10 @@ class GameManager {
     func nextMonth() {
 
         guard gameOutcome == nil else { return }
+
+        updateWorldEvent()
+
+        lastChurnedCustomers = processCustomerChurn()
 
         processMonthlyFinances()
 
@@ -879,6 +1012,8 @@ class GameManager {
 
         evaluateGameOutcome()
 
+        saveGame()
+
     }
     
     private func refreshTalentMarket() {
@@ -898,6 +1033,178 @@ class GameManager {
     private func processMonthlyFinances() {
 
         addCash(company.monthlyProfit)
+
+        company.lifetimeRevenue +=
+            max(0, company.monthlyRevenue)
+
+    }
+
+    private func processCustomerChurn() -> Int {
+
+        let totalCustomers = company.products.reduce(0) {
+
+            $0 + $1.customers
+
+        }
+
+        guard totalCustomers > 0 else {
+
+            company.customerSatisfaction =
+                min(100, company.customerSatisfaction + 1)
+
+            return 0
+
+        }
+
+        let qualityPressure = max(0, 1 - company.productQuality)
+
+        let worldChurn =
+            company.activeWorldEvent?.churnMultiplier ?? 1
+
+        let churnRate =
+            min(0.20, company.churnRisk + qualityPressure * 0.08) *
+            worldChurn
+
+        let churnedCustomers =
+            max(0, Int(Double(totalCustomers) * churnRate))
+
+        guard churnedCustomers > 0 else {
+
+            company.customerSatisfaction =
+                min(100, company.customerSatisfaction + 1)
+
+            return 0
+
+        }
+
+        var remainingChurn = churnedCustomers
+
+        for index in company.products.indices {
+
+            guard remainingChurn > 0 else { break }
+
+            let productCustomers = company.products[index].customers
+
+            let share =
+                Double(productCustomers) / Double(totalCustomers)
+
+            let lost =
+                min(
+                    productCustomers,
+                    max(1, Int(Double(churnedCustomers) * share))
+                )
+
+            company.products[index].customers -= lost
+
+            remainingChurn -= lost
+
+        }
+
+        let satisfactionLoss =
+            max(1, Int(Double(churnedCustomers) / Double(max(totalCustomers, 1)) * 100))
+
+        company.customerSatisfaction =
+            max(0, company.customerSatisfaction - satisfactionLoss)
+
+        if company.customerSatisfaction < 45 {
+
+            company.reputation =
+                max(0, company.reputation - 2)
+
+        }
+
+        return churnedCustomers
+
+    }
+
+    private func updateWorldEvent() {
+
+        if company.activeWorldEventMonthsRemaining > 0 {
+
+            company.activeWorldEventMonthsRemaining -= 1
+
+            if company.activeWorldEventMonthsRemaining == 0 {
+
+                addNotification(
+                    title: "Industry Shift Ended",
+                    message: company.activeWorldEvent?.title ?? "Market conditions normalized."
+                )
+
+                company.activeWorldEvent = nil
+
+            }
+
+            return
+
+        }
+
+        guard Int.random(in: 1...100) <= 18 else {
+            return
+        }
+
+        let event = availableWorldEvents.randomElement()
+
+        company.activeWorldEvent = event
+
+        company.activeWorldEventMonthsRemaining =
+            event?.durationMonths ?? 0
+
+        if let event {
+
+            company.reputation =
+                min(100, max(0, company.reputation + event.reputationEffect))
+
+            addNotification(
+                title: event.title,
+                message: event.summary
+            )
+
+            company.latestNews = event.summary
+
+        }
+
+    }
+
+    private var availableWorldEvents: [Company.WorldEvent] {
+
+        [
+            Company.WorldEvent(
+                title: "GPU Supply Crunch",
+                summary: "Cloud capacity tightened across the AI industry.",
+                demandMultiplier: 0.90,
+                churnMultiplier: 1.15,
+                researchMultiplier: 0.85,
+                reputationEffect: 0,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "Enterprise AI Boom",
+                summary: "Large companies accelerated AI adoption.",
+                demandMultiplier: 1.25,
+                churnMultiplier: 0.95,
+                researchMultiplier: 1.00,
+                reputationEffect: 1,
+                durationMonths: 4
+            ),
+            Company.WorldEvent(
+                title: "AI Regulation Wave",
+                summary: "New compliance pressure slowed risky launches.",
+                demandMultiplier: 0.85,
+                churnMultiplier: 0.90,
+                researchMultiplier: 0.95,
+                reputationEffect: -1,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "Open Source Breakthrough",
+                summary: "Open models raised customer expectations overnight.",
+                demandMultiplier: 0.95,
+                churnMultiplier: 1.25,
+                researchMultiplier: 1.20,
+                reputationEffect: 0,
+                durationMonths: 3
+            )
+        ]
 
     }
 
@@ -923,6 +1230,14 @@ class GameManager {
             serverCost: company.serverCost,
 
             researchCost: company.researchExpense,
+
+            churnedCustomers: lastChurnedCustomers,
+
+            endingCustomerSatisfaction: company.customerSatisfaction,
+
+            marketShare: company.marketShare,
+
+            worldEventTitle: company.activeWorldEvent?.title,
 
             endingCash: company.cash
 
@@ -1010,6 +1325,8 @@ class GameManager {
         currentEvent = nil
 
         evaluateGameOutcome()
+
+        saveGame()
 
     }
     // MARK: - Economy Helpers
@@ -1241,6 +1558,8 @@ class GameManager {
             title: "🏢 Office Upgraded",
             message: "Your company moved into the \(nextOffice.name)!"
         )
+
+        saveGame()
 
     }
     

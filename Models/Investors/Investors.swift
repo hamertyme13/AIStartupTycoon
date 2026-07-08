@@ -1,8 +1,8 @@
 import Foundation
 
-struct Investor: Identifiable {
+struct Investor: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -18,7 +18,7 @@ struct Investor: Identifiable {
 
     var investedDate: String?
 
-    enum Focus: String {
+    enum Focus: String, Codable {
 
         case research = "Research"
         case growth = "Growth"

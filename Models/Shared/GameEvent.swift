@@ -1,8 +1,8 @@
 import Foundation
 
-struct GameEvent: Identifiable {
+struct GameEvent: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let title: String
     let description: String
@@ -11,9 +11,9 @@ struct GameEvent: Identifiable {
 
 }
 
-struct GameEventOption: Identifiable {
+struct GameEventOption: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let title: String
     let description: String

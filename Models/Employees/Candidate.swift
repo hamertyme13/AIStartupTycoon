@@ -1,8 +1,8 @@
 import Foundation
 
-struct Candidate: Identifiable {
+struct Candidate: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -22,4 +22,3 @@ struct Candidate: Identifiable {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

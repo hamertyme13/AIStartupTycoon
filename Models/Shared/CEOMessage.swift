@@ -1,8 +1,8 @@
 import Foundation
 
-struct CEOMessage: Identifiable {
+struct CEOMessage: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let priority: Priority
 
@@ -10,7 +10,7 @@ struct CEOMessage: Identifiable {
 
     let message: String
 
-    enum Priority: Int {
+    enum Priority: Int, Codable {
 
         case critical = 0
         case attention = 1
@@ -25,4 +25,3 @@ struct CEOMessage: Identifiable {
 //
 //  Created by Joshua Hamer on 7/4/26.
 //
-

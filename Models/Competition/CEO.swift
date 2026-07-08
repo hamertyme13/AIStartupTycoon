@@ -1,8 +1,8 @@
 import Foundation
 
-struct CEO: Identifiable {
+struct CEO: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -10,7 +10,7 @@ struct CEO: Identifiable {
 
     let personality: Personality
 
-    enum Personality: String {
+    enum Personality: String, Codable {
 
         case visionary
         case dealmaker
@@ -26,4 +26,3 @@ struct CEO: Identifiable {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

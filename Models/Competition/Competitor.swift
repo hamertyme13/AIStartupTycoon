@@ -1,8 +1,8 @@
 import Foundation
 
-struct Competitor: Identifiable {
+struct Competitor: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     var name: String
 
@@ -56,4 +56,3 @@ struct Competitor: Identifiable {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

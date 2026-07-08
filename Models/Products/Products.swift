@@ -1,8 +1,8 @@
 import Foundation
 
-struct Product: Identifiable {
+struct Product: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     var name: String
     var description: String

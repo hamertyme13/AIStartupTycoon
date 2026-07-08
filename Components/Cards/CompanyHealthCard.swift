@@ -25,6 +25,57 @@ struct CompanyHealthCard: View {
 
                 }
 
+                Divider()
+
+                HStack {
+
+                    Text("Stage")
+
+                    Spacer()
+
+                    Text(game.company.campaignStage.rawValue)
+                        .bold()
+
+                }
+
+                HStack {
+
+                    Text("Scenario")
+
+                    Spacer()
+
+                    Text(game.company.selectedScenario.rawValue)
+                        .bold()
+
+                }
+
+                HStack {
+
+                    Text("Satisfaction")
+
+                    Spacer()
+
+                    Text("\(game.company.customerSatisfaction)%")
+                        .bold()
+                        .foregroundStyle(
+                            game.company.customerSatisfaction >= 60
+                            ? .green
+                            : .orange
+                        )
+
+                }
+
+                if let event = game.company.activeWorldEvent {
+
+                    Label(
+                        event.title,
+                        systemImage: "globe.americas.fill"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.blue)
+
+                }
+
             }
 
         } label: {
@@ -52,4 +103,3 @@ struct CompanyHealthCard: View {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

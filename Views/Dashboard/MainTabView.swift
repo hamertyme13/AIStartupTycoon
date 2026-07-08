@@ -59,6 +59,12 @@ struct MainTabView: View {
             }
 
         }
+        .sheet(isPresented: $game.showNewGameSetup) {
+
+            NewGameSetupView()
+                .interactiveDismissDisabled()
+
+        }
         .sheet(item: $game.currentEvent) { event in
 
             EventPopup(event: event) { option in
@@ -100,6 +106,104 @@ struct MainTabView: View {
 
             }
             .padding(30)
+
+        }
+
+    }
+
+}
+
+struct NewGameSetupView: View {
+
+    @Environment(GameManager.self) private var game
+
+    @State private var selectedScenario: Company.Scenario =
+        .bootstrappedFounder
+
+    var body: some View {
+
+        NavigationStack {
+
+            VStack(alignment: .leading, spacing: 20) {
+
+                VStack(alignment: .leading, spacing: 8) {
+
+                    Text("AI Startup Tycoon")
+                        .font(.largeTitle)
+                        .bold()
+
+                    Text("Choose your opening strategy and build toward market dominance or AGI.")
+                        .foregroundStyle(.secondary)
+
+                }
+
+                ForEach(Company.Scenario.allCases) { scenario in
+
+                    Button {
+
+                        selectedScenario = scenario
+
+                    } label: {
+
+                        HStack(spacing: 14) {
+
+                            Image(systemName:
+                                selectedScenario == scenario
+                                ? "checkmark.circle.fill"
+                                : "circle"
+                            )
+                            .foregroundStyle(
+                                selectedScenario == scenario
+                                ? .blue
+                                : .secondary
+                            )
+
+                            VStack(alignment: .leading, spacing: 4) {
+
+                                Text(scenario.rawValue)
+                                    .font(.headline)
+
+                                Text(scenario.subtitle)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                            }
+
+                            Spacer()
+
+                        }
+                        .padding()
+                        .background(.thinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                    }
+                    .buttonStyle(.plain)
+
+                }
+
+                Spacer()
+
+                Button {
+
+                    game.startNewGame(
+                        scenario: selectedScenario
+                    )
+
+                } label: {
+
+                    Label(
+                        "Start Company",
+                        systemImage: "play.fill"
+                    )
+                    .frame(maxWidth: .infinity)
+
+                }
+                .buttonStyle(.borderedProminent)
+
+            }
+            .padding()
+            .navigationTitle("New Game")
+            .navigationBarTitleDisplayMode(.inline)
 
         }
 

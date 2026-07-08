@@ -61,6 +61,63 @@ struct MonthlyReportView: View {
 
                 Divider()
 
+                VStack(alignment: .leading, spacing: 10) {
+
+                    if let worldEventTitle = report.worldEventTitle {
+
+                        Label(
+                            worldEventTitle,
+                            systemImage: "globe.americas.fill"
+                        )
+                        .font(.subheadline)
+                        .foregroundStyle(.blue)
+
+                    }
+
+                    HStack {
+
+                        Text("Customers Lost")
+
+                        Spacer()
+
+                        Text("\(report.churnedCustomers.formatted())")
+                            .foregroundStyle(
+                                report.churnedCustomers == 0
+                                ? .green
+                                : .orange
+                            )
+
+                    }
+
+                    HStack {
+
+                        Text("Satisfaction")
+
+                        Spacer()
+
+                        Text("\(report.endingCustomerSatisfaction)%")
+                            .foregroundStyle(
+                                report.endingCustomerSatisfaction >= 60
+                                ? .green
+                                : .orange
+                            )
+
+                    }
+
+                    HStack {
+
+                        Text("Market Share")
+
+                        Spacer()
+
+                        Text("\(String(format: "%.1f", report.marketShare))%")
+
+                    }
+
+                }
+
+                Divider()
+
                 Text("Cash Remaining")
                     .font(.headline)
 
@@ -90,4 +147,3 @@ struct MonthlyReportView: View {
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-

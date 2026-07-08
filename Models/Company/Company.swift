@@ -4,6 +4,137 @@ import Observation
 @Observable
 class Company {
 
+    enum CampaignStage: String, Codable {
+
+        case garage = "Garage Startup"
+        case seed = "Seed Stage"
+        case growth = "Growth Stage"
+        case scaleUp = "Scale-Up"
+        case frontierLab = "Frontier Lab"
+
+    }
+
+    enum Scenario: String, CaseIterable, Identifiable, Codable {
+
+        case bootstrappedFounder = "Bootstrapped Founder"
+        case vcRocketShip = "VC Rocket Ship"
+        case aiWinter = "AI Winter"
+        case openSourceWar = "Open Source War"
+
+        var id: String {
+            rawValue
+        }
+
+        var subtitle: String {
+
+            switch self {
+
+            case .bootstrappedFounder:
+                return "Low cash, full control, careful growth."
+
+            case .vcRocketShip:
+                return "More money, less ownership, faster expectations."
+
+            case .aiWinter:
+                return "Demand is weak and runway matters."
+
+            case .openSourceWar:
+                return "Competitors are aggressive and market share is harder."
+
+            }
+
+        }
+
+        var startingCash: Double {
+
+            switch self {
+
+            case .bootstrappedFounder:
+                return 8_000
+
+            case .vcRocketShip:
+                return 150_000
+
+            case .aiWinter:
+                return 25_000
+
+            case .openSourceWar:
+                return 50_000
+
+            }
+
+        }
+
+        var startingOwnership: Double {
+
+            switch self {
+
+            case .bootstrappedFounder,
+                 .aiWinter,
+                 .openSourceWar:
+                return 100
+
+            case .vcRocketShip:
+                return 82
+
+            }
+
+        }
+
+        var startingReputation: Int {
+
+            switch self {
+
+            case .bootstrappedFounder:
+                return 45
+
+            case .vcRocketShip:
+                return 58
+
+            case .aiWinter:
+                return 42
+
+            case .openSourceWar:
+                return 52
+
+            }
+
+        }
+
+        var demandMultiplier: Double {
+
+            switch self {
+
+            case .bootstrappedFounder,
+                 .vcRocketShip:
+                return 1.0
+
+            case .aiWinter:
+                return 0.75
+
+            case .openSourceWar:
+                return 0.9
+
+            }
+
+        }
+
+    }
+
+    struct WorldEvent: Identifiable, Codable {
+
+        var id = UUID()
+
+        let title: String
+        let summary: String
+        let demandMultiplier: Double
+        let churnMultiplier: Double
+        let researchMultiplier: Double
+        let reputationEffect: Int
+        let durationMonths: Int
+
+    }
+
     // MARK: Company Info
 
     var name = "My AI Startup"
@@ -16,6 +147,13 @@ class Company {
     var monthlyRevenue: Double = 250
     var companyValue: Double = 25_000
     var marketShare: Double = 70
+    var lifetimeRevenue: Double = 0
+    var customerSatisfaction = 78
+    var churnRisk: Double = 0.02
+    var selectedScenario: Scenario = .bootstrappedFounder
+    var activeWorldEvent: WorldEvent?
+    var activeWorldEventMonthsRemaining = 0
+    var completedTutorialSteps: Set<String> = []
     
     // MARK: - Marketing
     
@@ -173,6 +311,58 @@ class Company {
         }
 
         return "🟡 Growing"
+
+    }
+
+    var campaignStage: CampaignStage {
+
+        if hasUnlockedTechnology("Artificial General Intelligence") {
+
+            return .frontierLab
+
+        }
+
+        if companyValue >= 10_000_000 ||
+           monthlyRevenue >= 50_000 {
+
+            return .scaleUp
+
+        }
+
+        if companyValue >= 1_000_000 ||
+           employees.count >= 8 {
+
+            return .growth
+
+        }
+
+        if activeInvestors.isEmpty {
+
+            return .garage
+
+        }
+
+        return .seed
+
+    }
+
+    var productQuality: Double {
+
+        let productEmployees = employees.filter {
+            $0.department == .product
+        }.count
+
+        let engineeringEmployees = employees.filter {
+            $0.department == .engineering
+        }.count
+
+        let staffingScore =
+            Double(productEmployees * 2 + engineeringEmployees)
+
+        let customerLoad =
+            max(1, products.reduce(0) { $0 + $1.customers } / 750)
+
+        return min(1.25, max(0.55, staffingScore / Double(customerLoad)))
 
     }
     
