@@ -70,6 +70,8 @@ struct DashboardView: View {
                 .padding()
                 
             }
+            .scrollContentBackground(.hidden)
+            .background(RogueCircuitTheme.appBackground.ignoresSafeArea())
             .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.inline)
             
@@ -110,7 +112,7 @@ struct DashboardView: View {
         Text(title)
             .font(.caption)
             .fontWeight(.bold)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(RogueCircuitTheme.electricCyan)
             .frame(maxWidth: .infinity, alignment: .leading)
             .textCase(.uppercase)
         

@@ -25,7 +25,20 @@ struct StatCard: View {
 
         }
         .padding()
-        .background(color.opacity(0.15))
+        .background(
+            LinearGradient(
+                colors: [
+                    color.opacity(0.18),
+                    RogueCircuitTheme.panelRaised.opacity(0.18)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(color.opacity(0.24), lineWidth: 1)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 16))
 
     }
@@ -36,4 +49,3 @@ struct StatCard: View {
 //
 //  Created by Joshua Hamer on 7/1/26.
 //
-

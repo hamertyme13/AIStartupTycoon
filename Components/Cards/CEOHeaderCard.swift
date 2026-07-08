@@ -49,6 +49,7 @@ struct CEOHeaderCard: View {
             Text(game.company.name)
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundStyle(RogueCircuitTheme.brandGradient)
 
             HStack {
 
@@ -85,8 +86,7 @@ struct CEOHeaderCard: View {
 
         }
         .padding(24)
-        .background(.thinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 24))
+        .rogueCircuitCard(cornerRadius: 24)
 
     }
 

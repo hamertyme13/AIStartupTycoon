@@ -50,6 +50,8 @@ struct MainTabView: View {
             
     
         }
+        .tint(RogueCircuitTheme.electricCyan)
+        .background(RogueCircuitTheme.appBackground.ignoresSafeArea())
         .sheet(item: $game.latestReport) { report in
 
             MonthlyReportView(report: report) {
@@ -131,6 +133,7 @@ struct NewGameSetupView: View {
                     Text("AI Startup Tycoon")
                         .font(.largeTitle)
                         .bold()
+                        .foregroundStyle(RogueCircuitTheme.brandGradient)
 
                     Text("Choose your opening strategy and build toward market dominance or AGI.")
                         .foregroundStyle(.secondary)
@@ -154,7 +157,7 @@ struct NewGameSetupView: View {
                             )
                             .foregroundStyle(
                                 selectedScenario == scenario
-                                ? .blue
+                                ? RogueCircuitTheme.electricCyan
                                 : .secondary
                             )
 
@@ -173,8 +176,7 @@ struct NewGameSetupView: View {
 
                         }
                         .padding()
-                        .background(.thinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .rogueCircuitCard(cornerRadius: 12)
 
                     }
                     .buttonStyle(.plain)
@@ -199,8 +201,10 @@ struct NewGameSetupView: View {
 
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(RogueCircuitTheme.signalGreen)
 
             }
+            .background(RogueCircuitTheme.appBackground.ignoresSafeArea())
             .padding()
             .navigationTitle("New Game")
             .navigationBarTitleDisplayMode(.inline)
