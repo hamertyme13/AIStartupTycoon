@@ -46,6 +46,13 @@ struct ObjectivesCard: View {
             )
 
             objectiveRow(
+                completed: game.company.products.contains {
+                    $0.level >= 5
+                },
+                text: "Scale one product to Level 5"
+            )
+
+            objectiveRow(
                 completed: game.company.monthlyRevenue >= 10_000,
                 text: "Reach $10,000 monthly revenue"
             )
@@ -60,9 +67,34 @@ struct ObjectivesCard: View {
                 text: "Reach $1M valuation"
             )
 
+            objectiveRow(
+                completed: game.company.customerSatisfaction >= 85,
+                text: "Reach 85% customer satisfaction"
+            )
+
+            objectiveRow(
+                completed: game.company.totalCustomers >= 10_000,
+                text: "Serve 10,000 customers"
+            )
+
+            objectiveRow(
+                completed: game.company.releasedAIModelCount >= 2,
+                text: "Release 2 AI models"
+            )
+
+            objectiveRow(
+                completed: game.company.unlockedTechnologyCount >= 4,
+                text: "Unlock 4 technologies"
+            )
+
+            objectiveRow(
+                completed: game.company.monthlyProfit >= 25_000,
+                text: "Earn $25,000 monthly profit"
+            )
+
             Divider()
 
-            Text("Endgame")
+            Text("Victory Routes")
                 .font(.caption)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)
@@ -78,6 +110,36 @@ struct ObjectivesCard: View {
                     "Artificial General Intelligence"
                 ) && game.company.companyValue >= 100_000_000,
                 text: "Build a $100M AGI company"
+            )
+
+            objectiveRow(
+                completed: game.company.activeInvestors.isEmpty &&
+                    game.company.founderOwnership >= 90 &&
+                    game.company.monthlyProfit >= 50_000 &&
+                    game.company.cash >= 500_000,
+                text: "Bootstrap to $50K profit with founder control"
+            )
+
+            objectiveRow(
+                completed: game.company.releasedAIModelCount >= 4 &&
+                    game.company.unlockedTechnologyCount >= 5 &&
+                    game.company.companyValue >= 50_000_000,
+                text: "Become a frontier research lab"
+            )
+
+            objectiveRow(
+                completed: game.company.companyValue >= 1_000_000_000 &&
+                    game.company.activeInvestors.count >= 2 &&
+                    game.company.monthlyRevenue >= 250_000,
+                text: "Build a venture-backed unicorn"
+            )
+
+            objectiveRow(
+                completed: game.company.unlockedProductCount >=
+                    game.company.products.count &&
+                    game.company.totalCustomers >= 100_000 &&
+                    game.company.customerSatisfaction >= 90,
+                text: "Create a beloved AI product ecosystem"
             )
 
             Divider()

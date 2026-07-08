@@ -365,6 +365,38 @@ class Company {
         return min(1.25, max(0.55, staffingScore / Double(customerLoad)))
 
     }
+
+    var totalCustomers: Int {
+
+        products.reduce(0) {
+            $0 + $1.customers
+        }
+
+    }
+
+    var unlockedTechnologyCount: Int {
+
+        technologies.filter {
+            $0.unlocked
+        }.count
+
+    }
+
+    var releasedAIModelCount: Int {
+
+        aiModels.filter {
+            $0.status == .released
+        }.count
+
+    }
+
+    var unlockedProductCount: Int {
+
+        products.filter {
+            $0.unlocked
+        }.count
+
+    }
     
     var researchPoints: Double = 0
 

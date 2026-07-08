@@ -1471,6 +1471,83 @@ class GameManager {
 
         }
 
+        if company.activeInvestors.isEmpty &&
+           company.founderOwnership >= 90 &&
+           company.monthlyProfit >= 50_000 &&
+           company.cash >= 500_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a profitable AI company without giving up control. A rare founder-led win."
+            )
+
+            addNotification(
+                title: "Bootstrapped Victory",
+                message: "Your startup became highly profitable while staying founder-controlled."
+            )
+
+            return
+
+        }
+
+        if company.releasedAIModelCount >= 4 &&
+           company.unlockedTechnologyCount >= 5 &&
+           company.companyValue >= 50_000_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You turned the company into a frontier research lab with a portfolio of breakthrough AI models."
+            )
+
+            addNotification(
+                title: "Research Victory",
+                message: "Your lab now defines the technical frontier."
+            )
+
+            return
+
+        }
+
+        if company.companyValue >= 1_000_000_000 &&
+           company.activeInvestors.count >= 2 &&
+           company.monthlyRevenue >= 250_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a venture-backed AI unicorn with enough revenue to justify the hype."
+            )
+
+            addNotification(
+                title: "Unicorn Victory",
+                message: "Your company reached a $1B valuation."
+            )
+
+            return
+
+        }
+
+        if company.unlockedProductCount >= company.products.count &&
+           company.totalCustomers >= 100_000 &&
+           company.customerSatisfaction >= 90 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a beloved AI product ecosystem with massive adoption and unusually happy customers."
+            )
+
+            addNotification(
+                title: "Product Ecosystem Victory",
+                message: "Customers love your complete AI product suite."
+            )
+
+            return
+
+        }
+
         if company.marketShare >= 60 &&
            company.monthlyRevenue >= 100_000 {
 
