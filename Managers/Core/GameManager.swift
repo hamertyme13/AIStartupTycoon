@@ -626,11 +626,15 @@ class GameManager {
 
         company.activeResearch = company.technologies[index].id
 
+        company.researchExpense =
+            company.technologies[index].monthlyResearchCost
+
         company.completedTutorialSteps.insert("firstResearch")
 
         addNotification(
             title: "🧠 Research Started",
-            message: company.technologies[index].name
+            message:
+                "\(company.technologies[index].name) will cost $\(Int(company.researchExpense))/mo."
         )
 
         saveGame()
@@ -664,6 +668,8 @@ class GameManager {
 
             company.activeResearch = nil
 
+            company.researchExpense = 0
+
             addNotification(
                 title: "🔬 Research Complete",
                 message: "\(company.technologies[index].name) unlocked!"
@@ -679,6 +685,8 @@ class GameManager {
 
         guard let activeID = company.activeResearch else {
 
+            company.researchExpense = 0
+
             return
 
         }
@@ -689,9 +697,15 @@ class GameManager {
 
         }) else {
 
+            company.activeResearch = nil
+            company.researchExpense = 0
+
             return
 
         }
+
+        company.researchExpense =
+            company.technologies[index].monthlyResearchCost
 
         let researchGain = company.employees.reduce(0.0) { total, employee in
 
@@ -717,6 +731,8 @@ class GameManager {
             company.technologies[index].unlocked = true
 
             company.activeResearch = nil
+
+            company.researchExpense = 0
 
             changeMarketShare(by: 1)
 

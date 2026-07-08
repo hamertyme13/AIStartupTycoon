@@ -29,6 +29,19 @@ struct ResearchCard: View {
             .font(.caption)
             .foregroundStyle(.secondary)
 
+            HStack {
+
+                Label("Research Cost", systemImage: "creditcard.fill")
+
+                Spacer()
+
+                Text("$\(Int(technology.monthlyResearchCost))/mo")
+                    .bold()
+
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+
             if technology.unlocked {
 
                 Label(
@@ -75,4 +88,3 @@ struct ResearchCard: View {
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

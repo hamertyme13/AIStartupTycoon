@@ -67,8 +67,7 @@ extension GameManager {
         company.competitors[index].valuation +=
             Double.random(in: 20_000...80_000)
 
-        company.competitors[index].researchProgress +=
-            Double.random(in: 2...8)
+        payCompetitorBaselineResearch(at: index)
 
         if Int.random(in: 1...100) <= 30 {
 
@@ -165,12 +164,81 @@ extension GameManager {
         _ index: Int
     ) {
 
+        let cost = competitorResearchPushCost(at: index)
+
+        guard company.competitors[index].cash >= cost else {
+
+            company.competitors[index].valuation =
+                max(0, company.competitors[index].valuation - 15_000)
+
+            competitorNews(
+                competitor: company.competitors[index],
+                message: "slowed its AI research after burning through its lab budget."
+            )
+
+            return
+
+        }
+
+        company.competitors[index].cash -= cost
+
         company.competitors[index].researchProgress += 25
+
+        company.competitors[index].valuation += cost * 1.5
         
         competitorNews(
                competitor: company.competitors[index],
-               message: "expanded its AI research efforts."
+               message: "expanded its AI research efforts despite higher lab costs."
            )
+
+    }
+
+    private func payCompetitorBaselineResearch(
+        at index: Int
+    ) {
+
+        let cost = competitorMonthlyResearchCost(at: index)
+        let progress = Double.random(in: 2...8)
+
+        if company.competitors[index].cash >= cost {
+
+            company.competitors[index].cash -= cost
+            company.competitors[index].researchProgress += progress
+
+        } else {
+
+            let fundingRatio =
+                max(0.15, company.competitors[index].cash / max(cost, 1))
+
+            company.competitors[index].cash = 0
+            company.competitors[index].researchProgress +=
+                progress * fundingRatio
+            company.competitors[index].valuation =
+                max(0, company.competitors[index].valuation - cost)
+            company.competitors[index].marketShare =
+                max(2, company.competitors[index].marketShare - 0.1)
+
+        }
+
+    }
+
+    private func competitorMonthlyResearchCost(
+        at index: Int
+    ) -> Double {
+
+        let competitor = company.competitors[index]
+
+        return 1_500 +
+            Double(competitor.employees) * 350 +
+            Double(competitor.aiModelsReleased + 1) * 1_200
+
+    }
+
+    private func competitorResearchPushCost(
+        at index: Int
+    ) -> Double {
+
+        competitorMonthlyResearchCost(at: index) * 3
 
     }
 

@@ -14,6 +14,12 @@ struct Technology: Identifiable, Codable {
 
     var unlocked = false
 
+    var monthlyResearchCost: Double {
+
+        max(1_500, requiredResearch * 20)
+
+    }
+
 }
 //  Technology.swift
 //  AIStartupTycoon
