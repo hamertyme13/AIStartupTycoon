@@ -78,6 +78,7 @@ struct DashboardView: View {
             .navigationBarTitleDisplayMode(.inline)
             
         }
+        .preferredColorScheme(.dark)
         .onReceive(timer) { _ in
             
             guard game.gameOutcome == nil else {
@@ -114,7 +115,7 @@ struct DashboardView: View {
         Text(title)
             .font(.caption)
             .fontWeight(.bold)
-            .foregroundStyle(RogueCircuitTheme.electricCyan)
+            .foregroundStyle(RogueCircuitTheme.signalGreen)
             .frame(maxWidth: .infinity, alignment: .leading)
             .textCase(.uppercase)
         

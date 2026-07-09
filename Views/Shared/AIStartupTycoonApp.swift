@@ -9,14 +9,14 @@ import SwiftUI
 
 enum RogueCircuitTheme {
 
-    static let void = Color(red: 0.02, green: 0.02, blue: 0.05)
-    static let surface = Color(red: 0.04, green: 0.05, blue: 0.09)
-    static let panelRaised = Color(red: 0.06, green: 0.08, blue: 0.13)
+    static let void = Color(red: 0.05, green: 0.07, blue: 0.12)
+    static let surface = Color(red: 0.08, green: 0.11, blue: 0.18)
+    static let panelRaised = Color(red: 0.11, green: 0.15, blue: 0.24)
     static let electricCyan = Color(red: 0.10, green: 0.90, blue: 1.00)
     static let signalGreen = Color(red: 0.22, green: 1.00, blue: 0.53)
     static let neonMagenta = Color(red: 0.49, green: 0.24, blue: 1.00)
-    static let text = Color(red: 0.92, green: 0.96, blue: 0.98)
-    static let mutedText = Color(red: 0.62, green: 0.70, blue: 0.76)
+    static let text = Color(red: 0.96, green: 0.99, blue: 0.98)
+    static let mutedText = Color(red: 0.76, green: 0.83, blue: 0.88)
 
     static var appBackground: LinearGradient {
 
@@ -24,7 +24,7 @@ enum RogueCircuitTheme {
             colors: [
                 void,
                 surface,
-                Color(red: 0.03, green: 0.04, blue: 0.08)
+                Color(red: 0.10, green: 0.13, blue: 0.21)
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -80,11 +80,12 @@ struct RogueCircuitCardStyle: ViewModifier {
     func body(content: Content) -> some View {
 
         content
+            .foregroundStyle(RogueCircuitTheme.text)
             .background(RogueCircuitTheme.cardFill)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(
-                        Color.white.opacity(0.10),
+                        Color.white.opacity(0.18),
                         lineWidth: 1
                     )
             )
@@ -103,16 +104,16 @@ struct RogueCircuitCardStyle: ViewModifier {
             }
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .shadow(
-                color: RogueCircuitTheme.electricCyan.opacity(0.13),
-                radius: 24,
-                x: 0,
-                y: 16
-            )
-            .shadow(
-                color: Color.black.opacity(0.30),
+                color: RogueCircuitTheme.electricCyan.opacity(0.16),
                 radius: 18,
                 x: 0,
-                y: 12
+                y: 10
+            )
+            .shadow(
+                color: Color.black.opacity(0.20),
+                radius: 12,
+                x: 0,
+                y: 8
             )
 
     }
