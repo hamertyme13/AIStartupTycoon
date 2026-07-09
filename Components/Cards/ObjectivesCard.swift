@@ -161,10 +161,7 @@ struct ObjectivesCard: View {
 
         }
         .padding()
-        .background(.thinMaterial)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 

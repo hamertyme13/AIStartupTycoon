@@ -6,7 +6,16 @@ struct CompanyHealthCard: View {
 
     var body: some View {
 
-        GroupBox {
+        VStack(alignment: .leading, spacing: 14) {
+
+            Label(
+                "Company Health",
+                systemImage: "heart.text.square.fill"
+            )
+            .font(.headline)
+            .foregroundStyle(RogueCircuitTheme.signalGreen)
+
+            Divider()
 
             VStack(alignment: .leading, spacing: 12) {
 
@@ -78,15 +87,9 @@ struct CompanyHealthCard: View {
 
             }
 
-        } label: {
-
-            Label(
-                "Company Health",
-                systemImage: "heart.text.square.fill"
-            )
-            .foregroundStyle(.red)
-
         }
+        .padding()
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 

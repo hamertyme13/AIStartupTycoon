@@ -6,7 +6,16 @@ struct NewsCard: View {
 
     var body: some View {
 
-        GroupBox {
+        VStack(alignment: .leading, spacing: 14) {
+
+            Label(
+                "Latest News",
+                systemImage: "newspaper.fill"
+            )
+            .font(.headline)
+            .foregroundStyle(RogueCircuitTheme.electricCyan)
+
+            Divider()
 
             VStack(alignment: .leading, spacing: 10) {
 
@@ -31,14 +40,9 @@ struct NewsCard: View {
 
             }
 
-        } label: {
-
-            Label(
-                "Latest News",
-                systemImage: "newspaper.fill"
-            )
-
         }
+        .padding()
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 
@@ -55,4 +59,3 @@ struct NewsCard: View {
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-

@@ -40,8 +40,7 @@ struct CEOBriefingCard: View {
 
         }
         .padding()
-        .background(.thinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 
@@ -60,4 +59,3 @@ struct CEOBriefingCard: View {
 //
 //  Created by Joshua Hamer on 7/4/26.
 //
-
