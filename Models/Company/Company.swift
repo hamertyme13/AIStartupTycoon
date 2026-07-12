@@ -135,9 +135,177 @@ class Company {
 
     }
 
+    enum CompanyPerk: String, CaseIterable, Identifiable, Codable {
+
+        case hiringBrand = "Hiring Brand"
+        case customerSuccessOps = "Customer Success Ops"
+        case cloudNegotiator = "Cloud Negotiator"
+        case founderDiscipline = "Founder Discipline"
+        case boardWhisperer = "Board Whisperer"
+        case frontierOperator = "Frontier Operator"
+
+        var id: String {
+            rawValue
+        }
+
+        var cost: Int {
+
+            switch self {
+
+            case .hiringBrand,
+                 .customerSuccessOps:
+                return 1
+
+            case .cloudNegotiator,
+                 .founderDiscipline:
+                return 2
+
+            case .boardWhisperer,
+                 .frontierOperator:
+                return 3
+
+            }
+
+        }
+
+        var summary: String {
+
+            switch self {
+
+            case .hiringBrand:
+                return "Improves morale and reduces poaching risk."
+
+            case .customerSuccessOps:
+                return "Customer success sprints are more effective."
+
+            case .cloudNegotiator:
+                return "Reduces infrastructure and frontier project pressure."
+
+            case .founderDiscipline:
+                return "Monthly operations create more perk momentum."
+
+            case .boardWhisperer:
+                return "Improves active investor relationships."
+
+            case .frontierOperator:
+                return "Speeds up frontier lab mega-projects."
+
+            }
+
+        }
+
+    }
+
+    enum ContractKind: String, Codable {
+
+        case contract = "Contract"
+        case enterprisePilot = "Enterprise Pilot"
+        case governmentGrant = "Government Grant"
+
+    }
+
+    struct ContractOpportunity: Identifiable, Codable {
+
+        var id = UUID()
+        let name: String
+        let kind: ContractKind
+        let payout: Double
+        let reputationEffect: Int
+        let satisfactionEffect: Int
+        let researchEffect: Double
+        let durationMonths: Int
+
+    }
+
+    struct MarketSegment: Identifiable, Codable {
+
+        var id = UUID()
+        let name: String
+        let description: String
+        let unlockCost: Double
+        let monthlyRevenueBonus: Double
+        let reputationRequired: Int
+        var unlocked: Bool = false
+        var localShare: Double = 0
+
+    }
+
+    struct FrontierProject: Identifiable, Codable {
+
+        var id = UUID()
+        let name: String
+        let description: String
+        let requiredTechnology: String?
+        let totalCost: Double
+        let valuationReward: Double
+        let reputationReward: Int
+        let researchReward: Double
+        var progress: Double = 0
+        var completed: Bool = false
+
+    }
+
+    enum GameAchievement: String, CaseIterable, Identifiable, Codable {
+
+        case firstHire = "First Hire"
+        case firstContract = "First Contract"
+        case customerHero = "Customer Hero"
+        case founderControl = "Founder Control"
+        case unicornBuilder = "Unicorn Builder"
+        case frontierLab = "Frontier Lab"
+        case globalExpansion = "Global Expansion"
+        case loyalTeam = "Loyal Team"
+
+        var id: String {
+            rawValue
+        }
+
+        var gameCenterID: String {
+            "com.roguecircuit.aistartuptycoon." +
+                rawValue
+                .lowercased()
+                .replacingOccurrences(of: " ", with: "_")
+        }
+
+        var summary: String {
+
+            switch self {
+
+            case .firstHire:
+                return "Hire your first employee."
+
+            case .firstContract:
+                return "Complete contract or enterprise pilot work."
+
+            case .customerHero:
+                return "Reach 90% customer satisfaction."
+
+            case .founderControl:
+                return "Reach $10M value while keeping 80% ownership."
+
+            case .unicornBuilder:
+                return "Reach a $1B valuation."
+
+            case .frontierLab:
+                return "Complete a frontier lab mega-project."
+
+            case .globalExpansion:
+                return "Unlock three market segments."
+
+            case .loyalTeam:
+                return "Keep average loyalty above 85 with at least five employees."
+
+            }
+
+        }
+
+    }
+
     // MARK: Company Info
 
-    var name = "My AI Startup"
+    var name = "Rogue AI Labs"
+
+    var playerName = "Founder"
     
     var ceoBriefing: [CEOMessage] = []
 
@@ -154,6 +322,16 @@ class Company {
     var activeWorldEvent: WorldEvent?
     var activeWorldEventMonthsRemaining = 0
     var completedTutorialSteps: Set<String> = []
+
+    var companyPerkPoints = 0
+
+    var unlockedCompanyPerks: Set<CompanyPerk> = []
+
+    var completedContracts = 0
+
+    var availableContracts: [ContractOpportunity] = []
+
+    var unlockedAchievements: Set<GameAchievement> = []
     
     // MARK: - Marketing
     
@@ -418,6 +596,80 @@ class Company {
     // MARK: - Board of Directors
 
     var activeInvestors: [Investor] = []
+
+    var marketSegments: [MarketSegment] = [
+
+        MarketSegment(
+            name: "Startup Teams",
+            description: "Fast-moving founders and small teams adopting practical AI.",
+            unlockCost: 15_000,
+            monthlyRevenueBonus: 1_500,
+            reputationRequired: 40,
+            unlocked: true,
+            localShare: 12
+        ),
+        MarketSegment(
+            name: "Enterprise Buyers",
+            description: "Large customers with strict security and reliability needs.",
+            unlockCost: 65_000,
+            monthlyRevenueBonus: 8_000,
+            reputationRequired: 60
+        ),
+        MarketSegment(
+            name: "Developer Tools",
+            description: "Technical users who reward strong models and fast workflows.",
+            unlockCost: 110_000,
+            monthlyRevenueBonus: 14_000,
+            reputationRequired: 65
+        ),
+        MarketSegment(
+            name: "Public Sector",
+            description: "Slow sales cycles, high trust requirements, durable contracts.",
+            unlockCost: 180_000,
+            monthlyRevenueBonus: 24_000,
+            reputationRequired: 75
+        ),
+        MarketSegment(
+            name: "Global AI Platforms",
+            description: "International expansion with massive upside and heavy scrutiny.",
+            unlockCost: 400_000,
+            monthlyRevenueBonus: 60_000,
+            reputationRequired: 85
+        )
+
+    ]
+
+    var frontierProjects: [FrontierProject] = [
+
+        FrontierProject(
+            name: "AGI Safety Institute",
+            description: "A dedicated lab for alignment, evaluations, and model governance.",
+            requiredTechnology: "Artificial General Intelligence",
+            totalCost: 750_000,
+            valuationReward: 2_500_000,
+            reputationReward: 8,
+            researchReward: 500
+        ),
+        FrontierProject(
+            name: "Sovereign Compute Cluster",
+            description: "A proprietary compute base that reduces dependence on cloud shortages.",
+            requiredTechnology: nil,
+            totalCost: 500_000,
+            valuationReward: 1_800_000,
+            reputationReward: 3,
+            researchReward: 300
+        ),
+        FrontierProject(
+            name: "Autonomous Agent Network",
+            description: "A platform of agent workflows for enterprise automation.",
+            requiredTechnology: "AI Agents",
+            totalCost: 350_000,
+            valuationReward: 1_200_000,
+            reputationReward: 4,
+            researchReward: 220
+        )
+
+    ]
     
     var founderOwnership = 100.0
     var currentMonth = 1
@@ -515,6 +767,35 @@ class Company {
             max(1, products.reduce(0) { $0 + $1.customers } / 750)
 
         return min(1.25, max(0.55, staffingScore / Double(customerLoad)))
+
+    }
+
+    var supportCapacity: Double {
+
+        let productEmployees = employees.filter {
+            $0.department == .product
+        }.count
+
+        let engineeringEmployees = employees.filter {
+            $0.department == .engineering
+        }.count
+
+        let capacity =
+            Double(productEmployees * 3 + engineeringEmployees)
+
+        let customerLoad =
+            max(1, products.reduce(0) { $0 + $1.customers } / 1_000)
+
+        return min(1.5, max(0.35, capacity / Double(customerLoad)))
+
+    }
+
+    var customerSuccessCost: Double {
+
+        let customerScale =
+            Double(max(1, totalCustomers / 1_000))
+
+        return 1_500 + customerScale * 350
 
     }
 

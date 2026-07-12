@@ -29,6 +29,10 @@ struct Competitor: Identifiable, Codable {
     var aiRating: Double = 50
     
     var ceo: CEO
+
+    var rivalryHeat: Int = 30
+
+    var signatureMove = "Watching the market"
     
     init(
         name: String,

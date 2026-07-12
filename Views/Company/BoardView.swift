@@ -89,6 +89,21 @@ struct BoardView: View {
 
                                 }
 
+                                HStack {
+
+                                    Text("Relationship")
+
+                                    Spacer()
+
+                                    Text("\(investor.relationship)%")
+                                        .foregroundStyle(
+                                            investor.relationship >= 65
+                                            ? RogueCircuitTheme.signalGreen
+                                            : .orange
+                                        )
+
+                                }
+
                                 Text(investor.contribution.summary)
                                     .font(.caption)
                                     .foregroundStyle(.secondary)

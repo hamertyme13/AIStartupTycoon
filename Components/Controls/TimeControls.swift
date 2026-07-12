@@ -8,7 +8,15 @@ struct TimeControls: View {
 
     var body: some View {
 
-        HStack(spacing: 20) {
+        LazyVGrid(
+            columns: [
+                GridItem(
+                    .adaptive(minimum: 48, maximum: 56),
+                    spacing: 12
+                )
+            ],
+            spacing: 12
+        ) {
 
             ForEach(GameSpeed.allCases, id: \.self) { speed in
 
@@ -85,6 +93,7 @@ struct TimeControls: View {
             }
 
         }
+        .frame(maxWidth: .infinity)
         .confirmationDialog(
             "Start a new company?",
             isPresented: $showingResetConfirmation,

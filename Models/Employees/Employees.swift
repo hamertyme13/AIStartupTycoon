@@ -306,6 +306,12 @@ struct Employee: Identifiable, Codable {
     var avatar: EmployeeAvatar
 
     var department: EmployeeDepartment = .engineering
+
+    var morale = 76
+
+    var burnout = 0
+
+    var loyalty = 72
     
     var level = 1
 
@@ -350,9 +356,17 @@ struct Employee: Identifiable, Codable {
 
         }
 
+        let moraleMultiplier =
+            0.70 + (Double(morale) / 100.0) * 0.45
+
+        let burnoutPenalty =
+            max(0.55, 1 - Double(burnout) / 180.0)
+
         return (Double(skill) / 100.0) *
             roleBonus *
-            department.productivityMultiplier
+            department.productivityMultiplier *
+            moraleMultiplier *
+            burnoutPenalty
 
     }
     
@@ -419,6 +433,9 @@ struct Employee: Identifiable, Codable {
         potential: Int,
         avatar: EmployeeAvatar? = nil,
         department: EmployeeDepartment? = nil,
+        morale: Int = 76,
+        burnout: Int = 0,
+        loyalty: Int = 72,
         level: Int = 1,
         experience: Double = 0
     ) {
@@ -436,6 +453,9 @@ struct Employee: Identifiable, Codable {
         self.potential = potential
         self.avatar = avatar ?? EmployeeAvatar.random(for: gender)
         self.department = department ?? resolvedPath.defaultDepartment
+        self.morale = morale
+        self.burnout = burnout
+        self.loyalty = loyalty
         self.level = level
         self.experience = experience
 
@@ -454,6 +474,9 @@ struct Employee: Identifiable, Codable {
         case potential
         case avatar
         case department
+        case morale
+        case burnout
+        case loyalty
         case level
         case experience
 
@@ -490,6 +513,18 @@ struct Employee: Identifiable, Codable {
                 EmployeeDepartment.self,
                 forKey: .department
             ) ?? careerPath.defaultDepartment,
+            morale: try container.decodeIfPresent(
+                Int.self,
+                forKey: .morale
+            ) ?? 76,
+            burnout: try container.decodeIfPresent(
+                Int.self,
+                forKey: .burnout
+            ) ?? 0,
+            loyalty: try container.decodeIfPresent(
+                Int.self,
+                forKey: .loyalty
+            ) ?? 72,
             level: try container.decodeIfPresent(Int.self, forKey: .level) ?? 1,
             experience: try container.decodeIfPresent(
                 Double.self,
@@ -514,6 +549,9 @@ struct Employee: Identifiable, Codable {
         try container.encode(potential, forKey: .potential)
         try container.encode(avatar, forKey: .avatar)
         try container.encode(department, forKey: .department)
+        try container.encode(morale, forKey: .morale)
+        try container.encode(burnout, forKey: .burnout)
+        try container.encode(loyalty, forKey: .loyalty)
         try container.encode(level, forKey: .level)
         try container.encode(experience, forKey: .experience)
 

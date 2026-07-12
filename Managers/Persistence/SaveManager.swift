@@ -9,19 +9,88 @@ import Foundation
 
 struct SaveManager {
 
+    static let currentSchemaVersion = 4
+
     struct SaveData: Codable {
 
+        var schemaVersion: Int
         var company: CompanySnapshot
         var secondsElapsed: Int
         var gameSpeed: GameSpeed
         var gameOutcome: GameOutcome?
         var hasStartedGame: Bool
 
+        init(
+            schemaVersion: Int = SaveManager.currentSchemaVersion,
+            company: CompanySnapshot,
+            secondsElapsed: Int,
+            gameSpeed: GameSpeed,
+            gameOutcome: GameOutcome?,
+            hasStartedGame: Bool
+        ) {
+
+            self.schemaVersion = schemaVersion
+            self.company = company
+            self.secondsElapsed = secondsElapsed
+            self.gameSpeed = gameSpeed
+            self.gameOutcome = gameOutcome
+            self.hasStartedGame = hasStartedGame
+
+        }
+
+        private enum CodingKeys: String, CodingKey {
+
+            case schemaVersion
+            case company
+            case secondsElapsed
+            case gameSpeed
+            case gameOutcome
+            case hasStartedGame
+
+        }
+
+        init(from decoder: Decoder) throws {
+
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            schemaVersion = try container.decodeIfPresent(
+                Int.self,
+                forKey: .schemaVersion
+            ) ?? 1
+
+            company = try container.decode(
+                CompanySnapshot.self,
+                forKey: .company
+            )
+
+            secondsElapsed = try container.decodeIfPresent(
+                Int.self,
+                forKey: .secondsElapsed
+            ) ?? 0
+
+            gameSpeed = try container.decodeIfPresent(
+                GameSpeed.self,
+                forKey: .gameSpeed
+            ) ?? .paused
+
+            gameOutcome = try container.decodeIfPresent(
+                GameOutcome.self,
+                forKey: .gameOutcome
+            )
+
+            hasStartedGame = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .hasStartedGame
+            ) ?? true
+
+        }
+
     }
 
     struct CompanySnapshot: Codable {
 
         var name: String
+        var playerName: String?
         var ceoBriefing: [CEOMessage]
         var cash: Double
         var monthlyRevenue: Double
@@ -34,6 +103,11 @@ struct SaveManager {
         var activeWorldEvent: Company.WorldEvent?
         var activeWorldEventMonthsRemaining: Int
         var completedTutorialSteps: Set<String>
+        var companyPerkPoints: Int?
+        var unlockedCompanyPerks: Set<Company.CompanyPerk>?
+        var completedContracts: Int?
+        var availableContracts: [Company.ContractOpportunity]?
+        var unlockedAchievements: Set<Company.GameAchievement>?
         var marketingBudget: Double
         var marketingLevel: Int
         var reputation: Int
@@ -57,10 +131,13 @@ struct SaveManager {
         var serverCost: Double
         var researchExpense: Double
         var competitors: [Competitor]
+        var marketSegments: [Company.MarketSegment]?
+        var frontierProjects: [Company.FrontierProject]?
 
         init(company: Company) {
 
             name = company.name
+            playerName = company.playerName
             ceoBriefing = company.ceoBriefing
             cash = company.cash
             monthlyRevenue = company.monthlyRevenue
@@ -74,6 +151,11 @@ struct SaveManager {
             activeWorldEventMonthsRemaining =
                 company.activeWorldEventMonthsRemaining
             completedTutorialSteps = company.completedTutorialSteps
+            companyPerkPoints = company.companyPerkPoints
+            unlockedCompanyPerks = company.unlockedCompanyPerks
+            completedContracts = company.completedContracts
+            availableContracts = company.availableContracts
+            unlockedAchievements = company.unlockedAchievements
             marketingBudget = company.marketingBudget
             marketingLevel = company.marketingLevel
             reputation = company.reputation
@@ -97,6 +179,8 @@ struct SaveManager {
             serverCost = company.serverCost
             researchExpense = company.researchExpense
             competitors = company.competitors
+            marketSegments = company.marketSegments
+            frontierProjects = company.frontierProjects
 
         }
 
@@ -105,6 +189,7 @@ struct SaveManager {
             let company = Company()
 
             company.name = name
+            company.playerName = playerName ?? "Founder"
             company.ceoBriefing = ceoBriefing
             company.cash = cash
             company.monthlyRevenue = monthlyRevenue
@@ -118,6 +203,11 @@ struct SaveManager {
             company.activeWorldEventMonthsRemaining =
                 activeWorldEventMonthsRemaining
             company.completedTutorialSteps = completedTutorialSteps
+            company.companyPerkPoints = companyPerkPoints ?? 0
+            company.unlockedCompanyPerks = unlockedCompanyPerks ?? []
+            company.completedContracts = completedContracts ?? 0
+            company.availableContracts = availableContracts ?? []
+            company.unlockedAchievements = unlockedAchievements ?? []
             company.marketingBudget = marketingBudget
             company.marketingLevel = marketingLevel
             company.reputation = reputation
@@ -141,6 +231,8 @@ struct SaveManager {
             company.serverCost = serverCost
             company.researchExpense = researchExpense
             company.competitors = competitors
+            company.marketSegments = marketSegments ?? company.marketSegments
+            company.frontierProjects = frontierProjects ?? company.frontierProjects
 
             return company
 
@@ -172,7 +264,13 @@ struct SaveManager {
 
         do {
 
-            let encoded = try JSONEncoder().encode(data)
+            var migratedData = data
+            migratedData.schemaVersion = currentSchemaVersion
+
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+
+            let encoded = try encoder.encode(migratedData)
 
             try encoded.write(
                 to: saveURL,
@@ -193,13 +291,23 @@ struct SaveManager {
 
             let data = try Data(contentsOf: saveURL)
 
-            return try JSONDecoder().decode(
+            var saveData = try JSONDecoder().decode(
                 SaveData.self,
                 from: data
             )
 
+            if saveData.schemaVersion < currentSchemaVersion {
+
+                saveData.schemaVersion = currentSchemaVersion
+                save(saveData)
+
+            }
+
+            return saveData
+
         } catch {
 
+            print("Save load failed: \(error)")
             return nil
 
         }

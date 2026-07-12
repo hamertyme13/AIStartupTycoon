@@ -22,6 +22,8 @@ struct Investor: Identifiable, Codable {
 
     var investedDate: String?
 
+    var relationship = 60
+
     enum Focus: String, Codable {
 
         case research = "Research"
@@ -113,7 +115,8 @@ struct Investor: Identifiable, Codable {
         personality: Personality = .patient,
         contribution: Contribution = .standard,
         invested: Bool = false,
-        investedDate: String? = nil
+        investedDate: String? = nil,
+        relationship: Int = 60
     ) {
 
         self.id = id
@@ -126,6 +129,7 @@ struct Investor: Identifiable, Codable {
         self.contribution = contribution
         self.invested = invested
         self.investedDate = investedDate
+        self.relationship = relationship
 
     }
 
@@ -141,6 +145,7 @@ struct Investor: Identifiable, Codable {
         case contribution
         case invested
         case investedDate
+        case relationship
 
     }
 
@@ -167,7 +172,11 @@ struct Investor: Identifiable, Codable {
             investedDate: try container.decodeIfPresent(
                 String.self,
                 forKey: .investedDate
-            )
+            ),
+            relationship: try container.decodeIfPresent(
+                Int.self,
+                forKey: .relationship
+            ) ?? 60
         )
 
     }

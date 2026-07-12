@@ -128,6 +128,20 @@ struct ObjectivesCard: View {
             )
 
             objectiveRow(
+                completed: game.company.companyValue >= 500_000_000 &&
+                    game.company.monthlyProfit >= 100_000 &&
+                    game.company.founderOwnership >= 35,
+                text: "IPO with $500M valuation, $100K profit, and 35% ownership"
+            )
+
+            objectiveRow(
+                completed: game.company.companyValue >= 250_000_000 &&
+                    game.company.cash >= 5_000_000 &&
+                    game.company.customerSatisfaction >= 88,
+                text: "Earn a premium acquisition offer"
+            )
+
+            objectiveRow(
                 completed: game.company.companyValue >= 1_000_000_000 &&
                     game.company.activeInvestors.count >= 2 &&
                     game.company.monthlyRevenue >= 250_000,
@@ -185,10 +199,13 @@ struct ObjectivesCard: View {
             )
 
             Text(text)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(completed ? "Complete" : "Incomplete"): \(text)")
 
     }
 
@@ -212,10 +229,13 @@ struct ObjectivesCard: View {
             )
 
             Text(text)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(safe ? "Safe" : "At risk"): \(text)")
 
     }
 

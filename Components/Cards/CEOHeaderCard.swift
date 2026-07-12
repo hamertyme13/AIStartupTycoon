@@ -10,11 +10,11 @@ struct CEOHeaderCard: View {
 
         switch hour {
         case 5..<12:
-            return "Good Morning, Joshua"
+            return "Good Morning, \(game.company.playerName)"
         case 12..<17:
-            return "Good Afternoon, Joshua"
+            return "Good Afternoon, \(game.company.playerName)"
         default:
-            return "Good Evening, Joshua"
+            return "Good Evening, \(game.company.playerName)"
         }
     }
 
@@ -47,45 +47,105 @@ struct CEOHeaderCard: View {
                 .foregroundStyle(.secondary)
 
             Text(game.company.name)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundStyle(RogueCircuitTheme.brandGradient)
-
-            HStack {
-
-                Label(
-                    "Year \(game.company.currentYear)",
-                    systemImage: "calendar"
+                .font(.system(size: 34, weight: .black, design: .rounded))
+                .foregroundStyle(RogueCircuitTheme.text)
+                .shadow(
+                    color: RogueCircuitTheme.signalGreen.opacity(0.28),
+                    radius: 8,
+                    y: 2
                 )
+                .lineLimit(2)
+                .minimumScaleFactor(0.68)
+                .padding(.vertical, 2)
 
-                Spacer()
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            RogueCircuitTheme.signalGreen.opacity(0.95),
+                            RogueCircuitTheme.electricCyan.opacity(0.45),
+                            Color.clear
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(width: 132, height: 3)
+                .clipShape(Capsule())
 
-                Text("Month \(game.company.currentMonth)")
+            ViewThatFits(in: .horizontal) {
+
+                HStack {
+
+                    Label(
+                        "Year \(game.company.currentYear)",
+                        systemImage: "calendar"
+                    )
+
+                    Spacer()
+
+                    Text("Month \(game.company.currentMonth)")
+
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+
+                    Label(
+                        "Year \(game.company.currentYear)",
+                        systemImage: "calendar"
+                    )
+
+                    Text("Month \(game.company.currentMonth)")
+
+                }
+
             }
             .font(.subheadline)
             .foregroundStyle(.secondary)
 
             Divider()
 
-            HStack {
+            ViewThatFits(in: .horizontal) {
 
-                Label(
-                    game.company.companyStatus,
-                    systemImage: "building.2.fill"
-                )
-                .font(.headline)
+                HStack(alignment: .top, spacing: 12) {
 
-                Spacer()
+                    Label(
+                        game.company.companyStatus,
+                        systemImage: "building.2.fill"
+                    )
+                    .font(.headline)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
 
-                Text(priorityText)
+                    Spacer()
+
+                    Text(priorityText)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.trailing)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.75)
+
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+
+                    Label(
+                        game.company.companyStatus,
+                        systemImage: "building.2.fill"
+                    )
+                    .font(.headline)
+
+                    Text(priorityText)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.trailing)
+                    .fixedSize(horizontal: false, vertical: true)
 
+                }
             }
 
         }
-        .padding(24)
+        .padding(20)
         .rogueCircuitCard(cornerRadius: 24)
 
     }

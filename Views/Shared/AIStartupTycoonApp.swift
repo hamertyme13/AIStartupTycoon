@@ -150,6 +150,8 @@ struct AIStartupTycoonApp: App {
 
 struct RogueCircuitRootView: View {
 
+    @Environment(GameManager.self) private var game
+
     @State private var showOpeningScene = true
 
     var body: some View {
@@ -171,6 +173,11 @@ struct RogueCircuitRootView: View {
                 .zIndex(10)
 
             }
+
+        }
+        .onChange(of: game.openingSceneTrigger) { _, _ in
+
+            showOpeningScene = true
 
         }
 

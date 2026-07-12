@@ -4,6 +4,7 @@ struct ProductCard: View {
 
     let product: Product
     let onBuild: () -> Void
+    var onStrategyChange: ((ProductStrategy) -> Void)?
 
     var body: some View {
 
@@ -44,6 +45,28 @@ struct ProductCard: View {
             Text("💵 MRR: $\(Int(product.monthlyRevenue).formatted())")
 
             Text("🔨 Upgrade Cost: $\(Int(product.buildCost).formatted())")
+
+            Picker("Strategy", selection: Binding(
+                get: {
+                    product.strategy
+                },
+                set: { strategy in
+                    onStrategyChange?(strategy)
+                }
+            )) {
+
+                ForEach(ProductStrategy.allCases) { strategy in
+                    Text(strategy.rawValue)
+                        .tag(strategy)
+                }
+
+            }
+            .pickerStyle(.segmented)
+
+            Text(product.strategy.summary)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             
             Button("Build") {
 
@@ -71,7 +94,8 @@ struct ProductCard: View {
             buildCost: 1000,
             revenuePerLevel: 100
         ),
-        onBuild: {}
+        onBuild: {},
+        onStrategyChange: { _ in }
     )
 
 }
@@ -80,4 +104,3 @@ struct ProductCard: View {
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-

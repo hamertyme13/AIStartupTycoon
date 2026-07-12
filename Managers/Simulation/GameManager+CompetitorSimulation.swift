@@ -98,6 +98,9 @@ extension GameManager {
     ) {
 
         company.competitors[index].employees += 1
+        company.competitors[index].rivalryHeat =
+            min(100, company.competitors[index].rivalryHeat + 4)
+        company.competitors[index].signatureMove = "Hired senior engineering talent"
 
         company.competitors[index].cash -= 5_000
 
@@ -119,6 +122,7 @@ extension GameManager {
         company.competitors[index].revenue += 150
 
         company.competitors[index].valuation += 20_000
+        company.competitors[index].signatureMove = "Expanded steadily across products"
         
         competitorNews(
                 competitor: company.competitors[index],
@@ -134,6 +138,9 @@ extension GameManager {
         company.competitors[index].cash += 250_000
 
         company.competitors[index].valuation += 500_000
+        company.competitors[index].rivalryHeat =
+            min(100, company.competitors[index].rivalryHeat + 6)
+        company.competitors[index].signatureMove = "Raised fresh capital"
         
         competitorNews(
                 competitor: company.competitors[index],
@@ -152,6 +159,9 @@ extension GameManager {
             0,
             company.marketShare - 0.5
         )
+        company.competitors[index].rivalryHeat =
+            min(100, company.competitors[index].rivalryHeat + 8)
+        company.competitors[index].signatureMove = "Attacked your market share"
         
         competitorNews(
                 competitor: company.competitors[index],
@@ -185,6 +195,7 @@ extension GameManager {
         company.competitors[index].researchProgress += 25
 
         company.competitors[index].valuation += cost * 1.5
+        company.competitors[index].signatureMove = "Pushed frontier research"
         
         competitorNews(
                competitor: company.competitors[index],
@@ -270,6 +281,10 @@ extension GameManager {
             competitor: company.competitors[index],
             message: "released \(company.competitors[index].currentModel)."
         )
+        company.competitors[index].rivalryHeat =
+            min(100, company.competitors[index].rivalryHeat + 10)
+        company.competitors[index].signatureMove =
+            "Released \(company.competitors[index].currentModel)"
 
     }
 

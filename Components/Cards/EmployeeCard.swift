@@ -5,6 +5,8 @@ struct EmployeeCard: View {
     let employee: Employee
 
     var onDepartmentChange: ((EmployeeDepartment) -> Void)?
+
+    var onFire: (() -> Void)?
     
     private var potentialStars: String {
 
@@ -154,6 +156,39 @@ struct EmployeeCard: View {
 
             }
 
+            HStack {
+
+                Label("Morale", systemImage: "face.smiling")
+
+                Spacer()
+
+                Text("\(employee.morale)%")
+                    .foregroundStyle(employee.morale >= 60 ? .green : .orange)
+
+            }
+
+            HStack {
+
+                Label("Burnout", systemImage: "flame.fill")
+
+                Spacer()
+
+                Text("\(employee.burnout)%")
+                    .foregroundStyle(employee.burnout < 65 ? Color.secondary : Color.red)
+
+            }
+
+            HStack {
+
+                Label("Loyalty", systemImage: "shield.checkered")
+
+                Spacer()
+
+                Text("\(employee.loyalty)%")
+                    .foregroundStyle(employee.loyalty >= 55 ? .green : .orange)
+
+            }
+
             // NEW
             HStack {
 
@@ -162,6 +197,23 @@ struct EmployeeCard: View {
                 Spacer()
 
                 Text(String(format: "%.1f RP/s", employee.researchOutput))
+
+            }
+
+            if let onFire {
+
+                Button(role: .destructive) {
+
+                    onFire()
+
+                } label: {
+
+                    Label("Fire Employee", systemImage: "person.crop.circle.badge.xmark")
+                        .frame(maxWidth: .infinity)
+
+                }
+                .buttonStyle(.bordered)
+                .disabled(employee.name == "You")
 
             }
 
