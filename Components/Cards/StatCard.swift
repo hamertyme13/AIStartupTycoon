@@ -45,7 +45,7 @@ struct StatCard: View {
 
 }
 //  StatCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/1/26.
 //

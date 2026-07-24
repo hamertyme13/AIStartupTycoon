@@ -214,7 +214,7 @@ struct InvestorCard: View {
             name: "OpenAI Ventures",
             investment: 250000,
             equity: 15,
-            description: "AI Startup Fund",
+            description: "Frontier Tech Fund",
             focus: .research
         )
     ) {
@@ -223,7 +223,7 @@ struct InvestorCard: View {
 
 }
 //  InvestorCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/2/26.
 //

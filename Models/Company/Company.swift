@@ -303,7 +303,7 @@ class Company {
 
     // MARK: Company Info
 
-    var name = "Rogue AI Labs"
+    var name = "Tech Empire Labs"
 
     var playerName = "Founder"
     
@@ -346,7 +346,7 @@ class Company {
 
     // MARK: News
 
-    var latestNews = "🚀 Welcome to AI Startup Tycoon!"
+    var latestNews = "🚀 Welcome to Tech Empire!"
     
     var notifications: [CompanyNotification] = []
 

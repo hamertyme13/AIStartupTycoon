@@ -11,6 +11,11 @@ struct MainTabView: View {
 
         TabView {
 
+            TechEmpireGameView()
+                .tabItem {
+                    Label("HQ", systemImage: "square.grid.3x3.fill")
+                }
+
             DashboardView()
                 .tabItem {
                     Label("Dashboard", systemImage: "house.fill")
@@ -144,7 +149,7 @@ struct BetaReadinessView: View {
     )!
 
     private let supportURL = URL(
-        string: "mailto:support@roguecircuit.com?subject=AI%20Startup%20Tycoon%20Beta%20Feedback"
+        string: "mailto:support@roguecircuit.com?subject=Tech%20Empire%20Beta%20Feedback"
     )!
 
     private var appVersion: String {
@@ -354,7 +359,7 @@ struct NewGameSetupView: View {
 
                     VStack(alignment: .leading, spacing: 8) {
 
-                        Text("AI Startup Tycoon")
+                        Text("Tech Empire")
                             .font(.largeTitle)
                             .bold()
                             .foregroundStyle(RogueCircuitTheme.brandGradient)
@@ -383,7 +388,7 @@ struct NewGameSetupView: View {
                             .foregroundStyle(RogueCircuitTheme.signalGreen)
                             .textCase(.uppercase)
 
-                        TextField("Rogue AI Labs", text: $companyName)
+                        TextField("Tech Empire Labs", text: $companyName)
                             .textInputAutocapitalization(.words)
                             .textFieldStyle(.roundedBorder)
 

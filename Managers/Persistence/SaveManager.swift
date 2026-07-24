@@ -1,6 +1,6 @@
 //
 //  SaveManager.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
@@ -242,21 +242,43 @@ struct SaveManager {
 
     private static var saveURL: URL {
 
-        let directory = FileManager.default.urls(
+        let applicationSupportDirectory = FileManager.default.urls(
             for: .applicationSupportDirectory,
             in: .userDomainMask
         )[0]
-        .appendingPathComponent(
-            "AIStartupTycoon",
+
+        let directory = applicationSupportDirectory.appendingPathComponent(
+            "TechEmpire",
             isDirectory: true
         )
+
+        let legacyDirectory =
+            applicationSupportDirectory.appendingPathComponent(
+                "AIStartupTycoon",
+                isDirectory: true
+            )
+
+        let legacySaveURL =
+            legacyDirectory.appendingPathComponent("savegame.json")
+
+        let newSaveURL = directory.appendingPathComponent("savegame.json")
 
         try? FileManager.default.createDirectory(
             at: directory,
             withIntermediateDirectories: true
         )
 
-        return directory.appendingPathComponent("savegame.json")
+        if !FileManager.default.fileExists(atPath: newSaveURL.path),
+           FileManager.default.fileExists(atPath: legacySaveURL.path) {
+
+            try? FileManager.default.copyItem(
+                at: legacySaveURL,
+                to: newSaveURL
+            )
+
+        }
+
+        return newSaveURL
 
     }
 

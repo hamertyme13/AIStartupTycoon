@@ -8,6 +8,7 @@ The current priority is turning the game from a functional prototype into an App
 
 - Core dashboard and Rogue Circuit visual theme.
 - Opening scene.
+- First 2D HQ scene with animated employees and department zones.
 - Products, employees, investors, research, AI models, offices, and competitors.
 - Monthly reports and notifications.
 - Multiple victory routes.
@@ -35,6 +36,7 @@ The current priority is turning the game from a functional prototype into an App
 
 ## Make The Game Feel More Alive
 
+- Expand the 2D HQ with office decorations, visible upgrades, and richer employee animations.
 - More monthly storylets that react to company metrics.
 - Recurring rival behavior that players can recognize and anticipate.
 - Named enterprise customers and contract renewals.

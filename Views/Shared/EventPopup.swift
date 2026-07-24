@@ -117,7 +117,7 @@ struct EventPopup: View {
 
 }
 //  EventPopup.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/2/26.
 //

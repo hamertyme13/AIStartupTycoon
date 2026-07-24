@@ -1,6 +1,6 @@
 //
-//  AIStartupTycoonApp.swift
-//  AIStartupTycoon
+//  TechEmpireApp.swift
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 6/29/26.
 //
@@ -131,7 +131,7 @@ extension View {
 }
 
 @main
-struct AIStartupTycoonApp: App {
+struct TechEmpireApp: App {
 
     @State private var game = GameManager()
 
@@ -231,7 +231,7 @@ struct RogueCircuitOpeningScene: View {
                     .foregroundStyle(RogueCircuitTheme.mutedText)
                     .opacity(revealBrand ? 1 : 0)
 
-                Text("AI Startup Tycoon")
+                Text("Tech Empire")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .multilineTextAlignment(.center)

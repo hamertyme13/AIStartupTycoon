@@ -1,10 +1,10 @@
 # Architecture
 
-AI Startup Tycoon is a SwiftUI game organized around a central observable `GameManager` and small model/view modules.
+Tech Empire is a SwiftUI game organized around a central observable `GameManager` and small model/view modules.
 
 ## App Entry
 
-- `Views/Shared/AIStartupTycoonApp.swift`
+- `Views/Shared/TechEmpireApp.swift`
   - App entry point.
   - Rogue Circuit theme tokens and card styling.
   - Opening presentation scene.
@@ -79,7 +79,7 @@ swiftc -parse $(rg --files -g '*.swift')
 Full local iOS build:
 
 ```bash
-env DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project AIStartupTycoon.xcodeproj -scheme AIStartupTycoon -configuration Debug -destination generic/platform=iOS -derivedDataPath /tmp/AIStartupTycoonDerivedData CODE_SIGNING_ALLOWED=NO build
+env DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project TechEmpire.xcodeproj -scheme TechEmpire -configuration Debug -destination generic/platform=iOS -derivedDataPath /tmp/TechEmpireDerivedData CODE_SIGNING_ALLOWED=NO build
 ```
 
 ## Feature Placement Guide

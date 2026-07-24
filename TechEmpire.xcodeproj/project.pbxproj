@@ -28,7 +28,7 @@
 		4B325D082FF7296D00D98AF1 /* OfficeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF02FF7296D00D98AF1 /* OfficeView.swift */; };
 		4B325D092FF7296D00D98AF1 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF12FF7296D00D98AF1 /* ProductsView.swift */; };
 		4B325D0A2FF7296D00D98AF1 /* ResearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF22FF7296D00D98AF1 /* ResearchView.swift */; };
-		4B325D0B2FF7296D00D98AF1 /* AIStartupTycoonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */; };
+		4B325D0B2FF7296D00D98AF1 /* TechEmpireApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325CF42FF7296D00D98AF1 /* TechEmpireApp.swift */; };
 		4B325D0F2FF72B7600D98AF1 /* InvestorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D0D2FF72B6E00D98AF1 /* InvestorCard.swift */; };
 		4B325D122FF73C9300D98AF1 /* Technology.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D102FF73C8C00D98AF1 /* Technology.swift */; };
 		4B325D1D2FF7423700D98AF1 /* LockedProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325D1B2FF7422B00D98AF1 /* LockedProductCard.swift */; };
@@ -94,6 +94,8 @@
 		4B325E062FF99A6900D98AF1 /* CashFlowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */; };
 		4B325E082FF99BBA00D98AF1 /* ObjectivesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */; };
 		4B325E0A2FF9AD0B00D98AF1 /* GameManager+CompetitorSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B325E092FF9ACFB00D98AF1 /* GameManager+CompetitorSimulation.swift */; };
+		4C1000013000000000000001 /* OfficeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1000033000000000000003 /* OfficeScene.swift */; };
+		4C1000023000000000000002 /* TechEmpireGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1000043000000000000004 /* TechEmpireGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,7 +120,7 @@
 		4B325CF02FF7296D00D98AF1 /* OfficeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfficeView.swift; sourceTree = "<group>"; };
 		4B325CF12FF7296D00D98AF1 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		4B325CF22FF7296D00D98AF1 /* ResearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchView.swift; sourceTree = "<group>"; };
-		4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStartupTycoonApp.swift; sourceTree = "<group>"; };
+		4B325CF42FF7296D00D98AF1 /* TechEmpireApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechEmpireApp.swift; sourceTree = "<group>"; };
 		4B325D0D2FF72B6E00D98AF1 /* InvestorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestorCard.swift; sourceTree = "<group>"; };
 		4B325D102FF73C8C00D98AF1 /* Technology.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Technology.swift; sourceTree = "<group>"; };
 		4B325D1B2FF7422B00D98AF1 /* LockedProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedProductCard.swift; sourceTree = "<group>"; };
@@ -188,7 +190,9 @@
 		4B325E052FF99A6300D98AF1 /* CashFlowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowCard.swift; sourceTree = "<group>"; };
 		4B325E072FF99BB500D98AF1 /* ObjectivesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectivesCard.swift; sourceTree = "<group>"; };
 		4B325E092FF9ACFB00D98AF1 /* GameManager+CompetitorSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameManager+CompetitorSimulation.swift"; sourceTree = "<group>"; };
-		4BBEF4182FF2CFDE00278FF3 /* AIStartupTycoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIStartupTycoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BBEF4182FF2CFDE00278FF3 /* TechEmpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechEmpire.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C1000033000000000000003 /* OfficeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfficeScene.swift; sourceTree = "<group>"; };
+		4C1000043000000000000004 /* TechEmpireGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechEmpireGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -240,6 +244,7 @@
 		4B325DC02FF9003D00D98AF1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4C1000053000000000000005 /* Game */,
 				4B325DD42FF901B400D98AF1 /* Shared */,
 				4B325DD32FF901AA00D98AF1 /* Industry */,
 				4B325DD22FF9019D00D98AF1 /* Innovation */,
@@ -247,6 +252,15 @@
 				4B325DD02FF9018400D98AF1 /* Dashboard */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4C1000053000000000000005 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				4C1000033000000000000003 /* OfficeScene.swift */,
+				4C1000043000000000000004 /* TechEmpireGameView.swift */,
+			);
+			path = Game;
 			sourceTree = "<group>";
 		};
 		4B325DC12FF9005400D98AF1 /* Components */ = {
@@ -444,7 +458,7 @@
 			children = (
 				4B325D332FF766F000D98AF1 /* EventPopup.swift */,
 				4B325D572FF782B000D98AF1 /* MonthlyReportView.swift */,
-				4B325CF42FF7296D00D98AF1 /* AIStartupTycoonApp.swift */,
+				4B325CF42FF7296D00D98AF1 /* TechEmpireApp.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -536,7 +550,7 @@
 		4BBEF4192FF2CFDE00278FF3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4BBEF4182FF2CFDE00278FF3 /* AIStartupTycoon.app */,
+				4BBEF4182FF2CFDE00278FF3 /* TechEmpire.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -544,9 +558,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4BBEF4172FF2CFDE00278FF3 /* AIStartupTycoon */ = {
+		4BBEF4172FF2CFDE00278FF3 /* TechEmpire */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BBEF4232FF2CFDF00278FF3 /* Build configuration list for PBXNativeTarget "AIStartupTycoon" */;
+			buildConfigurationList = 4BBEF4232FF2CFDF00278FF3 /* Build configuration list for PBXNativeTarget "TechEmpire" */;
 			buildPhases = (
 				4BBEF4142FF2CFDE00278FF3 /* Sources */,
 				4BBEF4152FF2CFDE00278FF3 /* Frameworks */,
@@ -556,11 +570,11 @@
 			);
 			dependencies = (
 			);
-			name = AIStartupTycoon;
+			name = TechEmpire;
 			packageProductDependencies = (
 			);
-			productName = AIStartupTycoon;
-			productReference = 4BBEF4182FF2CFDE00278FF3 /* AIStartupTycoon.app */;
+			productName = TechEmpire;
+			productReference = 4BBEF4182FF2CFDE00278FF3 /* TechEmpire.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -578,7 +592,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4BBEF4132FF2CFDE00278FF3 /* Build configuration list for PBXProject "AIStartupTycoon" */;
+			buildConfigurationList = 4BBEF4132FF2CFDE00278FF3 /* Build configuration list for PBXProject "TechEmpire" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -592,7 +606,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4BBEF4172FF2CFDE00278FF3 /* AIStartupTycoon */,
+				4BBEF4172FF2CFDE00278FF3 /* TechEmpire */,
 			);
 		};
 /* End PBXProject section */
@@ -696,8 +710,10 @@
 				4B325D972FF892FD00D98AF1 /* CompetitorModels.swift in Sources */,
 				4B325DA32FF8BCBC00D98AF1 /* CEO.swift in Sources */,
 				4B325DEE2FF911F300D98AF1 /* GameManager+Events.swift in Sources */,
-				4B325D0B2FF7296D00D98AF1 /* AIStartupTycoonApp.swift in Sources */,
+				4B325D0B2FF7296D00D98AF1 /* TechEmpireApp.swift in Sources */,
 				4B325D942FF886BF00D98AF1 /* AIModelStatus.swift in Sources */,
+				4C1000013000000000000001 /* OfficeScene.swift in Sources */,
+				4C1000023000000000000002 /* TechEmpireGameView.swift in Sources */,
 				4B325DE22FF9117A00D98AF1 /* GameManager+Products.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -839,6 +855,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tech Empire";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -846,8 +863,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.roguecircuit.AIStartupTycoon;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.roguecircuit.TechEmpire;
+				PRODUCT_NAME = "Tech Empire";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -871,6 +888,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tech Empire";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -878,8 +896,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.roguecircuit.AIStartupTycoon;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.roguecircuit.TechEmpire;
+				PRODUCT_NAME = "Tech Empire";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -893,7 +911,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4BBEF4132FF2CFDE00278FF3 /* Build configuration list for PBXProject "AIStartupTycoon" */ = {
+		4BBEF4132FF2CFDE00278FF3 /* Build configuration list for PBXProject "TechEmpire" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BBEF4212FF2CFDF00278FF3 /* Debug */,
@@ -902,7 +920,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BBEF4232FF2CFDF00278FF3 /* Build configuration list for PBXNativeTarget "AIStartupTycoon" */ = {
+		4BBEF4232FF2CFDF00278FF3 /* Build configuration list for PBXNativeTarget "TechEmpire" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BBEF4242FF2CFDF00278FF3 /* Debug */,

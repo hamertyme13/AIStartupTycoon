@@ -1,4 +1,4 @@
-# 🚀 AI Startup Tycoon
+# 🚀 Tech Empire
 
 A startup management simulation game built with SwiftUI.
 

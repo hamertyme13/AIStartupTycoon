@@ -182,7 +182,7 @@ struct AIModelCard: View {
 
 }
 //  AIModelCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //

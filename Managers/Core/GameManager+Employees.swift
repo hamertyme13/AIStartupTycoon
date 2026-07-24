@@ -5,7 +5,7 @@ extension GameManager {
 
 }
 //  GameManager+Employees.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/4/26.
 //

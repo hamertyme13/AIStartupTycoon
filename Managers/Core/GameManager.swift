@@ -159,7 +159,7 @@ class GameManager {
         company.name =
             companyName.trimmingCharacters(in: .whitespacesAndNewlines)
                 .isEmpty
-            ? "Rogue AI Labs"
+            ? "Tech Empire Labs"
             : companyName.trimmingCharacters(in: .whitespacesAndNewlines)
         company.selectedScenario = scenario
         company.cash = scenario.startingCash

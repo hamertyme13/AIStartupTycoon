@@ -33,6 +33,10 @@
   - More polished outcome sheet.
   - In-app TestFlight hub with beta focus, support, and privacy links.
   - TestFlight QA checklist for build, device, save, balance, and App Store Connect validation.
+- Added the first 2D game layer:
+  - HQ tab with an animated SpriteKit office floor.
+  - Department zones for Engineering, Research, Product, and Growth.
+  - Tap-to-inspect employee avatars with morale, burnout, loyalty, assignment, and firing actions.
 
 ### Changed
 

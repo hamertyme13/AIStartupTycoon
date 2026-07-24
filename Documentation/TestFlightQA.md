@@ -24,7 +24,7 @@ Use this checklist before each TestFlight upload and during the first internal b
 - Fresh install shows the opening scene.
 - New game setup asks for founder name and company name.
 - Empty founder name falls back to `Founder`.
-- Empty company name falls back to `Rogue AI Labs`.
+- Empty company name falls back to `Tech Empire Labs`.
 - Starting a new game replays the opening scene.
 - Launch checklist can be completed through normal play.
 
@@ -58,7 +58,7 @@ Use this checklist before each TestFlight upload and during the first internal b
 
 ## App Store Connect
 
-- Bundle ID matches `com.roguecircuit.AIStartupTycoon`.
+- Bundle ID matches `com.roguecircuit.TechEmpire`.
 - Version and build number are incremented for upload.
 - App icon appears correctly.
 - Privacy policy URL is public.

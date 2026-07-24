@@ -1,8 +1,8 @@
-# AI Startup Tycoon Game Design
+# Tech Empire Game Design
 
 ## Vision
 
-AI Startup Tycoon is a compact management sim about building an AI company under pressure. The player balances cash, research, products, employees, investors, customer trust, and competitors while trying to reach a meaningful exit or long-term dominance.
+Tech Empire is a compact management sim about building an AI company under pressure. The player balances cash, research, products, employees, investors, customer trust, and competitors while trying to reach a meaningful exit or long-term dominance.
 
 The game should feel like a living startup boardroom: every month should create a new reason to make a tradeoff.
 
@@ -12,6 +12,12 @@ The game should feel like a living startup boardroom: every month should create 
 2. Spend money on products, hiring, research, customer success, marketing, or offices.
 3. Let time advance and watch revenue, churn, competitors, research, and market conditions update.
 4. Respond to events, investor opportunities, customer pressure, and competitor moves.
+
+## 2D HQ Layer
+
+Tech Empire should feel like a living company, not only a dashboard. The HQ scene is the first 2D layer: employees appear as animated avatars inside department zones, and the player can tap them to inspect morale, burnout, loyalty, level, skill, and current assignment.
+
+The 2D layer should remain connected to the simulation model. Employee department changes, firing, morale shifts, burnout, loyalty, and company health should be visible in the office scene without creating a separate parallel game state.
 5. Build toward a victory route or recover from a failure spiral.
 
 ## Primary Systems
