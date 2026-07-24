@@ -1,8 +1,8 @@
 import Foundation
 
-struct Competitor: Identifiable {
+struct Competitor: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     var name: String
 
@@ -29,6 +29,10 @@ struct Competitor: Identifiable {
     var aiRating: Double = 50
     
     var ceo: CEO
+
+    var rivalryHeat: Int = 30
+
+    var signatureMove = "Watching the market"
     
     init(
         name: String,
@@ -52,8 +56,7 @@ struct Competitor: Identifiable {
 
 }
 //  Competitor.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

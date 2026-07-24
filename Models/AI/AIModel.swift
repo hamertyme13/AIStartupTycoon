@@ -1,8 +1,8 @@
 import Foundation
 
-struct AIModel: Identifiable {
+struct AIModel: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 

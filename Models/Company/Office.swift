@@ -1,8 +1,8 @@
 import Foundation
 
-struct Office: Identifiable {
+struct Office: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -20,8 +20,7 @@ struct Office: Identifiable {
 
 }
 //  Office.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

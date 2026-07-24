@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-enum GameOutcome: Identifiable {
+enum GameOutcome: Identifiable, Codable {
 
     case victory(String)
     case failure(String)
@@ -46,6 +46,47 @@ enum GameOutcome: Identifiable {
 
     }
 
+    var icon: String {
+
+        switch self {
+
+        case .victory(let message):
+            if message.contains("IPO") {
+                return "chart.line.uptrend.xyaxis.circle.fill"
+            }
+
+            if message.contains("acquired") ||
+               message.contains("acquisition") {
+                return "building.2.crop.circle.fill"
+            }
+
+            if message.contains("AGI") {
+                return "sparkles"
+            }
+
+            return "trophy.fill"
+
+        case .failure:
+            return "exclamationmark.triangle.fill"
+
+        }
+
+    }
+
+    var primaryActionTitle: String {
+
+        switch self {
+
+        case .victory:
+            return "Review Legacy"
+
+        case .failure:
+            return "Review Company"
+
+        }
+
+    }
+
 }
 
 @Observable
@@ -62,9 +103,35 @@ class GameManager {
     var latestReport: MonthlyReport?
 
     var gameOutcome: GameOutcome?
+
+    var hasStartedGame = false
+
+    var showNewGameSetup = false
+
+    var openingSceneTrigger = 0
+
+    var lastChurnedCustomers = 0
     
     init() {
-        refreshTalentMarket()
+
+        if let save = SaveManager.load() {
+
+            company = save.company.restoreCompany()
+            secondsElapsed = save.secondsElapsed
+            gameSpeed = save.gameSpeed
+            gameOutcome = save.gameOutcome
+            hasStartedGame = save.hasStartedGame
+            showNewGameSetup = !save.hasStartedGame
+
+        } else {
+
+            showNewGameSetup = true
+            refreshTalentMarket()
+
+        }
+
+        generateCEOBriefing()
+
     }
 
     // MARK: - Time
@@ -75,6 +142,96 @@ class GameManager {
         
         gameSpeed.secondsPerMonth
         
+    }
+
+    func startNewGame(
+        scenario: Company.Scenario,
+        playerName: String,
+        companyName: String
+    ) {
+
+        company = Company()
+        company.playerName =
+            playerName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty
+            ? "Founder"
+            : playerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        company.name =
+            companyName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty
+            ? "Tech Empire Labs"
+            : companyName.trimmingCharacters(in: .whitespacesAndNewlines)
+        company.selectedScenario = scenario
+        company.cash = scenario.startingCash
+        company.founderOwnership = scenario.startingOwnership
+        company.reputation = scenario.startingReputation
+        company.customerGrowthMultiplier = scenario.demandMultiplier
+
+        switch scenario {
+
+        case .vcRocketShip:
+            company.companyValue = 250_000
+            company.monthlyRevenue = 600
+
+        case .aiWinter:
+            company.monthlyRevenue = 150
+            company.customerSatisfaction = 72
+
+        case .openSourceWar:
+            company.marketShare = 55
+            company.competitors[0].marketShare += 5
+            company.competitors[1].marketShare += 5
+
+        case .bootstrappedFounder:
+            break
+
+        }
+
+        secondsElapsed = 0
+        gameSpeed = .paused
+        currentEvent = nil
+        latestReport = nil
+        gameOutcome = nil
+        hasStartedGame = true
+        showNewGameSetup = false
+        openingSceneTrigger += 1
+
+        refreshTalentMarket()
+        refreshContractOpportunities()
+        generateCEOBriefing()
+        saveGame()
+
+    }
+
+    func resetGame() {
+
+        SaveManager.deleteSave()
+        company = Company()
+        secondsElapsed = 0
+        gameSpeed = .paused
+        currentEvent = nil
+        latestReport = nil
+        gameOutcome = nil
+        hasStartedGame = false
+        showNewGameSetup = true
+        refreshTalentMarket()
+        refreshContractOpportunities()
+        generateCEOBriefing()
+
+    }
+
+    func saveGame() {
+
+        SaveManager.save(
+            SaveManager.SaveData(
+                company: SaveManager.CompanySnapshot(company: company),
+                secondsElapsed: secondsElapsed,
+                gameSpeed: gameSpeed,
+                gameOutcome: gameOutcome,
+                hasStartedGame: hasStartedGame
+            )
+        )
+
     }
     
     // MARK: - Notifications
@@ -151,10 +308,13 @@ class GameManager {
 
         company.products[index].level += 1
 
+        company.completedTutorialSteps.insert("firstProduct")
+
         company.products[index].customers += 100
 
         company.monthlyRevenue +=
-            company.products[index].revenuePerLevel
+            company.products[index].revenuePerLevel *
+            company.products[index].strategy.revenueMultiplier
 
         company.companyValue +=
             company.products[index].revenuePerLevel * 5
@@ -167,6 +327,26 @@ class GameManager {
         )
 
         unlockProducts()
+
+        saveGame()
+
+    }
+
+    func setProductStrategy(
+        index: Int,
+        strategy: ProductStrategy
+    ) {
+
+        guard company.products.indices.contains(index) else { return }
+
+        company.products[index].strategy = strategy
+
+        addNotification(
+            title: "Product Strategy Updated",
+            message: "\(company.products[index].name) is now focused on \(strategy.rawValue)."
+        )
+
+        saveGame()
 
     }
 
@@ -245,6 +425,10 @@ class GameManager {
 
     func growProducts() {
 
+        let demandMultiplier =
+            company.customerGrowthMultiplier *
+            (company.activeWorldEvent?.demandMultiplier ?? 1)
+
         let productBonus = 1 +
             Double(company.employees.filter {
                 $0.department == .product
@@ -264,7 +448,12 @@ class GameManager {
             let bonus = growth * (Double(company.reputation) / 100)
 
             company.products[index].customers +=
-                Int((growth + bonus) * productBonus * growthBonus)
+                Int(
+                    (growth + bonus) *
+                    productBonus *
+                    growthBonus *
+                    demandMultiplier
+                )
 
         }
 
@@ -289,7 +478,11 @@ class GameManager {
 
             name: candidate.name,
 
+            gender: candidate.gender,
+
             role: candidate.role,
+
+            careerPath: candidate.careerPath,
 
             salary: candidate.salary,
 
@@ -297,30 +490,18 @@ class GameManager {
             
             specialty: candidate.specialty,
             
-            potential: candidate.potential
+            potential: candidate.potential,
+
+            avatar: candidate.avatar
 
         )
         
         employee.experience = Double(candidate.skill)
-
-        switch candidate.role {
-
-        case .researchAssistant,
-             .researchScientist,
-             .seniorScientist,
-             .principalScientist,
-             .chiefScientist:
-            employee.department = .research
-
-        case .productManager:
-            employee.department = .product
-
-        default:
-            employee.department = .engineering
-
-        }
+        employee.department = candidate.careerPath.defaultDepartment
 
         company.employees.append(employee)
+
+        company.completedTutorialSteps.insert("firstHire")
 
         company.talentMarket.removeAll {
 
@@ -341,11 +522,13 @@ class GameManager {
         🎉 \(candidate.name) joined the company!
 
         Role:
-        \(candidate.role.rawValue)
+        \(candidate.careerPath.title(for: 1))
 
         Specialty:
         \(candidate.specialty)
         """
+
+        saveGame()
 
     }
 
@@ -367,6 +550,43 @@ class GameManager {
             message:
                 "\(company.employees[index].name) moved to \(department.rawValue)."
         )
+
+        saveGame()
+
+    }
+
+    func fireEmployee(at index: Int) {
+
+        guard company.employees.indices.contains(index) else { return }
+
+        guard company.employees[index].name != "You" else {
+
+            addNotification(
+                title: "Founder Required",
+                message: "You cannot fire the founder."
+            )
+
+            return
+
+        }
+
+        let employee = company.employees.remove(at: index)
+
+        for remainingIndex in company.employees.indices {
+
+            company.employees[remainingIndex].morale =
+                max(0, company.employees[remainingIndex].morale - 4)
+            company.employees[remainingIndex].loyalty =
+                max(0, company.employees[remainingIndex].loyalty - 3)
+
+        }
+
+        addNotification(
+            title: "Employee Fired",
+            message: "\(employee.name) left the company. The remaining team is watching leadership closely."
+        )
+
+        saveGame()
 
     }
 
@@ -409,22 +629,6 @@ class GameManager {
 
             }
             
-            if company.employees[index].level >= 5 &&
-               company.employees[index].role == .juniorEngineer {
-
-                company.employees[index].role = .seniorEngineer
-
-                company.employees[index].skill += 5
-
-                company.employees[index].salary += 1500
-
-                addNotification(
-                    title: "🎉 Promotion",
-                    message: "\(company.employees[index].name) was promoted to Senior Engineer!"
-                )
-
-            }
-
         }
 
     }
@@ -433,42 +637,17 @@ class GameManager {
 
         var employee = company.employees[index]
 
-        switch employee.role {
+        guard employee.level < 8 else {
 
-        case .juniorEngineer:
-            employee.role = .engineer
+            employee.experience = employee.experienceNeeded
+            company.employees[index] = employee
 
-        case .engineer:
-            employee.role = .seniorEngineer
-
-        case .seniorEngineer:
-            employee.role = .staffEngineer
-
-        case .staffEngineer:
-            employee.role = .principalEngineer
-
-        case .principalEngineer:
-            employee.role = .distinguishedEngineer
-
-        case .researchAssistant:
-            employee.role = .researchScientist
-
-        case .researchScientist:
-            employee.role = .seniorScientist
-
-        case .seniorScientist:
-            employee.role = .principalScientist
-
-        case .principalScientist:
-            employee.role = .chiefScientist
-
-        case .distinguishedEngineer,
-             .chiefScientist,
-             .productManager:
             return
+
         }
 
         employee.level += 1
+        employee.role = employee.careerPath.role(for: employee.level)
         
         let skillGain: Int
 
@@ -502,7 +681,7 @@ class GameManager {
             title: "🎉 Promotion",
             message:
         """
-        \(employee.name) is now a \(employee.role.rawValue)!
+        \(employee.name) is now a \(employee.careerTitle)!
 
         +\(skillGain) Skill
         +$\(Int(Double(skillGain * 300))) Salary
@@ -561,10 +740,18 @@ class GameManager {
 
         company.activeResearch = company.technologies[index].id
 
+        company.researchExpense =
+            company.technologies[index].monthlyResearchCost
+
+        company.completedTutorialSteps.insert("firstResearch")
+
         addNotification(
             title: "🧠 Research Started",
-            message: company.technologies[index].name
+            message:
+                "\(company.technologies[index].name) will cost $\(Int(company.researchExpense))/mo."
         )
+
+        saveGame()
 
     }
     
@@ -595,6 +782,8 @@ class GameManager {
 
             company.activeResearch = nil
 
+            company.researchExpense = 0
+
             addNotification(
                 title: "🔬 Research Complete",
                 message: "\(company.technologies[index].name) unlocked!"
@@ -610,6 +799,8 @@ class GameManager {
 
         guard let activeID = company.activeResearch else {
 
+            company.researchExpense = 0
+
             return
 
         }
@@ -620,15 +811,22 @@ class GameManager {
 
         }) else {
 
+            company.activeResearch = nil
+            company.researchExpense = 0
+
             return
 
         }
+
+        company.researchExpense =
+            company.technologies[index].monthlyResearchCost
 
         let researchGain = company.employees.reduce(0.0) { total, employee in
 
             let researchPower =
                 employee.researchOutput *
-                (1 + company.currentOffice.researchBonus)
+                (1 + company.currentOffice.researchBonus) *
+                (company.activeWorldEvent?.researchMultiplier ?? 1)
 
             return total + researchPower
 
@@ -647,6 +845,8 @@ class GameManager {
             company.technologies[index].unlocked = true
 
             company.activeResearch = nil
+
+            company.researchExpense = 0
 
             changeMarketShare(by: 1)
 
@@ -721,6 +921,8 @@ class GameManager {
             title: "Training Started",
             message: "\(company.aiModels[index].name) is now training."
         )
+
+        saveGame()
 
     }
     
@@ -805,6 +1007,8 @@ class GameManager {
         Valuation +$\(Int(model.valuationBonus).formatted())
         """
 
+        saveGame()
+
     }
 
     // MARK: - Investors
@@ -824,10 +1028,22 @@ class GameManager {
 
         }
 
-        addCash(company.investors[index].investment)
+        let investor = company.investors[index]
+        let contribution = investor.contribution
+
+        addCash(investor.investment)
 
         company.founderOwnership -=
-            company.investors[index].equity
+            investor.equity
+
+        company.companyValue += contribution.valuationBonus
+        company.monthlyRevenue += contribution.monthlyRevenueBoost
+        company.researchPoints += contribution.researchPointGrant
+        company.customerGrowthMultiplier += contribution.customerGrowthBonus
+        company.reputation =
+            min(100, company.reputation + contribution.reputationBonus)
+
+        changeMarketShare(by: contribution.marketShareBonus)
 
         company.investors[index].invested = true
 
@@ -837,6 +1053,20 @@ class GameManager {
         company.activeInvestors.append(
             company.investors[index]
         )
+
+        if contribution.candidateBoost > 0 {
+
+            for _ in 0..<contribution.candidateBoost {
+
+                company.talentMarket.append(
+                    HiringManager.generateCandidate()
+                )
+
+            }
+
+        }
+
+        company.completedTutorialSteps.insert("firstInvestment")
         
         addNotification(
             title: "💰 Seed Funding",
@@ -844,12 +1074,17 @@ class GameManager {
         """
         \(company.investors[index].name)
 
-        Invested $\(Int(company.investors[index].investment).formatted())
+        Invested $\(Int(investor.investment).formatted())
+
+        Contribution:
+        \(contribution.title)
 
         Founder Ownership:
         \(Int(company.founderOwnership))%
         """
         )
+
+        saveGame()
 
     }
 
@@ -859,6 +1094,10 @@ class GameManager {
 
         guard gameOutcome == nil else { return }
 
+        updateWorldEvent()
+
+        lastChurnedCustomers = processCustomerChurn()
+
         processMonthlyFinances()
 
         createMonthlyReport()
@@ -866,18 +1105,30 @@ class GameManager {
         advanceCalendar()
         
         refreshTalentMarket()
+
+        refreshContractOpportunities()
         
-        company.latestNews = NewsManager.randomHeadline(
-            competitors: company.competitors
+        company.latestNews = NewsManager.monthlyHeadline(
+            for: company
         )
 
         rollForEvent()
         
         simulateCompetitors()
+
+        processMonthlyPulse()
+
+        processEmployeeMoraleAndPoaching()
+
+        processInvestorRelationships()
+
+        evaluateAchievements()
         
         generateCEOBriefing()
 
         evaluateGameOutcome()
+
+        saveGame()
 
     }
     
@@ -895,9 +1146,349 @@ class GameManager {
 
     }
 
+    private func refreshContractOpportunities() {
+
+        var contracts: [Company.ContractOpportunity] = [
+            Company.ContractOpportunity(
+                name: "Customer Support Automation",
+                kind: .contract,
+                payout: 8_000,
+                reputationEffect: 1,
+                satisfactionEffect: 2,
+                researchEffect: 20,
+                durationMonths: 1
+            ),
+            Company.ContractOpportunity(
+                name: "Enterprise Knowledge Bot Pilot",
+                kind: .enterprisePilot,
+                payout: 28_000,
+                reputationEffect: 2,
+                satisfactionEffect: -1,
+                researchEffect: 35,
+                durationMonths: 2
+            ),
+            Company.ContractOpportunity(
+                name: "Responsible AI Grant",
+                kind: .governmentGrant,
+                payout: 18_000,
+                reputationEffect: 3,
+                satisfactionEffect: 0,
+                researchEffect: 80,
+                durationMonths: 3
+            ),
+            Company.ContractOpportunity(
+                name: "Internal Copilot Rollout",
+                kind: .enterprisePilot,
+                payout: 42_000,
+                reputationEffect: 2,
+                satisfactionEffect: -2,
+                researchEffect: 50,
+                durationMonths: 2
+            )
+        ]
+
+        contracts.shuffle()
+        company.availableContracts = Array(contracts.prefix(3))
+
+    }
+
+    func acceptContract(
+        id: UUID
+    ) {
+
+        guard let index = company.availableContracts.firstIndex(where: {
+            $0.id == id
+        }) else {
+            return
+        }
+
+        let contract = company.availableContracts.remove(at: index)
+
+        addCash(contract.payout)
+        company.reputation =
+            min(100, max(0, company.reputation + contract.reputationEffect))
+        company.customerSatisfaction =
+            min(
+                100,
+                max(0, company.customerSatisfaction + contract.satisfactionEffect)
+            )
+        company.researchPoints += contract.researchEffect
+        company.completedContracts += 1
+
+        for employeeIndex in company.employees.indices {
+            company.employees[employeeIndex].burnout =
+                min(100, company.employees[employeeIndex].burnout + 4)
+            company.employees[employeeIndex].morale =
+                max(0, company.employees[employeeIndex].morale - 1)
+        }
+
+        addNotification(
+            title: "\(contract.kind.rawValue) Completed",
+            message: "\(contract.name) paid $\(Int(contract.payout).formatted()) but added pressure to the team."
+        )
+
+        evaluateAchievements()
+        saveGame()
+
+    }
+
     private func processMonthlyFinances() {
 
         addCash(company.monthlyProfit)
+
+        company.lifetimeRevenue +=
+            max(0, company.monthlyRevenue)
+
+        let unlockedSegmentRevenue = company.marketSegments.reduce(0) {
+            $0 + ($1.unlocked ? $1.monthlyRevenueBonus : 0)
+        }
+
+        if unlockedSegmentRevenue > 0 {
+            addCash(unlockedSegmentRevenue)
+            company.lifetimeRevenue += unlockedSegmentRevenue
+        }
+
+        if company.monthlyProfit > 0 {
+            company.companyPerkPoints +=
+                company.unlockedCompanyPerks.contains(.founderDiscipline)
+                ? 2
+                : 1
+        }
+
+    }
+
+    private func processCustomerChurn() -> Int {
+
+        let totalCustomers = company.products.reduce(0) {
+
+            $0 + $1.customers
+
+        }
+
+        guard totalCustomers > 0 else {
+
+            company.customerSatisfaction =
+                min(100, company.customerSatisfaction + 1)
+
+            return 0
+
+        }
+
+        let qualityPressure = max(0, 1 - company.productQuality)
+
+        let strategySatisfaction =
+            company.products.reduce(0) {
+                $0 + $1.strategy.satisfactionEffect
+            }
+
+        let worldChurn =
+            company.activeWorldEvent?.churnMultiplier ?? 1
+
+        let supportRelief =
+            max(0, company.supportCapacity - 1) * 0.025
+
+        let churnRate =
+            max(
+                0.002,
+                min(0.20, company.churnRisk + qualityPressure * 0.08) -
+                supportRelief
+            ) *
+            worldChurn
+
+        let churnedCustomers =
+            max(0, Int(Double(totalCustomers) * churnRate))
+
+        guard churnedCustomers > 0 else {
+
+            improveCustomerSatisfaction(
+                by: company.supportCapacity >= 1 ? 2 : 1
+            )
+
+            return 0
+
+        }
+
+        var remainingChurn = churnedCustomers
+
+        for index in company.products.indices {
+
+            guard remainingChurn > 0 else { break }
+
+            let productCustomers = company.products[index].customers
+
+            let share =
+                Double(productCustomers) / Double(totalCustomers)
+
+            let lost =
+                min(
+                    productCustomers,
+                    max(1, Int(Double(churnedCustomers) * share))
+                )
+
+            company.products[index].customers -= lost
+
+            remainingChurn -= lost
+
+        }
+
+        let rawSatisfactionLoss =
+            Int(
+                Double(churnedCustomers) /
+                Double(max(totalCustomers, 1)) *
+                100
+            )
+
+        let supportRecovery =
+            company.supportCapacity >= 1.1 ? 2 :
+            company.supportCapacity >= 0.85 ? 1 : 0
+
+        let satisfactionLoss =
+            max(0, rawSatisfactionLoss - supportRecovery)
+
+        company.customerSatisfaction =
+            max(0, company.customerSatisfaction - satisfactionLoss)
+
+        if satisfactionLoss == 0 {
+
+            improveCustomerSatisfaction(by: max(1, strategySatisfaction))
+
+        }
+
+        if company.customerSatisfaction < 45 {
+
+            company.reputation =
+                max(0, company.reputation - 2)
+
+        }
+
+        return churnedCustomers
+
+    }
+
+    private func updateWorldEvent() {
+
+        if company.activeWorldEventMonthsRemaining > 0 {
+
+            company.activeWorldEventMonthsRemaining -= 1
+
+            if company.activeWorldEventMonthsRemaining == 0 {
+
+                addNotification(
+                    title: "Industry Shift Ended",
+                    message: company.activeWorldEvent?.title ?? "Market conditions normalized."
+                )
+
+                company.activeWorldEvent = nil
+
+            }
+
+            return
+
+        }
+
+        guard Int.random(in: 1...100) <= 18 else {
+            return
+        }
+
+        let event = availableWorldEvents.randomElement()
+
+        company.activeWorldEvent = event
+
+        company.activeWorldEventMonthsRemaining =
+            event?.durationMonths ?? 0
+
+        if let event {
+
+            company.reputation =
+                min(100, max(0, company.reputation + event.reputationEffect))
+
+            addNotification(
+                title: event.title,
+                message: event.summary
+            )
+
+            company.latestNews = event.summary
+
+        }
+
+    }
+
+    private var availableWorldEvents: [Company.WorldEvent] {
+
+        [
+            Company.WorldEvent(
+                title: "GPU Supply Crunch",
+                summary: "Cloud capacity tightened across the AI industry.",
+                demandMultiplier: 0.90,
+                churnMultiplier: 1.15,
+                researchMultiplier: 0.85,
+                reputationEffect: 0,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "Enterprise AI Boom",
+                summary: "Large companies accelerated AI adoption.",
+                demandMultiplier: 1.25,
+                churnMultiplier: 0.95,
+                researchMultiplier: 1.00,
+                reputationEffect: 1,
+                durationMonths: 4
+            ),
+            Company.WorldEvent(
+                title: "AI Regulation Wave",
+                summary: "New compliance pressure slowed risky launches.",
+                demandMultiplier: 0.85,
+                churnMultiplier: 0.90,
+                researchMultiplier: 0.95,
+                reputationEffect: -1,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "Open Source Breakthrough",
+                summary: "Open models raised customer expectations overnight.",
+                demandMultiplier: 0.95,
+                churnMultiplier: 1.25,
+                researchMultiplier: 1.20,
+                reputationEffect: 0,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "AI Talent War",
+                summary: "Top researchers became harder to recruit as labs bid up compensation.",
+                demandMultiplier: 1.00,
+                churnMultiplier: 1.00,
+                researchMultiplier: 0.90,
+                reputationEffect: 0,
+                durationMonths: 2
+            ),
+            Company.WorldEvent(
+                title: "Enterprise Security Panic",
+                summary: "Buyers started demanding stronger controls before renewing AI contracts.",
+                demandMultiplier: 0.88,
+                churnMultiplier: 1.20,
+                researchMultiplier: 1.00,
+                reputationEffect: -1,
+                durationMonths: 3
+            ),
+            Company.WorldEvent(
+                title: "Developer Tooling Wave",
+                summary: "New developer workflows increased demand for practical AI products.",
+                demandMultiplier: 1.18,
+                churnMultiplier: 0.92,
+                researchMultiplier: 1.05,
+                reputationEffect: 1,
+                durationMonths: 4
+            ),
+            Company.WorldEvent(
+                title: "Cloud Price Drop",
+                summary: "Infrastructure providers cut GPU prices and made experimentation cheaper.",
+                demandMultiplier: 1.05,
+                churnMultiplier: 0.96,
+                researchMultiplier: 1.25,
+                reputationEffect: 0,
+                durationMonths: 2
+            )
+        ]
 
     }
 
@@ -924,6 +1515,14 @@ class GameManager {
 
             researchCost: company.researchExpense,
 
+            churnedCustomers: lastChurnedCustomers,
+
+            endingCustomerSatisfaction: company.customerSatisfaction,
+
+            marketShare: company.marketShare,
+
+            worldEventTitle: company.activeWorldEvent?.title,
+
             endingCash: company.cash
 
         )
@@ -932,6 +1531,211 @@ class GameManager {
             title: "📊 Monthly Report",
             message: "Month closed with \(company.monthlyProfit >= 0 ? "a profit" : "a loss")."
         )
+
+    }
+
+    private func processMonthlyPulse() {
+
+        guard Int.random(in: 1...100) <= 55 else {
+            return
+        }
+
+        let productStaff =
+            company.employees.filter { $0.department == .product }.count
+
+        let researchStaff =
+            company.employees.filter { $0.department == .research }.count
+
+        if company.customerSatisfaction >= 90 {
+
+            let advocates = Int.random(in: 200...700)
+
+            if let first = company.products.indices.first {
+                company.products[first].customers += advocates
+            }
+
+            company.reputation = min(100, company.reputation + 1)
+
+            addNotification(
+                title: "Customer Advocates",
+                message: "Happy customers brought in \(advocates) organic signups."
+            )
+
+            return
+
+        }
+
+        if company.customerSatisfaction < 50 {
+
+            company.reputation = max(0, company.reputation - 1)
+
+            addNotification(
+                title: "Customer Backlash",
+                message: "Low satisfaction is spilling into public perception."
+            )
+
+            return
+
+        }
+
+        if company.runwayMonths < 3 {
+
+            company.companyValue =
+                max(0, company.companyValue - 10_000)
+
+            addNotification(
+                title: "Investor Pressure",
+                message: "Short runway made the market more skeptical of your next round."
+            )
+
+            return
+
+        }
+
+        if productStaff >= 2 &&
+           company.supportCapacity >= 1 {
+
+            improveCustomerSatisfaction(by: 2)
+
+            addNotification(
+                title: "Product Team Win",
+                message: "Product and support work improved customer sentiment this month."
+            )
+
+            return
+
+        }
+
+        if researchStaff >= 2 &&
+           company.activeResearch != nil {
+
+            addResearchPoints(Double.random(in: 25...60))
+
+            addNotification(
+                title: "Lab Breakthrough",
+                message: "Research staff found a shortcut in the active project."
+            )
+
+            return
+
+        }
+
+        if company.monthlyProfit > 0 {
+
+            company.reputation = min(100, company.reputation + 1)
+
+            addNotification(
+                title: "Founder Letter",
+                message: "A transparent monthly update strengthened confidence in the company."
+            )
+
+        }
+
+    }
+
+    private func processEmployeeMoraleAndPoaching() {
+
+        guard !company.employees.isEmpty else { return }
+
+        let profitable = company.monthlyProfit >= 0
+        let hasHiringBrand =
+            company.unlockedCompanyPerks.contains(.hiringBrand)
+
+        for index in company.employees.indices {
+
+            let burnoutIncrease =
+                company.activeResearch == nil ? 1 : 3
+
+            company.employees[index].burnout =
+                min(100, company.employees[index].burnout + burnoutIncrease)
+
+            if profitable {
+                company.employees[index].morale =
+                    min(100, company.employees[index].morale + 2)
+                company.employees[index].loyalty =
+                    min(100, company.employees[index].loyalty + 1)
+            } else {
+                company.employees[index].morale =
+                    max(0, company.employees[index].morale - 3)
+                company.employees[index].loyalty =
+                    max(0, company.employees[index].loyalty - 2)
+            }
+
+            if hasHiringBrand {
+                company.employees[index].loyalty =
+                    min(100, company.employees[index].loyalty + 2)
+            }
+
+            if company.employees[index].burnout > 70 {
+                company.employees[index].morale =
+                    max(0, company.employees[index].morale - 3)
+            }
+
+        }
+
+        guard company.employees.count > 1 else { return }
+
+        let poachableIndexes = company.employees.indices.filter {
+            company.employees[$0].name != "You" &&
+            company.employees[$0].loyalty < 42 &&
+            company.employees[$0].skill >= 65
+        }
+
+        guard let index = poachableIndexes.randomElement() else { return }
+
+        let poachChance = hasHiringBrand ? 12 : 28
+
+        guard Int.random(in: 1...100) <= poachChance else { return }
+
+        let employee = company.employees.remove(at: index)
+
+        if let rivalIndex = company.competitors.indices.randomElement() {
+            company.competitors[rivalIndex].employees += 1
+            company.competitors[rivalIndex].rivalryHeat =
+                min(100, company.competitors[rivalIndex].rivalryHeat + 12)
+            company.competitors[rivalIndex].signatureMove =
+                "Poached \(employee.name)"
+
+            addNotification(
+                title: "Talent Poached",
+                message: "\(company.competitors[rivalIndex].name) poached \(employee.name). Loyalty matters now."
+            )
+        }
+
+    }
+
+    private func processInvestorRelationships() {
+
+        guard !company.activeInvestors.isEmpty else { return }
+
+        let delta: Int
+
+        if company.monthlyProfit > 0 &&
+           company.customerSatisfaction >= 70 {
+            delta = 3
+        } else if company.runwayMonths < 4 ||
+                  company.customerSatisfaction < 55 {
+            delta = -5
+        } else {
+            delta = 1
+        }
+
+        for index in company.activeInvestors.indices {
+            company.activeInvestors[index].relationship =
+                min(100, max(0, company.activeInvestors[index].relationship + delta))
+        }
+
+        for index in company.investors.indices where company.investors[index].invested {
+            company.investors[index].relationship =
+                min(100, max(0, company.investors[index].relationship + delta))
+        }
+
+        if delta < 0 {
+            addNotification(
+                title: "Board Pressure",
+                message: "Investor confidence slipped due to weak fundamentals."
+            )
+        }
 
     }
 
@@ -990,6 +1794,12 @@ class GameManager {
         company.reputation =
             min(100, max(0, company.reputation + option.reputationEffect))
 
+        company.customerSatisfaction =
+            min(
+                100,
+                max(0, company.customerSatisfaction + option.satisfactionEffect)
+            )
+
         changeMarketShare(by: option.marketShareEffect)
 
         if let first = company.products.indices.first {
@@ -1010,6 +1820,8 @@ class GameManager {
         currentEvent = nil
 
         evaluateGameOutcome()
+
+        saveGame()
 
     }
     // MARK: - Economy Helpers
@@ -1113,6 +1925,286 @@ class GameManager {
             message: "Campaign attracted \(customers) new customers."
         )
 
+        saveGame()
+
+    }
+
+    func launchCustomerSuccessSprint() {
+
+        let cost = company.customerSuccessCost
+
+        guard spendCash(cost) else {
+
+            addNotification(
+                title: "Customer Success Delayed",
+                message: "You need $\(Int(cost).formatted()) to fund a customer success sprint."
+            )
+
+            return
+
+        }
+
+        var satisfactionGain =
+            company.supportCapacity >= 1 ? 10 : 6
+
+        if company.unlockedCompanyPerks.contains(.customerSuccessOps) {
+            satisfactionGain += 4
+        }
+
+        improveCustomerSatisfaction(by: satisfactionGain)
+
+        company.churnRisk =
+            max(0.005, company.churnRisk - 0.01)
+
+        company.reputation =
+            min(100, company.reputation + 1)
+
+        addNotification(
+            title: "Customer Success Sprint",
+            message:
+                "Support improvements raised satisfaction by \(satisfactionGain)% and lowered churn risk."
+        )
+
+        saveGame()
+
+    }
+
+    private func improveCustomerSatisfaction(by amount: Int) {
+
+        company.customerSatisfaction =
+            min(100, company.customerSatisfaction + amount)
+
+    }
+
+    func unlockCompanyPerk(_ perk: Company.CompanyPerk) {
+
+        guard !company.unlockedCompanyPerks.contains(perk) else { return }
+
+        guard company.companyPerkPoints >= perk.cost else {
+
+            addNotification(
+                title: "Perk Locked",
+                message: "\(perk.rawValue) requires \(perk.cost) company perk points."
+            )
+
+            return
+
+        }
+
+        company.companyPerkPoints -= perk.cost
+        company.unlockedCompanyPerks.insert(perk)
+
+        if perk == .boardWhisperer {
+            improveInvestorRelationships(by: 8)
+        }
+
+        addNotification(
+            title: "Company Perk Unlocked",
+            message: "\(perk.rawValue): \(perk.summary)"
+        )
+
+        saveGame()
+
+    }
+
+    func expandMarketSegment(id: UUID) {
+
+        guard let index = company.marketSegments.firstIndex(where: {
+            $0.id == id
+        }) else {
+            return
+        }
+
+        guard !company.marketSegments[index].unlocked else { return }
+
+        guard company.reputation >= company.marketSegments[index].reputationRequired else {
+
+            addNotification(
+                title: "Expansion Blocked",
+                message: "\(company.marketSegments[index].name) requires \(company.marketSegments[index].reputationRequired) reputation."
+            )
+
+            return
+
+        }
+
+        guard spendCash(company.marketSegments[index].unlockCost) else {
+
+            addNotification(
+                title: "Expansion Blocked",
+                message: "You need $\(Int(company.marketSegments[index].unlockCost).formatted()) to enter \(company.marketSegments[index].name)."
+            )
+
+            return
+
+        }
+
+        company.marketSegments[index].unlocked = true
+        company.marketSegments[index].localShare = 5
+        company.monthlyRevenue +=
+            company.marketSegments[index].monthlyRevenueBonus
+        changeMarketShare(by: 1)
+
+        addNotification(
+            title: "Market Segment Unlocked",
+            message: "\(company.marketSegments[index].name) is now contributing new revenue."
+        )
+
+        evaluateAchievements()
+        saveGame()
+
+    }
+
+    func fundFrontierProject(id: UUID) {
+
+        guard let index = company.frontierProjects.firstIndex(where: {
+            $0.id == id
+        }) else {
+            return
+        }
+
+        guard !company.frontierProjects[index].completed else { return }
+
+        if let technology = company.frontierProjects[index].requiredTechnology,
+           !company.hasUnlockedTechnology(technology) {
+
+            addNotification(
+                title: "Frontier Project Locked",
+                message: "\(company.frontierProjects[index].name) requires \(technology)."
+            )
+
+            return
+
+        }
+
+        let cloudDiscount =
+            company.unlockedCompanyPerks.contains(.cloudNegotiator) ? 0.85 : 1
+
+        let projectSpeed =
+            company.unlockedCompanyPerks.contains(.frontierOperator) ? 1.25 : 1
+
+        let baseCost =
+            max(25_000, company.frontierProjects[index].totalCost * 0.18)
+
+        let cost = baseCost * cloudDiscount
+
+        guard spendCash(cost) else {
+
+            addNotification(
+                title: "Frontier Funding Blocked",
+                message: "You need $\(Int(cost).formatted()) for the next \(company.frontierProjects[index].name) milestone."
+            )
+
+            return
+
+        }
+
+        let progressGain =
+            (cost / company.frontierProjects[index].totalCost) *
+            100 *
+            projectSpeed
+
+        company.frontierProjects[index].progress =
+            min(100, company.frontierProjects[index].progress + progressGain)
+
+        if company.frontierProjects[index].progress >= 100 {
+            completeFrontierProject(at: index)
+        } else {
+            addNotification(
+                title: "Frontier Project Advanced",
+                message: "\(company.frontierProjects[index].name) reached \(Int(company.frontierProjects[index].progress))%."
+            )
+        }
+
+        saveGame()
+
+    }
+
+    private func completeFrontierProject(at index: Int) {
+
+        company.frontierProjects[index].completed = true
+        company.companyValue += company.frontierProjects[index].valuationReward
+        company.reputation =
+            min(
+                100,
+                company.reputation + company.frontierProjects[index].reputationReward
+            )
+        company.researchPoints += company.frontierProjects[index].researchReward
+
+        addNotification(
+            title: "Frontier Project Complete",
+            message: "\(company.frontierProjects[index].name) became a company-defining capability."
+        )
+
+        evaluateAchievements()
+
+    }
+
+    private func improveInvestorRelationships(by amount: Int) {
+
+        for index in company.activeInvestors.indices {
+            company.activeInvestors[index].relationship =
+                min(100, company.activeInvestors[index].relationship + amount)
+        }
+
+        for index in company.investors.indices where company.investors[index].invested {
+            company.investors[index].relationship =
+                min(100, company.investors[index].relationship + amount)
+        }
+
+    }
+
+    private func evaluateAchievements() {
+
+        let achievements: [(Company.GameAchievement, Bool)] = [
+            (.firstHire, company.employees.count > 1),
+            (.firstContract, company.completedContracts > 0),
+            (.customerHero, company.customerSatisfaction >= 90),
+            (
+                .founderControl,
+                company.companyValue >= 10_000_000 &&
+                company.founderOwnership >= 80
+            ),
+            (.unicornBuilder, company.companyValue >= 1_000_000_000),
+            (.frontierLab, company.frontierProjects.contains { $0.completed }),
+            (
+                .globalExpansion,
+                company.marketSegments.filter { $0.unlocked }.count >= 3
+            ),
+            (
+                .loyalTeam,
+                company.employees.count >= 5 &&
+                averageEmployeeLoyalty >= 85
+            )
+        ]
+
+        for (achievement, unlocked) in achievements where unlocked {
+
+            guard !company.unlockedAchievements.contains(achievement) else {
+                continue
+            }
+
+            company.unlockedAchievements.insert(achievement)
+
+            addNotification(
+                title: "Achievement Unlocked",
+                message: "\(achievement.rawValue) (\(achievement.gameCenterID))"
+            )
+
+        }
+
+    }
+
+    private var averageEmployeeLoyalty: Int {
+
+        guard !company.employees.isEmpty else { return 0 }
+
+        let total = company.employees.reduce(0) {
+            $0 + $1.loyalty
+        }
+
+        return total / company.employees.count
+
     }
     
     func skipToNextMonth() {
@@ -1189,6 +2281,121 @@ class GameManager {
 
         }
 
+        if company.activeInvestors.isEmpty &&
+           company.founderOwnership >= 90 &&
+           company.monthlyProfit >= 50_000 &&
+           company.cash >= 500_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a profitable AI company without giving up control. A rare founder-led win."
+            )
+
+            addNotification(
+                title: "Bootstrapped Victory",
+                message: "Your startup became highly profitable while staying founder-controlled."
+            )
+
+            return
+
+        }
+
+        if company.releasedAIModelCount >= 4 &&
+           company.unlockedTechnologyCount >= 5 &&
+           company.companyValue >= 50_000_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You turned the company into a frontier research lab with a portfolio of breakthrough AI models."
+            )
+
+            addNotification(
+                title: "Research Victory",
+                message: "Your lab now defines the technical frontier."
+            )
+
+            return
+
+        }
+
+        if company.companyValue >= 500_000_000 &&
+           company.monthlyProfit >= 100_000 &&
+           company.founderOwnership >= 35 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "IPO Victory: you took a profitable AI company public while keeping meaningful founder control."
+            )
+
+            addNotification(
+                title: "IPO Victory",
+                message: "Your company is public, profitable, and still founder-led."
+            )
+
+            return
+
+        }
+
+        if company.companyValue >= 250_000_000 &&
+           company.cash >= 5_000_000 &&
+           company.customerSatisfaction >= 88 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "Strategic Acquisition Victory: a platform giant acquired your beloved AI company for a premium exit."
+            )
+
+            addNotification(
+                title: "Acquisition Victory",
+                message: "Your customer love and cash position created a premium exit."
+            )
+
+            return
+
+        }
+
+        if company.companyValue >= 1_000_000_000 &&
+           company.activeInvestors.count >= 2 &&
+           company.monthlyRevenue >= 250_000 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a venture-backed AI unicorn with enough revenue to justify the hype."
+            )
+
+            addNotification(
+                title: "Unicorn Victory",
+                message: "Your company reached a $1B valuation."
+            )
+
+            return
+
+        }
+
+        if company.unlockedProductCount >= company.products.count &&
+           company.totalCustomers >= 100_000 &&
+           company.customerSatisfaction >= 90 {
+
+            gameSpeed = .paused
+
+            gameOutcome = .victory(
+                "You built a beloved AI product ecosystem with massive adoption and unusually happy customers."
+            )
+
+            addNotification(
+                title: "Product Ecosystem Victory",
+                message: "Customers love your complete AI product suite."
+            )
+
+            return
+
+        }
+
         if company.marketShare >= 60 &&
            company.monthlyRevenue >= 100_000 {
 
@@ -1241,6 +2448,8 @@ class GameManager {
             title: "🏢 Office Upgraded",
             message: "Your company moved into the \(nextOffice.name)!"
         )
+
+        saveGame()
 
     }
     

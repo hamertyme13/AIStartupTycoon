@@ -4,15 +4,26 @@ struct TimeControls: View {
 
     @Environment(GameManager.self) private var game
 
+    @State private var showingResetConfirmation = false
+
     var body: some View {
 
-        HStack(spacing: 20) {
+        LazyVGrid(
+            columns: [
+                GridItem(
+                    .adaptive(minimum: 48, maximum: 56),
+                    spacing: 12
+                )
+            ],
+            spacing: 12
+        ) {
 
             ForEach(GameSpeed.allCases, id: \.self) { speed in
 
                 Button {
 
                     game.gameSpeed = speed
+                    game.saveGame()
 
                 } label: {
 
@@ -51,14 +62,59 @@ struct TimeControls: View {
 
             }
 
+            Button {
+
+                game.saveGame()
+
+            } label: {
+
+                Image(systemName: "square.and.arrow.down.fill")
+                    .font(.title2)
+                    .frame(width: 44, height: 44)
+                    .background(Color.blue.opacity(0.85))
+                    .foregroundStyle(.white)
+                    .clipShape(Circle())
+
+            }
+
+            Button {
+
+                showingResetConfirmation = true
+
+            } label: {
+
+                Image(systemName: "arrow.counterclockwise")
+                    .font(.title2)
+                    .frame(width: 44, height: 44)
+                    .background(Color.red.opacity(0.85))
+                    .foregroundStyle(.white)
+                    .clipShape(Circle())
+
+            }
+
+        }
+        .frame(maxWidth: .infinity)
+        .confirmationDialog(
+            "Start a new company?",
+            isPresented: $showingResetConfirmation,
+            titleVisibility: .visible
+        ) {
+
+            Button("New Game", role: .destructive) {
+
+                game.resetGame()
+
+            }
+
+            Button("Cancel", role: .cancel) {}
+
         }
 
     }
 
 }
 //  TimeControls.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

@@ -56,6 +56,25 @@ struct CompetitorCard: View {
 
                 }
 
+                Divider()
+
+                HStack {
+
+                    Label("Rivalry", systemImage: "flame.fill")
+
+                    Spacer()
+
+                    Text("\(competitor.rivalryHeat)%")
+                        .foregroundStyle(
+                            competitor.rivalryHeat >= 60 ? .orange : .secondary
+                        )
+
+                }
+
+                Text(competitor.signatureMove)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
             }
 
         }
@@ -64,8 +83,7 @@ struct CompetitorCard: View {
 
 }
 //  CompetitorCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

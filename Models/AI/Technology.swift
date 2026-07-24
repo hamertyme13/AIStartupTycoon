@@ -1,8 +1,8 @@
 import Foundation
 
-struct Technology: Identifiable {
+struct Technology: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let name: String
 
@@ -14,10 +14,15 @@ struct Technology: Identifiable {
 
     var unlocked = false
 
+    var monthlyResearchCost: Double {
+
+        max(1_500, requiredResearch * 20)
+
+    }
+
 }
 //  Technology.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/2/26.
 //
-

@@ -16,7 +16,8 @@ struct EventManager {
                     customerEffect: 2_000,
                     researchEffect: 0,
                     reputationEffect: 4,
-                    marketShareEffect: 1.5
+                    marketShareEffect: 1.5,
+                    satisfactionEffect: 2
                 ),
                 GameEventOption(
                     title: "Monetize the Spike",
@@ -26,7 +27,8 @@ struct EventManager {
                     customerEffect: 800,
                     researchEffect: 0,
                     reputationEffect: 1,
-                    marketShareEffect: 0.5
+                    marketShareEffect: 0.5,
+                    satisfactionEffect: -2
                 )
             ]
         ),
@@ -70,7 +72,8 @@ struct EventManager {
                     customerEffect: -100,
                     researchEffect: 0,
                     reputationEffect: 2,
-                    marketShareEffect: -0.2
+                    marketShareEffect: -0.2,
+                    satisfactionEffect: 5
                 ),
                 GameEventOption(
                     title: "Patch Quietly",
@@ -80,7 +83,8 @@ struct EventManager {
                     customerEffect: -600,
                     researchEffect: 0,
                     reputationEffect: -4,
-                    marketShareEffect: -1.0
+                    marketShareEffect: -1.0,
+                    satisfactionEffect: -8
                 )
             ]
         ),
@@ -124,7 +128,8 @@ struct EventManager {
                     customerEffect: -200,
                     researchEffect: 40,
                     reputationEffect: 5,
-                    marketShareEffect: -0.5
+                    marketShareEffect: -0.5,
+                    satisfactionEffect: 4
                 ),
                 GameEventOption(
                     title: "Defend the Launch",
@@ -134,7 +139,124 @@ struct EventManager {
                     customerEffect: 500,
                     researchEffect: 0,
                     reputationEffect: -5,
-                    marketShareEffect: 0.6
+                    marketShareEffect: 0.6,
+                    satisfactionEffect: -6
+                )
+            ]
+        ),
+
+        GameEvent(
+            title: "💬 Customer Forum Erupts",
+            description: "Power users are demanding roadmap changes in public.",
+            options: [
+                GameEventOption(
+                    title: "Host a Live AMA",
+                    description: "Spend founder time and support cash to rebuild trust.",
+                    cashEffect: -6_000,
+                    companyValueEffect: 10_000,
+                    customerEffect: 300,
+                    researchEffect: -20,
+                    reputationEffect: 3,
+                    marketShareEffect: 0.2,
+                    satisfactionEffect: 8
+                ),
+                GameEventOption(
+                    title: "Ship the Most Requested Fix",
+                    description: "Delay growth work to improve product quality.",
+                    cashEffect: -4_000,
+                    companyValueEffect: 25_000,
+                    customerEffect: 600,
+                    researchEffect: 0,
+                    reputationEffect: 1,
+                    marketShareEffect: 0.4,
+                    satisfactionEffect: 5
+                )
+            ]
+        ),
+
+        GameEvent(
+            title: "🧑‍💻 Employee Hack Week",
+            description: "The team wants a week to prototype risky ideas.",
+            options: [
+                GameEventOption(
+                    title: "Fund the Hack Week",
+                    description: "Morale rises and one prototype advances research.",
+                    cashEffect: -7_500,
+                    companyValueEffect: 35_000,
+                    customerEffect: 0,
+                    researchEffect: 90,
+                    reputationEffect: 2,
+                    marketShareEffect: 0.1,
+                    satisfactionEffect: 1
+                ),
+                GameEventOption(
+                    title: "Stay on Roadmap",
+                    description: "Preserve cash and focus, but miss a culture moment.",
+                    cashEffect: 0,
+                    companyValueEffect: 5_000,
+                    customerEffect: 0,
+                    researchEffect: 20,
+                    reputationEffect: -1,
+                    marketShareEffect: 0,
+                    satisfactionEffect: 0
+                )
+            ]
+        ),
+
+        GameEvent(
+            title: "🕵️ Competitor Copies Your Feature",
+            description: "A rival launched a similar product with aggressive pricing.",
+            options: [
+                GameEventOption(
+                    title: "Differentiate with Quality",
+                    description: "Invest in customer experience instead of a price war.",
+                    cashEffect: -9_000,
+                    companyValueEffect: 20_000,
+                    customerEffect: 250,
+                    researchEffect: 30,
+                    reputationEffect: 3,
+                    marketShareEffect: 0.3,
+                    satisfactionEffect: 6
+                ),
+                GameEventOption(
+                    title: "Match the Discount",
+                    description: "Protect share but cheapen the brand.",
+                    cashEffect: -3_000,
+                    companyValueEffect: -10_000,
+                    customerEffect: 900,
+                    researchEffect: 0,
+                    reputationEffect: -2,
+                    marketShareEffect: 0.8,
+                    satisfactionEffect: 1
+                )
+            ]
+        ),
+
+        GameEvent(
+            title: "🏛️ Policy Roundtable Invite",
+            description: "Regulators asked your company to join an AI policy working group.",
+            options: [
+                GameEventOption(
+                    title: "Take a Public Leadership Role",
+                    description: "Gain trust and reputation, but slow research velocity.",
+                    cashEffect: -5_000,
+                    companyValueEffect: 30_000,
+                    customerEffect: 150,
+                    researchEffect: -30,
+                    reputationEffect: 5,
+                    marketShareEffect: 0.2,
+                    satisfactionEffect: 3
+                ),
+                GameEventOption(
+                    title: "Send Legal Counsel",
+                    description: "Keep leaders focused while staying represented.",
+                    cashEffect: -2_500,
+                    companyValueEffect: 10_000,
+                    customerEffect: 0,
+                    researchEffect: 0,
+                    reputationEffect: 1,
+                    marketShareEffect: 0,
+                    satisfactionEffect: 0
                 )
             ]
         )
@@ -143,7 +265,7 @@ struct EventManager {
 
 }
 //  EventManager.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/2/26.
 //

@@ -6,7 +6,16 @@ struct CompanyHealthCard: View {
 
     var body: some View {
 
-        GroupBox {
+        VStack(alignment: .leading, spacing: 14) {
+
+            Label(
+                "Company Health",
+                systemImage: "heart.text.square.fill"
+            )
+            .font(.headline)
+            .foregroundStyle(RogueCircuitTheme.signalGreen)
+
+            Divider()
 
             VStack(alignment: .leading, spacing: 12) {
 
@@ -25,17 +34,62 @@ struct CompanyHealthCard: View {
 
                 }
 
+                Divider()
+
+                HStack {
+
+                    Text("Stage")
+
+                    Spacer()
+
+                    Text(game.company.campaignStage.rawValue)
+                        .bold()
+
+                }
+
+                HStack {
+
+                    Text("Scenario")
+
+                    Spacer()
+
+                    Text(game.company.selectedScenario.rawValue)
+                        .bold()
+
+                }
+
+                HStack {
+
+                    Text("Satisfaction")
+
+                    Spacer()
+
+                    Text("\(game.company.customerSatisfaction)%")
+                        .bold()
+                        .foregroundStyle(
+                            game.company.customerSatisfaction >= 60
+                            ? .green
+                            : .orange
+                        )
+
+                }
+
+                if let event = game.company.activeWorldEvent {
+
+                    Label(
+                        event.title,
+                        systemImage: "globe.americas.fill"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.blue)
+
+                }
+
             }
 
-        } label: {
-
-            Label(
-                "Company Health",
-                systemImage: "heart.text.square.fill"
-            )
-            .foregroundStyle(.red)
-
         }
+        .padding()
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 
@@ -48,8 +102,7 @@ struct CompanyHealthCard: View {
 
 }
 //  CompanyHealthCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

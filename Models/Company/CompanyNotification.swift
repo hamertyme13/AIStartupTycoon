@@ -1,8 +1,8 @@
 import Foundation
 
-struct CompanyNotification: Identifiable {
+struct CompanyNotification: Identifiable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     let title: String
 
@@ -12,12 +12,11 @@ struct CompanyNotification: Identifiable {
 
     let month: Int
 
-    let date = Date()
+    var date = Date()
 
 }
 //  Notifications.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

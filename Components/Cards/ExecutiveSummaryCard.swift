@@ -71,7 +71,7 @@ struct ExecutiveSummaryCard: View {
 
 }
 //  ExecutiveSummaryCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/4/26.
 //

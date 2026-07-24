@@ -31,6 +31,12 @@ struct ResearchView: View {
                             color: .blue
                         )
 
+                        StatCard(
+                            title: "💸 Research Cost",
+                            value: "$\(Int(game.company.researchExpense))/mo",
+                            color: .red
+                        )
+
                         ResearchCard(
                             technology: game.company.technologies[index],
                             index: index

@@ -1,6 +1,6 @@
 import Foundation
 
-enum GameSpeed: String, CaseIterable {
+enum GameSpeed: String, CaseIterable, Codable {
 
     case paused = "Pause"
     case slow = "Slow"
@@ -49,8 +49,7 @@ enum GameSpeed: String, CaseIterable {
 
 }
 //  GameSpeed.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-

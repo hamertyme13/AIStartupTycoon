@@ -59,6 +59,11 @@ struct EmployeesView: View {
                                     at: index,
                                     to: department
                                 )
+                            },
+                            onFire: {
+                                withAnimation {
+                                    game.fireEmployee(at: index)
+                                }
                             }
                         )
 

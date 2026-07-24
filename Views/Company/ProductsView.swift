@@ -28,6 +28,13 @@ struct ProductsView: View {
 
                                 }
 
+                            } onStrategyChange: { strategy in
+
+                                game.setProductStrategy(
+                                    index: index,
+                                    strategy: strategy
+                                )
+
                             }
 
                         } else {

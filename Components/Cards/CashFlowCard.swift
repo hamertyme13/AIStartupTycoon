@@ -16,37 +16,47 @@ struct CashFlowCard: View {
 
             Divider()
 
-            HStack {
+            ViewThatFits(in: .horizontal) {
 
-                VStack(alignment: .leading) {
+                HStack(alignment: .top, spacing: 12) {
 
-                    Text("Cash")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    cashMetric(
+                        title: "Cash",
+                        value: "$\(Int(game.company.cash).formatted())",
+                        color: RogueCircuitTheme.text,
+                        alignment: .leading
+                    )
 
-                    Text("$\(Int(game.company.cash).formatted())")
-                        .font(.title2)
-                        .bold()
+                    Spacer(minLength: 12)
+
+                    cashMetric(
+                        title: "Monthly Profit",
+                        value: "$\(Int(game.company.monthlyProfit).formatted())",
+                        color: game.company.monthlyProfit >= 0
+                        ? .green
+                        : .red,
+                        alignment: .trailing
+                    )
 
                 }
 
-                Spacer()
+                VStack(alignment: .leading, spacing: 12) {
 
-                VStack(alignment: .trailing) {
-
-                    Text("Monthly Profit")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    Text(
-                        "$\(Int(game.company.monthlyProfit).formatted())"
+                    cashMetric(
+                        title: "Cash",
+                        value: "$\(Int(game.company.cash).formatted())",
+                        color: RogueCircuitTheme.text,
+                        alignment: .leading
                     )
-                    .font(.title3)
-                    .bold()
-                    .foregroundStyle(
+
+                    cashMetric(
+                        title: "Monthly Profit",
+                        value: "$\(Int(game.company.monthlyProfit).formatted())",
+                        color:
                         game.company.monthlyProfit >= 0
                         ? .green
-                        : .red
+                        : .red,
+                        alignment: .leading
                     )
 
                 }
@@ -70,10 +80,31 @@ struct CashFlowCard: View {
 
         }
         .padding()
-        .background(.thinMaterial)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
+        .rogueCircuitCard(cornerRadius: 20)
+
+    }
+
+    private func cashMetric(
+        title: String,
+        value: String,
+        color: Color,
+        alignment: HorizontalAlignment
+    ) -> some View {
+
+        VStack(alignment: alignment, spacing: 4) {
+
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Text(value)
+                .font(.title3)
+                .bold()
+                .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.62)
+
+        }
 
     }
 
@@ -86,8 +117,7 @@ struct CashFlowCard: View {
 
 }
 //  CashFlowCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/4/26.
 //
-

@@ -24,7 +24,16 @@ struct MonthProgressCard: View {
 
     var body: some View {
 
-        GroupBox {
+        VStack(alignment: .leading, spacing: 14) {
+
+            Label(
+                "Next Month",
+                systemImage: "calendar"
+            )
+            .font(.headline)
+            .foregroundStyle(RogueCircuitTheme.signalGreen)
+
+            Divider()
 
             VStack(spacing: 16) {
 
@@ -38,15 +47,9 @@ struct MonthProgressCard: View {
 
             }
 
-        } label: {
-
-            Label(
-                "📅 Next Month",
-                systemImage: "calendar"
-            )
-            .font(.headline)
-
         }
+        .padding()
+        .rogueCircuitCard(cornerRadius: 20)
 
     }
 
@@ -61,8 +64,7 @@ struct MonthProgressCard: View {
 
 }
 //  MonthProgressCard.swift
-//  AIStartupTycoon
+//  TechEmpire
 //
 //  Created by Joshua Hamer on 7/3/26.
 //
-
